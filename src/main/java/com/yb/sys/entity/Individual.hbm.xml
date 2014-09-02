@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.yb.sys.entity.IndividualExt" table="individual">
+        <id name="id" type="java.lang.Long">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+		<property name="user_id" column="user_id" type="java.lang.Long" />
+		<property name="name" column="name" type="java.lang.String" />
+		<property name="gender" column="gender" type="java.lang.Long" />
+		<property name="edu_id" column="edu_id" type="java.lang.Long" />
+		<property name="sch_id" column="sch_id" type="java.lang.Long" />
+		<property name="birth_year" column="birth_year" type="java.lang.Long" />
+		<property name="city_id" column="city_id" type="java.lang.Long" />
+		<property name="mainpage" column="mainpage" type="java.lang.String" />
+		<property name="workstyle" column="workstyle" type="java.lang.Long" />
+		<property name="lang_cert" column="lang_cert" type="java.lang.String" />
+		<property name="trans_cert" column="trans_cert" type="java.lang.String" />
+		<property name="prof_cert" column="prof_cert" type="java.lang.String" />
+		<property name="exp_year" column="exp_year" type="java.lang.Long" />
+		<property name="exp_trans" column="exp_trans" type="java.lang.Long" />
+		<property name="works" column="works" type="java.lang.String" />
+		<property name="introduct" column="introduct" type="java.lang.String" />
+		<property name="photo" column="photo" type="java.lang.String" />
+		<property name="auth_file" column="auth_file" type="java.lang.String" />
+		<property name="auth_pass" column="auth_pass" type="java.lang.Long" />
+		<property name="mpos_id" column="mpos_id" type="java.lang.Long" />
+		<property name="spos_id" column="spos_id" type="java.lang.Long" />
+    </class>
+</hibernate-mapping>

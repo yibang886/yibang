@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+    <context:component-scan base-package="com.yb.sys" />
+
+    <!-- 默认注解的支持 -->
+    <mvc:annotation-driven />
+
+    <!-- 配置拦截器 -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    
+    <!-- 静态资源访问 -->
+    <mvc:resources mapping="/resource/**" location="/resource/" cache-period="31556926" /> 
+
+    <!-- 数据源 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+      <property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+      <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/yibangdb?useUnicode=true&amp;characterEncoding=UTF-8"></property>
+      <property name="user" value="root"></property>
+      <property name="password" value="123456"></property>
+
+      <!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default:1 -->
+      <property name="acquireIncrement" value="1"></property>
+
+      <!--初始化时获取三个连接，取值应在minPoolSize与maxPoolSize之间。Default:3 -->
+      <property name="initialPoolSize" value="3"></property>
+
+      <!--最大空闲时间,30秒内未使用则连接被丢弃。若为0则永不丢弃。Default:0 -->
+      <property name="maxIdleTime" value="30"></property>
+
+      <!--连接池中保留的最大连接数。Default: 15 -->
+      <property name="maxPoolSize" value="5"></property>
+
+      <!--连接池中保留的最小连接数。Default:3 -->
+      <property name="minPoolSize" value="3"></property>
+
+      <!--两次连接中间隔时间，单位毫秒。Default: 1000-->
+      <property name="acquireRetryDelay" value="1000"></property>
+
+      <!--定义在从数据库获取新连接失败后重复尝试的次数。Default:30 -->
+      <property name="acquireRetryAttempts" value="5"></property>
+
+      <!--获取连接失败将会引起所有等待连接池来获取连接的线程抛出异常。但是数据源仍有效
+          保留，并在下次调用getConnection()的时候继续尝试获取连接。如果设为true，那么在尝试 
+          获取连接失败后该数据源将申明已断开并永久关闭。Default: false -->
+      <property name="breakAfterAcquireFailure" value="false"></property>
+    </bean>
+
+    <!-- 配置事务-->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+      <property name="sessionFactory">
+        <ref bean="sessionFactory" />
+      </property>
+    </bean>
+
+    <!-- 配置Hibernate Template -->
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+      <property name="sessionFactory">
+        <ref bean="sessionFactory" />
+      </property>
+    </bean>
+
+    <bean id="transactionInteceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="transactionAttributes">
+            <props>
+              <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+              <prop key="*Query">PROPAGATION_REQUIRED,readOnly</prop>
+              <prop key="*Count">PROPAGATION_REQUIRED,readOnly</prop>
+              <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+      <property name="dataSource" ref="dataSource"></property>
+      <property name="mappingResources">
+        <list>
+          <value>com/yb/sys/entity/Individual.hbm.xml</value>
+          <value>com/yb/sys/entity/User.hbm.xml</value>
+          <value>com/yb/sys/entity/Language.hbm.xml</value>
+          <value>com/yb/sys/entity/Field.hbm.xml</value>
+          <value>com/yb/sys/entity/Transtype.hbm.xml</value>
+          <value>com/yb/sys/entity/Doctype.hbm.xml</value>
+          <value>com/yb/sys/entity/Mainpos.hbm.xml</value>
+          <value>com/yb/sys/entity/Searchpos.hbm.xml</value>
+          <value>com/yb/sys/entity/Education.hbm.xml</value>
+          <value>com/yb/sys/entity/City.hbm.xml</value>
+          <value>com/yb/sys/entity/School.hbm.xml</value>
+        </list>
+      </property>
+      <property name="hibernateProperties">
+        <props>
+          <prop key="hibernate.jdbc.fetch_size">100</prop> 
+          <prop key="hibernate.jdbc.batch_size">15</prop> 
+          <prop key="hibernate.show_sql">true</prop> 
+          <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop> 
+          <prop key="hibernate.cache.use_query_cache">true</prop> 
+          <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop> 
+          <prop key="hibernate.cache.query_cache_factory">org.hibernate.cache.StandardQueryCacheFactory</prop> 
+          <prop key="hibernate.query.factory_class">org.hibernate.hql.classic.ClassicQueryTranslatorFactory</prop> 
+          <prop key="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</prop> 
+        </props>
+      </property>
+    </bean>
+
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames">
+          <list>
+            <value>individualService</value>
+            <value>userService</value>
+            <value>languageService</value>
+            <value>fieldService</value>
+            <value>transtypeService</value>
+            <value>doctypeService</value>
+            <value>mainposService</value>
+            <value>searchposService</value>
+            <value>educationService</value>
+            <value>cityService</value>
+            <value>schoolService</value>
+          </list>
+        </property>
+
+        <property name="interceptorNames">
+          <list>
+            <value>transactionInteceptor</value>
+          </list>
+        </property>
+    </bean>
+
+    <bean id="individualDao" class="com.yb.sys.dao.IndividualDao">
+      <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+    </bean>
+    <bean id="individualService" class="com.yb.sys.service.IndividualServiceExt">
+      <property name="individualDao" ref="individualDao" />
+    </bean>
+
+
+    <bean id="userDao" class="com.yb.sys.dao.UserDao">
+      <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+    </bean>
+    <bean id="userService" class="com.yb.sys.service.UserServiceExt">
+      <property name="userDao" ref="userDao" />
+    </bean>
+
+
+    <bean id="languageDao" class="com.yb.sys.dao.LanguageDao">
+      <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+    </bean>
+    <bean id="languageService" class="com.yb.sys.service.LanguageServiceExt">
+      <property name="languageDao" ref="languageDao" />
+    </bean>
+
+
+    <bean id="fieldDao" class="com.yb.sys.dao.FieldDao">
+      <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+    </bean>
+    <bean id="fieldService" class="com.yb.sys.service.FieldServiceExt">
+      <property name="fieldDao" ref="fieldDao" />
+    </bean>
+
+
+    <bean id="transtypeDao" class="com.yb.sys.dao.TranstypeDao">
+      <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+    </bean>
+    <bean id="transtypeService" class="com.yb.sys.service.TranstypeServiceExt">
+      <property name="transtypeDao" ref="transtypeDao" />
+    </bean>
+
+
+    <bean id="doctypeDao" class="com.yb.sys.dao.DoctypeDao">
+      <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+    </bean>
+    <bean id="doctypeService" class="com.yb.sys.service.DoctypeServiceExt">
+      <property name="doctypeDao" ref="doctypeDao" />
+    </bean>
+
+
+    <bean id="mainposDao" class="com.yb.sys.dao.MainposDao">
+      <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+    </bean>
+    <bean id="mainposService" class="com.yb.sys.service.MainposServiceExt">
+      <property name="mainposDao" ref="mainposDao" />
+    </bean>
+
+
+    <bean id="searchposDao" class="com.yb.sys.dao.SearchposDao">
+      <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+    </bean>
+    <bean id="searchposService" class="com.yb.sys.service.SearchposServiceExt">
+      <property name="searchposDao" ref="searchposDao" />
+    </bean>
+
+
+    <bean id="educationDao" class="com.yb.sys.dao.EducationDao">
+      <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+    </bean>
+    <bean id="educationService" class="com.yb.sys.service.EducationServiceExt">
+      <property name="educationDao" ref="educationDao" />
+    </bean>
+
+
+    <bean id="cityDao" class="com.yb.sys.dao.CityDao">
+      <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+    </bean>
+    <bean id="cityService" class="com.yb.sys.service.CityServiceExt">
+      <property name="cityDao" ref="cityDao" />
+    </bean>
+
+
+    <bean id="schoolDao" class="com.yb.sys.dao.SchoolDao">
+      <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+    </bean>
+    <bean id="schoolService" class="com.yb.sys.service.SchoolServiceExt">
+      <property name="schoolDao" ref="schoolDao" />
+    </bean>
+</beans>
