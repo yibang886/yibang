@@ -1,0 +1,15 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="city.js"></script>
+<script type="text/javascript" src="quickQuery.js"></script>
+</head>
+<body>
+<input type="text" id="quickQueryInput" />
+<div id="quickQueryContainer" ></div>
+<script type="text/javascript">
+$.fn.quickQuery.init($("#quickQueryInput"),{"propList":["a","b","c"],"displayProp":"c","propSetList":[["A","B","C","D"],["E","F","G","H"],["J","K","L","M"],["N","O","P","Q","R","S"],["T","U","V","W","X"],["Y","Z"]],"queryBoxContainerId":"quickQueryContainer"},{"cityList":cityList});
+</script>
+</body>
+</html>
