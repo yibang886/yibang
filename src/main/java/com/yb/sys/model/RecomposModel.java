@@ -2,13 +2,13 @@ package com.yb.sys.model;
 
 import java.util.List;
 
-import com.yb.sys.entity.SearchposExt;
+import com.yb.sys.entity.RecomposExt;
 
-public class SearchposModel {
+public class RecomposModel {
 
-	private SearchposExt searchposExt;
+	private RecomposExt recomposExt;
 	
-	private SearchposExt searchposQueryCon;
+	private RecomposExt recomposQueryCon;
 	
 	private int currentPage = 1;
 	
@@ -22,26 +22,26 @@ public class SearchposModel {
 	
 	private Long dataId;
 	
-	private List<SearchposExt> items;
+	private List<RecomposExt> items;
 	
 	private String operationType;
 	
 	private String errorMessage;
 
-	public SearchposExt getSearchposExt() {
-		return searchposExt;
+	public RecomposExt getRecomposExt() {
+		return recomposExt;
 	}
 
-	public void setSearchposExt(SearchposExt searchposExt) {
-		this.searchposExt = searchposExt;
+	public void setRecomposExt(RecomposExt recomposExt) {
+		this.recomposExt = recomposExt;
 	}
 
-	public SearchposExt getSearchposQueryCon() {
-		return searchposQueryCon;
+	public RecomposExt getRecomposQueryCon() {
+		return recomposQueryCon;
 	}
 
-	public void setSearchposQueryCon(SearchposExt searchposQueryCon) {
-		this.searchposQueryCon = searchposQueryCon;
+	public void setRecomposQueryCon(RecomposExt recomposQueryCon) {
+		this.recomposQueryCon = recomposQueryCon;
 	}
 
 	public int getCurrentPage() {
@@ -91,11 +91,11 @@ public class SearchposModel {
 		this.dataId = dataId;
 	}
 
-	public List<SearchposExt> getItems() {
+	public List<RecomposExt> getItems() {
 		return items;
 	}
 
-	public void setItems(List<SearchposExt> items) {
+	public void setItems(List<RecomposExt> items) {
 		this.items = items;
 	}
 

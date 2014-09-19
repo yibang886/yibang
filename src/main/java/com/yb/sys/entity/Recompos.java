@@ -2,7 +2,7 @@ package com.yb.sys.entity;
 
 import java.io.Serializable;
 
-public class Searchpos implements Serializable{
+public class Recompos implements Serializable{
 
 	/**
 	 * 
@@ -19,14 +19,14 @@ public class Searchpos implements Serializable{
 		this.id = id;
 	}
 	
-	private String searchpos;
+	private String recompos;
 	
-	public String getsearchpos(){
-		return searchpos;
+	public String getrecompos(){
+		return recompos;
 	}
 	
-	public void setsearchpos(String searchpos){
-		this.searchpos = searchpos;
+	public void setrecompos(String recompos){
+		this.recompos = recompos;
 	}
 
 	public boolean equals(Object object)
@@ -35,11 +35,11 @@ public class Searchpos implements Serializable{
         {
             return true;
         }
-        if (!(object instanceof Searchpos))
+        if (!(object instanceof Recompos))
         {
             return false;
         }
-        final Searchpos that = (Searchpos)object;
+        final Recompos that = (Recompos)object;
         if (this.id == null || that.getId() == null || !this.id.equals(that.getId()))
         {
             return false;
@@ -62,12 +62,12 @@ public class Searchpos implements Serializable{
 
 	}
 	
-	public Searchpos cloneSearchpos (){
+	public Recompos cloneRecompos (){
         
-		Searchpos newObj = null;
+		Recompos newObj = null;
         try
         {
-            newObj = (Searchpos)org.apache.commons.beanutils.BeanUtils.cloneBean(this);            
+            newObj = (Recompos)org.apache.commons.beanutils.BeanUtils.cloneBean(this);            
         } catch (IllegalAccessException e)
         {
             // TODO Auto-generated catch block

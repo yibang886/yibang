@@ -217,35 +217,20 @@ INSERT INTO city(city) VALUES ('天津');
 INSERT INTO city(city) VALUES ('南京');
 INSERT INTO city(city) VALUES ('海外');
 
--- create table 'mainpos'
--- 翻译信息在主页中的推荐位置; NO: 不在推荐位置显示；
-DROP TABLE IF EXISTS mainpos;
-CREATE TABLE IF NOT EXISTS mainpos
+-- create table 'recompos'
+-- 翻译信息的推荐位置; NO: 不在推荐位置显示；
+DROP TABLE IF EXISTS recompos;
+CREATE TABLE IF NOT EXISTS recompos
 (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  mainpos VARCHAR(8) NOT NULL,
+  recompos VARCHAR(8) NOT NULL,
   PRIMARY KEY (id)
 ) ENGINE InnoDB, DEFAULT CHARACTER SET utf8 AUTO_INCREMENT 1;
 
-INSERT INTO mainpos(mainpos) VALUES ('NO');
-INSERT INTO mainpos(mainpos) VALUES ('A1');
-INSERT INTO mainpos(mainpos) VALUES ('A2');
-INSERT INTO mainpos(mainpos) VALUES ('A3');
-
--- create table 'searchpos'
--- 翻译信息在搜索页中的推荐位置; NO: 不在推荐位置显示；
-DROP TABLE IF EXISTS searchpos;
-CREATE TABLE IF NOT EXISTS searchpos
-(
-  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  searchpos VARCHAR(8) NOT NULL,
-  PRIMARY KEY (id)
-) ENGINE InnoDB, DEFAULT CHARACTER SET utf8 AUTO_INCREMENT 1;
-
-INSERT INTO searchpos(searchpos) VALUES ('NO');
-INSERT INTO searchpos(searchpos) VALUES ('B1');
-INSERT INTO searchpos(searchpos) VALUES ('B2');
-INSERT INTO searchpos(searchpos) VALUES ('B3');
+INSERT INTO recompos(recompos) VALUES ('NO');
+INSERT INTO recompos(recompos) VALUES ('A1');
+INSERT INTO recompos(recompos) VALUES ('A2');
+INSERT INTO recompos(recompos) VALUES ('A3');
 
 -- create table 'user'
 DROP TABLE IF EXISTS user;
@@ -288,14 +273,12 @@ CREATE TABLE IF NOT EXISTS individual
   photo VARCHAR(64),
   auth_file VARCHAR(64),                       /*认证资料路径*/
   auth_pass INT UNSIGNED NOT NULL DEFAULT 0,   /*是否通过认证, 0:未通过; 1:通过*/    
-  mpos_id INT UNSIGNED NOT NULL,               /*在主页中的推荐位置*/ 
-  spos_id INT UNSIGNED NOT NULL,               /*在搜索页中的推荐位置*/
+  recompos_id INT UNSIGNED NOT NULL,               /*在主页中的推荐位置*/ 
   FOREIGN KEY(user_id) REFERENCES user(id) ON DELETE RESTRICT ON UPDATE CASCADE,
   FOREIGN KEY(edu_id) REFERENCES education(id) ON DELETE RESTRICT ON UPDATE RESTRICT, 
   FOREIGN KEY(sch_id) REFERENCES school(id) ON DELETE RESTRICT ON UPDATE RESTRICT, 
   FOREIGN KEY(city_id) REFERENCES city(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  FOREIGN KEY(mpos_id) REFERENCES mainpos(id) ON DELETE RESTRICT ON UPDATE RESTRICT, 
-  FOREIGN KEY(spos_id) REFERENCES searchpos(id) ON DELETE RESTRICT ON UPDATE RESTRICT, 
+  FOREIGN KEY(recompos_id) REFERENCES recompos(id) ON DELETE RESTRICT ON UPDATE RESTRICT, 
   PRIMARY KEY (id)
 ) ENGINE InnoDB, DEFAULT CHARACTER SET utf8 AUTO_INCREMENT 1;
 
@@ -412,7 +395,7 @@ CREATE TABLE IF NOT EXISTS company_doctype
 -- Sample Data: 个人译员 
 INSERT INTO user(email,password,tel,mobile,fax,qq,weixin) VALUES ('yuanguo.h_001@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin');
 
-INSERT INTO individual(user_id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,lang_cert,trans_cert,prof_cert,exp_year,exp_trans,works,introduct,photo,auth_file,auth_pass,mpos_id,spos_id) VALUES (1,'霍远国',0,2,5,1985,1,'http://yuanguo.page.com',1,'individual/lang_cert/1/langcert.crt','individual/trans_cert/1/transcert.crt','individual/prof_cert/1/profcert.crt',4,15,'C语言入门','认证负责，经验丰富','individual/photo/1/photo.bitmap','individual/auth_file/1/authfile.png',1,3,2);
+INSERT INTO individual(user_id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,lang_cert,trans_cert,prof_cert,exp_year,exp_trans,works,introduct,photo,auth_file,auth_pass,recompos_id) VALUES (1,'霍远国',0,2,5,1985,1,'http://yuanguo.page.com',1,'individual/lang_cert/1/langcert.crt','individual/trans_cert/1/transcert.crt','individual/prof_cert/1/profcert.crt',4,15,'C语言入门','认证负责，经验丰富','individual/photo/1/photo.bitmap','individual/auth_file/1/authfile.png',1,3);
 
 INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(1,2);
 INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(1,6);

@@ -190,23 +190,14 @@ public class Individual implements Serializable{
 	public void setauth_pass(Long auth_pass){
 		this.auth_pass = auth_pass;
 	}
-	private Long mpos_id;
+	private Long recompos_id;
 	
-	public Long getmpos_id(){
-		return mpos_id;
+	public Long getrecompos_id(){
+		return recompos_id;
 	}
 	
-	public void setmpos_id(Long mpos_id){
-		this.mpos_id = mpos_id;
-	}
-	private Long spos_id;
-	
-	public Long getspos_id(){
-		return spos_id;
-	}
-	
-	public void setspos_id(Long spos_id){
-		this.spos_id = spos_id;
+	public void setrecompos_id(Long recompos_id){
+		this.recompos_id = recompos_id;
 	}
 
 	public boolean equals(Object object)

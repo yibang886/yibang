@@ -93,11 +93,10 @@
           <value>com/yb/sys/entity/Field.hbm.xml</value>
           <value>com/yb/sys/entity/Transtype.hbm.xml</value>
           <value>com/yb/sys/entity/Doctype.hbm.xml</value>
-          <value>com/yb/sys/entity/Mainpos.hbm.xml</value>
-          <value>com/yb/sys/entity/Searchpos.hbm.xml</value>
           <value>com/yb/sys/entity/Education.hbm.xml</value>
           <value>com/yb/sys/entity/City.hbm.xml</value>
           <value>com/yb/sys/entity/School.hbm.xml</value>
+          <value>com/yb/sys/entity/Recompos.hbm.xml</value>
         </list>
       </property>
       <property name="hibernateProperties">
@@ -124,11 +123,10 @@
             <value>fieldService</value>
             <value>transtypeService</value>
             <value>doctypeService</value>
-            <value>mainposService</value>
-            <value>searchposService</value>
             <value>educationService</value>
             <value>cityService</value>
             <value>schoolService</value>
+            <value>recomposService</value>
           </list>
         </property>
 
@@ -187,22 +185,6 @@
     </bean>
 
 
-    <bean id="mainposDao" class="com.yb.sys.dao.MainposDao">
-      <property name="sessionFactory"><ref bean="sessionFactory"/></property>
-    </bean>
-    <bean id="mainposService" class="com.yb.sys.service.MainposServiceExt">
-      <property name="mainposDao" ref="mainposDao" />
-    </bean>
-
-
-    <bean id="searchposDao" class="com.yb.sys.dao.SearchposDao">
-      <property name="sessionFactory"><ref bean="sessionFactory"/></property>
-    </bean>
-    <bean id="searchposService" class="com.yb.sys.service.SearchposServiceExt">
-      <property name="searchposDao" ref="searchposDao" />
-    </bean>
-
-
     <bean id="educationDao" class="com.yb.sys.dao.EducationDao">
       <property name="sessionFactory"><ref bean="sessionFactory"/></property>
     </bean>
@@ -224,5 +206,12 @@
     </bean>
     <bean id="schoolService" class="com.yb.sys.service.SchoolServiceExt">
       <property name="schoolDao" ref="schoolDao" />
+    </bean>
+
+    <bean id="recomposDao" class="com.yb.sys.dao.RecomposDao">
+      <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+    </bean>
+    <bean id="recomposService" class="com.yb.sys.service.RecomposServiceExt">
+      <property name="recomposDao" ref="recomposDao" />
     </bean>
 </beans>

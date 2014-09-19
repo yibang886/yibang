@@ -9,21 +9,21 @@
 </head>
 <body>
 <div id="wrapper">
-    <c:if test="${ mainposModel.operationType eq 'create' }">
+    <c:if test="${ recomposModel.operationType eq 'create' }">
     <input type="button" value="新建" onclick="doCreate()" />
     </c:if>
-    <c:if test="${ mainposModel.operationType eq 'edit' }">
+    <c:if test="${ recomposModel.operationType eq 'edit' }">
     <input type="button" value="保存" onclick="doEdit()"/>
     </c:if>
-    <form id="form" name="mainposForm" method="post">
+    <form id="form" name="recomposForm" method="post">
     <table class="table_add">
         <thead>
-                                          <tr><td>主页推荐位：</td><td><input type="text" name="mainposExt.mainpos" value="<c:out value="${ mainposModel.mainposExt.mainpos }" escapeXml="true" />" style="width:700px;"/></td></tr>
+                                          <tr><td>推荐位：</td><td><input type="text" name="recomposExt.recompos" value="<c:out value="${ recomposModel.recomposExt.recompos }" escapeXml="true" />" style="width:700px;"/></td></tr>
         </thead>
         <tbody></tbody>
     </table>
-    <c:if test="${ mainposModel.operationType eq 'edit' }">
-    <input type="hidden" value="${ mainposModel.mainposExt.id }" name="mainposExt.id"/>
+    <c:if test="${ recomposModel.operationType eq 'edit' }">
+    <input type="hidden" value="${ recomposModel.recomposExt.id }" name="recomposExt.id"/>
     </c:if>
     </form>
 </div>
@@ -31,13 +31,13 @@
 <script type="text/javascript">
 function doCreate(){
     var form = document.getElementById("form");
-    form.action = "<%=request.getContextPath()%>/mainpos/doCreate.action";
+    form.action = "<%=request.getContextPath()%>/recompos/doCreate.action";
     form.submit();
 }
 
 function doEdit(){
     var form = document.getElementById("form");
-    form.action = "<%=request.getContextPath()%>/mainpos/doEdit.action";
+    form.action = "<%=request.getContextPath()%>/recompos/doEdit.action";
     form.submit();
 }
 </script>

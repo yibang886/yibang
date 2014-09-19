@@ -37,8 +37,7 @@
                                           <tr><td>近期照片：</td><td><input type="text" name="individualExt.photo" value="<c:out value="${ individualModel.individualExt.photo }" escapeXml="true" />" style="width:700px;"/></td></tr>
                                           <tr><td>认证资料：</td><td><input type="text" name="individualExt.auth_file" value="<c:out value="${ individualModel.individualExt.auth_file }" escapeXml="true" />" style="width:700px;"/></td></tr>
                                           <tr><td>是否认证：</td><td><input type="text" name="individualExt.auth_pass" value="<c:out value="${ individualModel.individualExt.auth_pass }" escapeXml="true" />" style="width:700px;"/></td></tr>
-                                          <tr><td>主页推荐位：</td><td><input type="text" name="individualExt.mpos_id" value="<c:out value="${ individualModel.individualExt.mpos_id }" escapeXml="true" />" style="width:700px;"/></td></tr>
-                                          <tr><td>搜索页推荐位：</td><td><input type="text" name="individualExt.spos_id" value="<c:out value="${ individualModel.individualExt.spos_id }" escapeXml="true" />" style="width:700px;"/></td></tr>
+                                          <tr><td>推荐位：</td><td><input type="text" name="individualExt.recompos_id" value="<c:out value="${ individualModel.individualExt.recompos_id }" escapeXml="true" />" style="width:700px;"/></td></tr>
         </thead>
         <tbody></tbody>
     </table>

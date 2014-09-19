@@ -12,8 +12,8 @@
 	<table class="table_add">
 		<tbody>
 		
-						<c:if test="${!empty searchposModel.searchposExt.searchpos}">
-						<tr><td>搜索页推荐位：</td><td><c:out value="${searchposModel.searchposExt.searchpos }" escapeXml="true" /></td></tr>
+						<c:if test="${!empty recomposModel.recomposExt.recompos}">
+						<tr><td>推荐位：</td><td><c:out value="${recomposModel.recomposExt.recompos }" escapeXml="true" /></td></tr>
 						</c:if>				    
 							    
 		</tbody>

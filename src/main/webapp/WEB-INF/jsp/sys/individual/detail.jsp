@@ -88,13 +88,10 @@
 						<tr><td>是否认证：</td><td><c:out value="${individualModel.individualExt.auth_pass }" escapeXml="true" /></td></tr>
 						</c:if>				    
 							    
-				<c:if test="${!empty individualModel.individualExt.mpos_id}">
-						<tr><td>主页推荐位：</td><td><c:out value="${individualModel.individualExt.mpos_id }" escapeXml="true" /></td></tr>
+				<c:if test="${!empty individualModel.individualExt.recompos_id}">
+						<tr><td>推荐位：</td><td><c:out value="${individualModel.individualExt.recompos_id }" escapeXml="true" /></td></tr>
 						</c:if>				    
 							    
-				<c:if test="${!empty individualModel.individualExt.spos_id}">
-						<tr><td>搜索页推荐位：</td><td><c:out value="${individualModel.individualExt.spos_id }" escapeXml="true" /></td></tr>
-						</c:if>				    
 							    
 		</tbody>
 	</table>

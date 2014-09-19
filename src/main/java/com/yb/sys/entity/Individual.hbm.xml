@@ -26,7 +26,6 @@
 		<property name="photo" column="photo" type="java.lang.String" />
 		<property name="auth_file" column="auth_file" type="java.lang.String" />
 		<property name="auth_pass" column="auth_pass" type="java.lang.Long" />
-		<property name="mpos_id" column="mpos_id" type="java.lang.Long" />
-		<property name="spos_id" column="spos_id" type="java.lang.Long" />
+		<property name="recompos_id" column="recompos_id" type="java.lang.Long" />
     </class>
 </hibernate-mapping>

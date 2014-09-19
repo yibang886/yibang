@@ -1,6 +1,6 @@
 package com.yb.sys.entity;
 
-public class SearchposExt extends Searchpos {
+public class RecomposExt extends Recompos {
 
 	/**
 	 * 
