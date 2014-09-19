@@ -29,8 +29,8 @@
           <table border="0" cellpadding="0" cellspacing="0" class="table_date"
             id="dataTable">
             <tr>
-              <th width="30%">教育水平 </th>
-              <th width="10%"></th>
+              <th width="80%">教育水平 </th>
+              <th width="20%"></th>
             </tr>
             <c:forEach var="var" items="${educationModel.items}">
   

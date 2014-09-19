@@ -29,12 +29,11 @@
           <table border="0" cellpadding="0" cellspacing="0" class="table_date"
             id="dataTable">
             <tr>
-                  <th width="30%">发布用户 </th>
-                  <th width="30%">姓名 </th>
-                  <th width="30%">性别 </th>
-                  <th width="30%">出生 </th>
-                  <th width="30%">近期照片 </th>
-              <th width="10%"></th>
+                  <th width="20%">发布用户 </th>
+                  <th width="20%">姓名 </th>
+                  <th width="20%">性别 </th>
+                  <th width="20%">出生 </th>
+                  <th width="20%">操作 </th>
             </tr>
             <c:forEach var="var" items="${individualModel.items}">
   
@@ -43,7 +42,6 @@
                     <td><div><c:out value="${var.name}" escapeXml="true"/></div></td>
                     <td><div><c:out value="${var.gender}" escapeXml="true"/></div></td>
                     <td><div><c:out value="${var.birth_year}" escapeXml="true"/></div></td>
-                    <td><div><c:out value="${var.photo}" escapeXml="true"/></div></td>
                     <td>
                       <a href="<%=request.getContextPath()%>/individual/goView.action?dataId=${ var.id }" >查看</a>
                       &nbsp;&nbsp;

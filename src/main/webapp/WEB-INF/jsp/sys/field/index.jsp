@@ -29,8 +29,8 @@
           <table border="0" cellpadding="0" cellspacing="0" class="table_date"
             id="dataTable">
             <tr>
-              <th width="30%">专业领域 </th>
-              <th width="10%">操作</th>
+              <th width="80%">专业领域 </th>
+              <th width="20%">操作</th>
             </tr>
             <c:forEach var="var" items="${fieldModel.items}">
               <tr onmouseover="this.className='over'" onmouseout="this.className='out'">

@@ -29,11 +29,11 @@
           <table border="0" cellpadding="0" cellspacing="0" class="table_date"
             id="dataTable">
             <tr>
-                  <th width="30%">登录邮箱 </th>
-                  <th width="30%">移动电话 </th>
-                  <th width="30%">QQ号码 </th>
-                  <th width="30%">微信 </th>
-              <th width="10%"></th>
+                  <th width="20%">登录邮箱 </th>
+                  <th width="20%">移动电话 </th>
+                  <th width="20%">QQ号码 </th>
+                  <th width="20%">微信 </th>
+                  <th width="20%">操作 </th>
             </tr>
             <c:forEach var="var" items="${userModel.items}">
   
