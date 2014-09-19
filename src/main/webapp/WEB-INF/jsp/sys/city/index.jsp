@@ -11,12 +11,12 @@
 </head>
 <body>
   <div class="weizhi">
-    <div class="weizhi_bj">用户信息</div>
+    <div class="weizhi_bj">城市信息</div>
   </div>
   <form id="form" method="post">
     <table border="0" cellpadding="0" cellspacing="0" class="table_list">
       <tr>
-        <th width="11%">用户信息列表</th>
+        <th width="11%">城市信息列表</th>
         <th width="89%">
           <div>
             <!-- <input name="add" type="button" value="导出excel" onclick="toExcel();" /> --> 
@@ -29,22 +29,15 @@
           <table border="0" cellpadding="0" cellspacing="0" class="table_date"
             id="dataTable">
             <tr>
-              <th width="5%">请选择</th>
-              
-                                  <th width="30%">城市 </th>
+              <th width="30%">城市 </th>
               <th width="10%"></th>
             </tr>
             <c:forEach var="var" items="${cityModel.items}">
   
               <tr onmouseover="this.className='over'" onmouseout="this.className='out'">
-                    <td><input type="checkbox" name="checkId" value="${ var.id }" /></td>
                     <td><div><c:out value="${var.city}" escapeXml="true"/></div></td>
                     <td>
                       <a href="<%=request.getContextPath()%>/city/goView.action?dataId=${ var.id }" >查看</a>
-                      &nbsp;&nbsp;
-                      <a href="<%=request.getContextPath()%>/city/goEdit.action?dataId=${ var.id }" >编辑</a>
-                      &nbsp;&nbsp;
-                      <a href="<%=request.getContextPath()%>/city/doDelete.action?dataId=${ var.id }" >删除</a>
                     </td>
               </tr>
             </c:forEach>
