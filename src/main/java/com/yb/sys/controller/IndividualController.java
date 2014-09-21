@@ -55,6 +55,10 @@ public class IndividualController {
 	
 	@RequestMapping(value = "/individual/goCreate")
 	public String goCreate(@ModelAttribute IndividualModel individualModel, ModelMap model){
+    //Yuanguo: 
+    //create and edit use the same page (edit.jsp) to enter individual info; edit.jsp 
+    //makes use of "operationType" to decide to jump to "doCreate" or "doEdit"; see 
+    //edit.jsp;
 		individualModel.setOperationType("create");
 		model.addAttribute(individualModel);
 		return "/sys/individual/edit";
@@ -71,6 +75,10 @@ public class IndividualController {
 	
 	@RequestMapping(value = "/individual/goEdit")
 	public String goEdit(@ModelAttribute IndividualModel individualModel, ModelMap model){
+    //Yuanguo: 
+    //create and edit use the same page (edit.jsp) to enter individual info; edit.jsp 
+    //makes use of "operationType" to decide to jump to "doCreate" or "doEdit"; see 
+    //edit.jsp;
 		individualModel.setOperationType("edit");
 		if(individualModel.getDataId() != 0){
 			IndividualExt individualExt = individualService.load(individualModel.getDataId(), true);
@@ -101,5 +109,4 @@ public class IndividualController {
 		}
 		return "forward:/individual/query";
 	}
-	
 }
