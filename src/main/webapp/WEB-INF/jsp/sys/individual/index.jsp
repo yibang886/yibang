@@ -26,8 +26,7 @@
       </tr>
       <tr>
         <td colspan="2">
-          <table border="0" cellpadding="0" cellspacing="0" class="table_date"
-            id="dataTable">
+          <table border="0" cellpadding="0" cellspacing="0" class="table_date" id="dataTable">
             <tr>
                   <th width="20%">发布用户 </th>
                   <th width="20%">姓名 </th>
@@ -35,8 +34,8 @@
                   <th width="20%">出生 </th>
                   <th width="20%">操作 </th>
             </tr>
+
             <c:forEach var="var" items="${individualModel.items}">
-  
               <tr onmouseover="this.className='over'" onmouseout="this.className='out'">
                     <td><div><c:out value="${var.user_id}" escapeXml="true"/></div></td>
                     <td><div><c:out value="${var.name}" escapeXml="true"/></div></td>
@@ -51,6 +50,7 @@
                     </td>
               </tr>
             </c:forEach>
+
           </table>
         </td>
       </tr>
@@ -79,13 +79,13 @@
     
     function doDelete(){
         var form = document.getElementById("form");
-        form.action = "<%=request.getContextPath()%>/individual/doDelete";
+        form.action = "<%=request.getContextPath()%>/individual/doDelete.action";
         form.submit();
     }
     
     function doQuery(){
         var form = document.getElementById("form");
-        form.action = "<%=request.getContextPath()%>/individual/query";
+        form.action = "<%=request.getContextPath()%>/individual/query.action";
         form.submit();
     }
     
@@ -93,5 +93,3 @@
   </script>
 </body>
 </html>
-
-
