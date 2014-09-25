@@ -23,7 +23,49 @@
         <tr>
           <td>发布用户：</td>
           <td>
-            <input type="text" name="individualExt.user_id" value="<c:out value="${ individualModel.individualExt.user_id }" escapeXml="true" />" style="width:700px;"/>
+            <input type="text" name="individualExt.user.id" value="<c:out value="${ individualModel.individualExt.user.id }" escapeXml="true" />" style="width:700px;" readonly="true" style="background-color:#FF0000" />
+          </td>
+        </tr>
+
+        <tr>
+          <td>邮箱：</td>
+          <td>
+            <input type="text" name="individualExt.user.email" value="<c:out value="${ individualModel.individualExt.user.email }" escapeXml="true" />" style="width:700px;" disabled="true" />
+          </td>
+        </tr>
+
+        <tr>
+          <td>固定电话：</td>
+          <td>
+            <input type="text" name="individualExt.user.tel" value="<c:out value="${ individualModel.individualExt.user.tel }" escapeXml="true" />" style="width:700px;" disabled="true" />
+          </td>
+        </tr>
+
+        <tr>
+          <td>移动电话：</td>
+          <td>
+            <input type="text" name="individualExt.user.mobile" value="<c:out value="${ individualModel.individualExt.user.mobile }" escapeXml="true" />" style="width:700px;" disabled="true" />
+          </td>
+        </tr>
+
+        <tr>
+          <td>传真：</td>
+          <td>
+            <input type="text" name="individualExt.user.fax" value="<c:out value="${ individualModel.individualExt.user.fax }" escapeXml="true" />" style="width:700px;" disabled="true" />
+          </td>
+        </tr>
+
+        <tr>
+          <td>QQ：</td>
+          <td>
+            <input type="text" name="individualExt.user.qq" value="<c:out value="${ individualModel.individualExt.user.qq }" escapeXml="true" />" style="width:700px;" disabled="true" />
+          </td>
+        </tr>
+
+        <tr>
+          <td>微信：</td>
+          <td>
+            <input type="text" name="individualExt.user.weixin" value="<c:out value="${ individualModel.individualExt.user.weixin }" escapeXml="true" />" style="width:700px;" disabled="true" />
           </td>
         </tr>
         

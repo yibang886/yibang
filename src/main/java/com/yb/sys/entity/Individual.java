@@ -1,6 +1,7 @@
 package com.yb.sys.entity;
 
 import java.io.Serializable;
+import com.yb.sys.entity.UserExt;
 
 public class Individual implements Serializable{
 
@@ -19,15 +20,16 @@ public class Individual implements Serializable{
 		this.id = id;
 	}
 	
-	private Long user_id;
+  private UserExt user; 
 	
-	public Long getuser_id(){
-		return user_id;
+	public UserExt getuser(){
+		return user;
 	}
 	
-	public void setuser_id(Long user_id){
-		this.user_id = user_id;
+	public void setuser(UserExt user){
+		this.user = user;
 	}
+
 	private String name;
 	
 	public String getname(){
