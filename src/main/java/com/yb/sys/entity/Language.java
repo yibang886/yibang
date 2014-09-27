@@ -1,6 +1,11 @@
 package com.yb.sys.entity;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 import java.io.Serializable;
+
+import com.yb.sys.entity.IndividualExt;
 
 public class Language implements Serializable{
 
@@ -28,6 +33,20 @@ public class Language implements Serializable{
 	public void setlanguage(String language){
 		this.language = language;
 	}
+
+  private Set<IndividualExt> individuals = new TreeSet<IndividualExt>();
+  public void addindividual (IndividualExt individual)
+  {
+    this.individuals.add(individual);
+  }
+  public Set<IndividualExt> getindividuals()
+  {
+    return this.individuals;
+  }
+  public void setindividuals(Set<IndividualExt> individuals)
+  {
+    this.individuals = individuals;
+  }
 
 	public boolean equals(Object object)
     {

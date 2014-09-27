@@ -116,9 +116,24 @@
             </c:if>            
                   
         <c:if test="${!empty individualModel.individualExt.recompos_id}">
-            <tr><td>推荐位：</td><td><c:out value="${individualModel.individualExt.recompos_id }" escapeXml="true" /></td></tr>
-            </c:if>            
+          <tr>
+            <td>推荐位：</td>
+            <td>
+              <c:out value="${individualModel.individualExt.recompos_id }" escapeXml="true" />
+            </td>
+          </tr>
+        </c:if>            
                   
+        <c:if test="${!empty individualModel.individualExt.languages}">
+          <tr>
+            <td>语种：</td>
+            <td>
+              <c:forEach var="var" items="${individualModel.individualExt.languages}">
+                <c:out value="${var.language}" escapeXml="true" />&nbsp;&nbsp;
+              </c:forEach>
+            </td>
+          </tr>
+        </c:if>            
                   
     </tbody>
   </table>

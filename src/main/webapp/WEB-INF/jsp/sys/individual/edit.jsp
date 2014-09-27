@@ -203,6 +203,7 @@
             <input type="text" name="individualExt.recompos_id" value="<c:out value="${ individualModel.individualExt.recompos_id }" escapeXml="true" />" style="width:700px;"/>
           </td>
         </tr>
+
       </thead>
       <tbody></tbody>
     </table>

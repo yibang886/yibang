@@ -1,7 +1,11 @@
 package com.yb.sys.entity;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 import java.io.Serializable;
 import com.yb.sys.entity.UserExt;
+import com.yb.sys.entity.LanguageExt;
 
 public class Individual implements Serializable{
 
@@ -201,6 +205,20 @@ public class Individual implements Serializable{
 	public void setrecompos_id(Long recompos_id){
 		this.recompos_id = recompos_id;
 	}
+
+  private Set<LanguageExt> languages = new TreeSet<LanguageExt>();
+  public void addlanguage (LanguageExt language)
+  {
+    this.languages.add(language);
+  }
+  public Set<LanguageExt> getlanguages()
+  {
+    return this.languages;
+  }
+  public void setlanguages (Set<LanguageExt> languages)
+  {
+    this.languages = languages;
+  }
 
 	public boolean equals(Object object)
     {

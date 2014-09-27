@@ -27,5 +27,9 @@
 		<property name="auth_file" column="auth_file" type="java.lang.String" />
 		<property name="auth_pass" column="auth_pass" type="java.lang.Long" />
 		<property name="recompos_id" column="recompos_id" type="java.lang.Long" />
+        <set name="languages" table="individual_lang">
+          <key column="indiv_id" />
+          <many-to-many column="lang_id" class="com.yb.sys.entity.LanguageExt" />
+        </set>
     </class>
 </hibernate-mapping>
