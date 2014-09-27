@@ -39,6 +39,10 @@
 				<c:if test="${!empty userModel.userExt.weixin}">
 						<tr><td>微信：</td><td><c:out value="${userModel.userExt.weixin }" escapeXml="true" /></td></tr>
 						</c:if>				    
+
+				<c:if test="${!empty userModel.userExt.user_type}">
+						<tr><td>用户类型：</td><td><c:out value="${userModel.userExt.user_type }" escapeXml="true" /></td></tr>
+						</c:if>				    
 							    
 				<c:if test="${!empty userModel.userExt.srvcount}">
 						<tr><td>发布计数：</td><td><c:out value="${userModel.userExt.srvcount }" escapeXml="true" /></td></tr>

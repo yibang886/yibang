@@ -82,6 +82,18 @@ public class User implements Serializable{
 	public void setweixin(String weixin){
 		this.weixin = weixin;
 	}
+
+  private Long user_type;
+
+  public Long getuser_type()
+  {
+    return user_type;
+  }
+  public void setuser_type(Long user_type)
+  {
+    this.user_type = user_type;
+  }
+
 	private Long srvcount;
 	
 	public Long getsrvcount(){

@@ -244,6 +244,7 @@ CREATE TABLE IF NOT EXISTS user
   fax VARCHAR(16),                             /*传真*/
   qq VARCHAR(16),                              /*QQ号*/
   weixin VARCHAR(32),                          /*微信*/
+  user_type INT UNSIGNED NOT NULL,             /*用户类型，0:个人译员； 1:翻译公司; 关联individual或company后不能修改*/
   srvcount INT UNSIGNED NOT NULL DEFAULT 0,    /*该用户发布的翻译服务数, 当前版本中最多为1*/
   refcount INT UNSIGNED NOT NULL DEFAULT 0,    /*该用户推荐的用户数, 推荐数到一定数量则允许用户选择推荐位*/
   PRIMARY KEY (id)
@@ -393,7 +394,7 @@ CREATE TABLE IF NOT EXISTS company_doctype
 ) ENGINE InnoDB, DEFAULT CHARACTER SET utf8;
 
 -- Sample Data: 个人译员 
-INSERT INTO user(email,password,tel,mobile,fax,qq,weixin) VALUES ('yuanguo.h_001@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin');
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type) VALUES ('yuanguo.h_001@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',0);
 
 INSERT INTO individual(user_id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,lang_cert,trans_cert,prof_cert,exp_year,exp_trans,works,introduct,photo,auth_file,auth_pass,recompos_id) VALUES (1,'霍远国',0,2,5,1985,1,'http://yuanguo.page.com',1,'individual/lang_cert/1/langcert.crt','individual/trans_cert/1/transcert.crt','individual/prof_cert/1/profcert.crt',4,15,'C语言入门','认证负责，经验丰富','/ybfiles/individual/1/photo','individual/auth_file/1/authfile.png',1,3);
 
