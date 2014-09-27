@@ -2,6 +2,8 @@ package com.yb.sys.entity;
 
 import java.io.Serializable;
 
+import com.yb.sys.entity.IndividualExt;
+
 public class User implements Serializable{
 
 	/**
@@ -17,6 +19,16 @@ public class User implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+  private IndividualExt individual; 
+	
+	public IndividualExt getindividual(){
+		return individual;
+	}
+	
+	public void setindividual(IndividualExt individual){
+		this.individual = individual;
 	}
 	
 	private String email;

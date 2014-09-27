@@ -7,7 +7,7 @@
             <column name="ID" />
             <generator class="native" />
         </id>
-        <many-to-one name="user" column="user_id" class="com.yb.sys.entity.UserExt" /> 
+        <one-to-one name="user" class="com.yb.sys.entity.UserExt" cascade="save-update" outer-join="false" /> 
 		<property name="name" column="name" type="java.lang.String" />
 		<property name="gender" column="gender" type="java.lang.Long" />
 		<property name="edu_id" column="edu_id" type="java.lang.Long" />

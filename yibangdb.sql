@@ -255,7 +255,6 @@ DROP TABLE IF EXISTS individual;
 CREATE TABLE IF NOT EXISTS individual
 (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  user_id INT UNSIGNED NOT NULL,     /*发布者*/
   name VARCHAR(16) NOT NULL,         /*真实姓名*/
   gender INT UNSIGNED NOT NULL,      /*性别, 0:男；1:女*/
   edu_id INT UNSIGNED NOT NULL,      /*教育水平*/
@@ -275,7 +274,6 @@ CREATE TABLE IF NOT EXISTS individual
   auth_file VARCHAR(64),                       /*认证资料路径*/
   auth_pass INT UNSIGNED NOT NULL DEFAULT 0,   /*是否通过认证, 0:未通过; 1:通过*/    
   recompos_id INT UNSIGNED NOT NULL,               /*在主页中的推荐位置*/ 
-  FOREIGN KEY(user_id) REFERENCES user(id) ON DELETE RESTRICT ON UPDATE CASCADE,
   FOREIGN KEY(edu_id) REFERENCES education(id) ON DELETE RESTRICT ON UPDATE RESTRICT, 
   FOREIGN KEY(sch_id) REFERENCES school(id) ON DELETE RESTRICT ON UPDATE RESTRICT, 
   FOREIGN KEY(city_id) REFERENCES city(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
@@ -396,7 +394,7 @@ CREATE TABLE IF NOT EXISTS company_doctype
 -- Sample Data: 个人译员 
 INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type) VALUES ('yuanguo.h_001@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',0);
 
-INSERT INTO individual(user_id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,lang_cert,trans_cert,prof_cert,exp_year,exp_trans,works,introduct,photo,auth_file,auth_pass,recompos_id) VALUES (1,'霍远国',0,2,5,1985,1,'http://yuanguo.page.com',1,'individual/lang_cert/1/langcert.crt','individual/trans_cert/1/transcert.crt','individual/prof_cert/1/profcert.crt',4,15,'C语言入门','认证负责，经验丰富','/ybfiles/individual/1/photo','individual/auth_file/1/authfile.png',1,3);
+INSERT INTO individual(name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,lang_cert,trans_cert,prof_cert,exp_year,exp_trans,works,introduct,photo,auth_file,auth_pass,recompos_id) VALUES ('霍远国',0,2,5,1985,1,'http://yuanguo.page.com',1,'individual/lang_cert/1/langcert.crt','individual/trans_cert/1/transcert.crt','individual/prof_cert/1/profcert.crt',4,15,'C语言入门','认证负责，经验丰富','/ybfiles/individual/1/photo','individual/auth_file/1/authfile.png',1,3);
 
 INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(1,2);
 INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(1,6);
