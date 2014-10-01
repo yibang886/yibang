@@ -16,7 +16,6 @@
 		<property name="qq" column="qq" type="java.lang.String" />
 		<property name="weixin" column="weixin" type="java.lang.String" />
 		<property name="user_type" column="user_type" type="java.lang.Long" />
-		<property name="srvcount" column="srvcount" type="java.lang.Long" />
-		<property name="refcount" column="refcount" type="java.lang.Long" />
+		<property name="coin" column="coin" type="java.lang.Long" />
     </class>
 </hibernate-mapping>
