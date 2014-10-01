@@ -6,29 +6,62 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>首页大图编辑页</title>
 <%@ include file="/core/includecss.jsp"%>
+
+<script>
+  function changeColor(name,color)
+  {
+    document.getElementsByName(name)[0].style.color=color;
+  }
+</script>
+
 </head>
 <body>
 <div id="wrapper">
-    <c:if test="${ userModel.operationType eq 'create' }">
+
+  <c:if test="${ userModel.operationType eq 'create' }">
     <input type="button" value="新建" onclick="doCreate()" />
-    </c:if>
-    <c:if test="${ userModel.operationType eq 'edit' }">
+  </c:if>
+
+  <c:if test="${ userModel.operationType eq 'edit' }">
     <input type="button" value="保存" onclick="doEdit()"/>
-    </c:if>
-    <form id="form" name="userForm" method="post">
+  </c:if>
+
+  <form id="form" name="userForm" method="post">
     <table class="table_add">
       <thead>
         <tr>
-          <td>登录邮箱：</td>
+          <td>登录邮箱(必填)：</td>
           <td>
-            <input type="text" name="userExt.email" value="<c:out value="${ userModel.userExt.email }" escapeXml="true" />" style="width:700px;"/>
+            <c:if test="${ userModel.operationType eq 'edit' }">
+              <input type="text" name="userExt.email" value="<c:out value="${ userModel.userExt.email }" escapeXml="true" />" style="width:700px; color:grey;" onclick="changeColor('userExt.email','black')"/>
+            </c:if>
+            <c:if test="${ userModel.operationType eq 'create' }">
+              <input type="text" name="userExt.email" value="请填写电子邮箱" style="width:700px; color:grey;" onclick="changeColor('userExt.email','black')" />
+            </c:if>
           </td>
         </tr>
         
         <tr>
-          <td>密码：</td>
+          <td>密码(必填)：</td>
           <td>
-            <input type="text" name="userExt.password" value="<c:out value="${ userModel.userExt.password }" escapeXml="true" />" style="width:700px;"/>
+            <c:if test="${ userModel.operationType eq 'edit' }">
+              <input type="password" name="userExt.password" value="<c:out value="${ userModel.userExt.password }" escapeXml="true" />" style="width:700px; color:grey;" onclick="changeColor('userExt.password','black')"/>
+            </c:if>
+            <c:if test="${ userModel.operationType eq 'create' }">
+              <input type="password" name="userExt.password" value="123456" style="width:700px; color:grey;" onclick="changeColor('userExt.password','black')"/>
+            </c:if>
+          </td>
+        </tr>
+
+        <tr>
+          <td>用户类型(必填)：</td>
+          <td>
+            <c:if test="${ userModel.operationType eq 'edit' }">
+              <input type="text" name="userExt.user_type" value="<c:out value="${ userModel.userExt.user_type }" escapeXml="true" />" style="width:700px; color:grey;" onclick="changeColor('userExt.user_type','black')"/>
+            </c:if>
+            <c:if test="${ userModel.operationType eq 'create' }">
+              <input type="text" name="userExt.user_type" value="0" style="width:700px; color:grey;" onclick="changeColor('userExt.user_type','black')"/>
+            </c:if>
           </td>
         </tr>
         
@@ -68,25 +101,20 @@
         </tr>
 
         <tr>
-          <td>用户类型：</td>
-          <td>
-            <input type="text" name="userExt.user_type" value="<c:out value="${ userModel.userExt.user_type }" escapeXml="true" />" style="width:700px;"/>
-          </td>
-        </tr>
-
-        <tr>
           <td>金币数：</td>
-          <td><input type="text" name="userExt.coin" value="<c:out value="${ userModel.userExt.coin }" escapeXml="true" />" style="width:700px;"/>
+          <td>
+            <input type="text" name="userExt.coin" value="<c:out value="${ userModel.userExt.coin }" escapeXml="true" />" style="width:700px;"/>
           </td>
         </tr>
 
       </thead>
       <tbody></tbody>
     </table>
+
     <c:if test="${ userModel.operationType eq 'edit' }">
-    <input type="hidden" value="${ userModel.userExt.id }" name="userExt.id"/>
+      <input type="hidden" value="${ userModel.userExt.id }" name="userExt.id"/>
     </c:if>
-    </form>
+  </form>
 </div>
 
 <script type="text/javascript">
