@@ -231,6 +231,7 @@ INSERT INTO recompos(recompos) VALUES ('NO');
 INSERT INTO recompos(recompos) VALUES ('A1');
 INSERT INTO recompos(recompos) VALUES ('A2');
 INSERT INTO recompos(recompos) VALUES ('A3');
+INSERT INTO recompos(recompos) VALUES ('A4');
 
 -- create table 'user'
 DROP TABLE IF EXISTS user;
@@ -245,8 +246,7 @@ CREATE TABLE IF NOT EXISTS user
   qq VARCHAR(16),                              /*QQ号*/
   weixin VARCHAR(32),                          /*微信*/
   user_type INT UNSIGNED NOT NULL,             /*用户类型，0:个人译员； 1:翻译公司; 关联individual或company后不能修改*/
-  srvcount INT UNSIGNED NOT NULL DEFAULT 0,    /*该用户发布的翻译服务数, 当前版本中最多为1*/
-  refcount INT UNSIGNED NOT NULL DEFAULT 0,    /*该用户推荐的用户数, 推荐数到一定数量则允许用户选择推荐位*/
+  coin INT UNSIGNED NOT NULL DEFAULT 0,        /*金币数，一定数量则允许用户选择推荐位; 目前版本中金币可通过推荐用户得到*/
   PRIMARY KEY (id)
 ) ENGINE InnoDB, DEFAULT CHARACTER SET utf8 AUTO_INCREMENT 1;
 

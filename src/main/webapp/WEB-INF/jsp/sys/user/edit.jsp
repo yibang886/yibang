@@ -73,17 +73,10 @@
             <input type="text" name="userExt.user_type" value="<c:out value="${ userModel.userExt.user_type }" escapeXml="true" />" style="width:700px;"/>
           </td>
         </tr>
-        
-        <tr>
-          <td>发布计数：</td>
-          <td>
-            <input type="text" name="userExt.srvcount" value="<c:out value="${ userModel.userExt.srvcount }" escapeXml="true" />" style="width:700px;"/>
-          </td>
-        </tr>
 
         <tr>
-          <td>推荐计数：</td>
-          <td><input type="text" name="userExt.refcount" value="<c:out value="${ userModel.userExt.refcount }" escapeXml="true" />" style="width:700px;"/>
+          <td>金币数：</td>
+          <td><input type="text" name="userExt.coin" value="<c:out value="${ userModel.userExt.coin }" escapeXml="true" />" style="width:700px;"/>
           </td>
         </tr>
 

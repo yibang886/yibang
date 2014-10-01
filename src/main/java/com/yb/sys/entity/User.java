@@ -106,23 +106,14 @@ public class User implements Serializable{
     this.user_type = user_type;
   }
 
-	private Long srvcount;
+	private Long coin;
 	
-	public Long getsrvcount(){
-		return srvcount;
+	public Long getcoin(){
+		return coin;
 	}
 	
-	public void setsrvcount(Long srvcount){
-		this.srvcount = srvcount;
-	}
-	private Long refcount;
-	
-	public Long getrefcount(){
-		return refcount;
-	}
-	
-	public void setrefcount(Long refcount){
-		this.refcount = refcount;
+	public void setcoin(Long coin){
+		this.coin = coin;
 	}
 
 	public boolean equals(Object object)

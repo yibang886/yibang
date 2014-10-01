@@ -44,12 +44,8 @@
 						<tr><td>用户类型：</td><td><c:out value="${userModel.userExt.user_type }" escapeXml="true" /></td></tr>
 						</c:if>				    
 							    
-				<c:if test="${!empty userModel.userExt.srvcount}">
-						<tr><td>发布计数：</td><td><c:out value="${userModel.userExt.srvcount }" escapeXml="true" /></td></tr>
-						</c:if>				    
-							    
-				<c:if test="${!empty userModel.userExt.refcount}">
-						<tr><td>推荐计数：</td><td><c:out value="${userModel.userExt.refcount }" escapeXml="true" /></td></tr>
+				<c:if test="${!empty userModel.userExt.coin}">
+						<tr><td>金币数：</td><td><c:out value="${userModel.userExt.coin }" escapeXml="true" /></td></tr>
 						</c:if>				    
 							    
 		</tbody>
