@@ -68,42 +68,42 @@
         <tr>
           <td>固定电话：</td>
           <td>
-            <input type="text" name="userExt.tel" value="<c:out value="${ userModel.userExt.tel }" escapeXml="true" />" style="width:700px;"/>
+            <input type="text" name="userExt.tel" value="<c:out value="${ userModel.userExt.tel }" escapeXml="true" />" style="width:700px; color:grey;" onclick="changeColor('userExt.tel','black')"/>
           </td>
         </tr>
         
         <tr>
           <td>移动电话：</td>
           <td>
-            <input type="text" name="userExt.mobile" value="<c:out value="${ userModel.userExt.mobile }" escapeXml="true" />" style="width:700px;"/>
+            <input type="text" name="userExt.mobile" value="<c:out value="${ userModel.userExt.mobile }" escapeXml="true" />" style="width:700px; color:grey;" onclick="changeColor('userExt.mobile','black')"/>
           </td>
         </tr>
 
         <tr>
           <td>传真：</td>
           <td>
-            <input type="text" name="userExt.fax" value="<c:out value="${ userModel.userExt.fax }" escapeXml="true" />" style="width:700px;"/>
+            <input type="text" name="userExt.fax" value="<c:out value="${ userModel.userExt.fax }" escapeXml="true" />" style="width:700px; color:grey;" onclick="changeColor('userExt.fax','black')"/>
           </td>
         </tr>
         
         <tr>
           <td>QQ号码：</td>
           <td>
-            <input type="text" name="userExt.qq" value="<c:out value="${ userModel.userExt.qq }" escapeXml="true" />" style="width:700px;"/>
+            <input type="text" name="userExt.qq" value="<c:out value="${ userModel.userExt.qq }" escapeXml="true" />" style="width:700px; color:grey;" onclick="changeColor('userExt.qq','black')"/>
           </td>
         </tr>
 
         <tr>
           <td>微信：</td>
           <td>
-            <input type="text" name="userExt.weixin" value="<c:out value="${ userModel.userExt.weixin }" escapeXml="true" />" style="width:700px;"/>
+            <input type="text" name="userExt.weixin" value="<c:out value="${ userModel.userExt.weixin }" escapeXml="true" />" style="width:700px; color:grey;" onclick="changeColor('userExt.weixin','black')"/>
           </td>
         </tr>
 
         <tr>
           <td>金币数：</td>
           <td>
-            <input type="text" name="userExt.coin" value="<c:out value="${ userModel.userExt.coin }" escapeXml="true" />" style="width:700px;"/>
+            <input type="text" name="userExt.coin" value="<c:out value="${ userModel.userExt.coin }" escapeXml="true" />" style="width:700px; color:grey;" onclick="changeColor('userExt.coin','black')"/>
           </td>
         </tr>
 
