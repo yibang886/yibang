@@ -100,10 +100,10 @@
             <tr><td>个人简介：</td><td><c:out value="${individualModel.individualExt.introduct }" escapeXml="true" /></td></tr>
             </c:if>            
                   
-        <c:if test="${!empty individualModel.individualExt.photo}">
+        <c:if test="${!empty individualModel.individualExt.photo_suffix}">
             <tr>
               <td>近期照片：</td>
-              <td><img src="${individualModel.individualExt.photo}/large.png" /></td>
+              <td><img src="/ybfiles/individual/${individualModel.individualExt.id}/photo/large${individualModel.individualExt.photo_suffix}" /></td>
             </tr>
         </c:if>            
                   

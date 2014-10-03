@@ -14,8 +14,10 @@ import java.awt.image.ConvolveOp;
   
 public class ImageUtil 
 {  
-    public static void resize(File originalFile, File resizedFile, int newWidth, float quality) throws IOException 
+    public static void resize(File originalFile, File resizedFile, int newWidth, float quality)
     {
+      try
+      {
         if (quality > 1) 
         {
           throw new IllegalArgumentException("Quality has to be between 0 and 1");
@@ -67,12 +69,17 @@ public class ImageUtil
   
         encoder.setJPEGEncodeParam(param);  
         encoder.encode(bufferedImage);  
-    } // Example usage  
+      }
+      catch (Exception ex)
+      {
+        //TODO: log
+        System.out.println("exception occurred when resize image");
+        ex.printStackTrace();
+      }
+    }
   
+    //test
     public static void main(String[] args) throws IOException {  
-//       File originalImage = new File("C:\\11.jpg");  
-//       resize(originalImage, new File("c:\\11-0.jpg"),150, 0.7f);  
-//       resize(originalImage, new File("c:\\11-1.jpg"),150, 1f);  
          File originalImage = new File("photo.png");  
          resize(originalImage, new File("1.png"),150, 0.7f);  
          resize(originalImage, new File("2.png"),50, 1f);  

@@ -169,14 +169,14 @@ public class Individual implements Serializable{
 	public void setintroduct(String introduct){
 		this.introduct = introduct;
 	}
-	private String photo;
+	private String photo_suffix;
 	
-	public String getphoto(){
-		return photo;
+	public String getphoto_suffix(){
+		return photo_suffix;
 	}
 	
-	public void setphoto(String photo){
-		this.photo = photo;
+	public void setphoto_suffix(String photo_suffix){
+		this.photo_suffix = photo_suffix;
 	}
 	private String auth_file;
 	

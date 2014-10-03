@@ -38,7 +38,7 @@
 
             <c:forEach var="var" items="${individualModel.items}">
               <tr onmouseover="this.className='over'" onmouseout="this.className='out'">
-                    <td><div><img src="${var.photo}/small.png"/></div></td>
+                    <td><div><img src="/ybfiles/individual/${var.id}/photo/small${var.photo_suffix}"/></div></td>
                     <td><div><c:out value="${var.name}" escapeXml="true"/></div></td>
                     <td><div><c:out value="${var.gender}" escapeXml="true"/></div></td>
                     <td><div><c:out value="${var.birth_year}" escapeXml="true"/></div></td>

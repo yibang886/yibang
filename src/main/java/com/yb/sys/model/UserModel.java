@@ -3,6 +3,7 @@ package com.yb.sys.model;
 import java.util.List;
 
 import com.yb.sys.entity.UserExt;
+import com.yb.sys.entity.IndividualExt;
 
 public class UserModel {
 
@@ -27,6 +28,22 @@ public class UserModel {
 	private String operationType;
 	
 	private String errorMessage;
+
+  //Added by Yuanguo; when user publish translation service, it needs to create a blank instance of IndividualExt
+  //and pass it to publish_indiv.jsp to be populated. The individualExt is used to pass the instance. See function 
+  //goPublish() in UserController.java;
+  private IndividualExt individualExt;
+
+  //Added by Yuanguo; when user upload files (see upload_indiv.jsp), the controller needs to tell upload_indiv.jsp 
+  //which file (photo, language certificate and etc) to upload, and upload_indiv.jsp needs to tell controller which
+  //file it is uploading. The fileType is for this purpose.
+  //It is similar for company.
+  private String fileType;
+
+  //Added by Yuanguo: in upload_indiv.jsp, pass "skip or not" to controller;
+  //   0: not skip;
+  //   1: skip;
+  private int skip;
 
 	public UserExt getUserExt() {
 		return userExt;
@@ -113,4 +130,34 @@ public class UserModel {
 	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
 	}
+
+  //Following functions are added by Yuanguo;
+  
+	public IndividualExt getIndividualExt() {
+		return individualExt;
+	}
+
+	public void setIndividualExt(IndividualExt individualExt) {
+		this.individualExt = individualExt;
+	}
+
+  public String getFileType()
+  {
+    return fileType;
+  }
+
+  public void setFileType(String fileType)
+  {
+    this.fileType = fileType;
+  }
+
+  public int getSkip()
+  {
+    return skip;
+  }
+
+  public void setSkip(int skip)
+  {
+    this.skip = skip;
+  }
 }

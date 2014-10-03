@@ -5,7 +5,12 @@
     <class name="com.yb.sys.entity.IndividualExt" table="individual">
         <id name="id" type="java.lang.Long">
             <column name="ID" />
-            <generator class="native" />
+            <!--Yuanguo: 
+              individual has one-to-one relationship with user, it will use the same 'id' as the related 
+              user. Thus, we assign 'individual id' with 'user id' rather than auto generate it; see the
+              doPublish function in UserController.java;
+            -->
+            <generator class="assigned" />  
         </id>
         <one-to-one name="user" class="com.yb.sys.entity.UserExt" cascade="save-update" outer-join="false" /> 
 		<property name="name" column="name" type="java.lang.String" />
@@ -23,7 +28,7 @@
 		<property name="exp_trans" column="exp_trans" type="java.lang.Long" />
 		<property name="works" column="works" type="java.lang.String" />
 		<property name="introduct" column="introduct" type="java.lang.String" />
-		<property name="photo" column="photo" type="java.lang.String" />
+		<property name="photo_suffix" column="photo_suffix" type="java.lang.String" />
 		<property name="auth_file" column="auth_file" type="java.lang.String" />
 		<property name="auth_pass" column="auth_pass" type="java.lang.Long" />
 		<property name="recompos_id" column="recompos_id" type="java.lang.Long" />

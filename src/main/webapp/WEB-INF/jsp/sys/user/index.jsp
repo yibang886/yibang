@@ -48,6 +48,8 @@
                       <a href="<%=request.getContextPath()%>/user/goEdit.action?dataId=${ var.id }" >编辑</a>
                       &nbsp;&nbsp;
                       <a href="<%=request.getContextPath()%>/user/doDelete.action?dataId=${ var.id }" >删除</a>
+                      &nbsp;&nbsp;
+                      <a href="<%=request.getContextPath()%>/user/goPublish.action?dataId=${ var.id }" >发布服务</a>
                     </td>
               </tr>
             </c:forEach>
@@ -88,7 +90,12 @@
         form.action = "<%=request.getContextPath()%>/user/query";
         form.submit();
     }
-    
+
+    function goPublish(){
+        var form = document.getElementById("form");
+        form.action = "<%=request.getContextPath()%>/user/goPublish.action";
+        form.submit();
+    }
     
   </script>
 </body>
