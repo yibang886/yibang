@@ -53,7 +53,7 @@ function doUploadFile(fileType,userId,skip){
 
         <tr>
           <td>文件：</td>
-          <td><input type="file" name="upfile" /></td>
+          <td><input type="file" name="upfile" multiple="false"/></td>
         </tr>
 
       </thead>

@@ -6,6 +6,14 @@ import java.util.TreeSet;
 import java.io.Serializable;
 import com.yb.sys.entity.UserExt;
 import com.yb.sys.entity.LanguageExt;
+import com.yb.sys.entity.TranstypeExt;
+import com.yb.sys.entity.FieldExt;
+import com.yb.sys.entity.DoctypeExt;
+import com.yb.sys.entity.EducationExt;
+import com.yb.sys.entity.SchoolExt;
+import com.yb.sys.entity.CityExt;
+import com.yb.sys.entity.SchoolExt;
+import com.yb.sys.entity.RecomposExt;
 
 public class Individual implements Serializable{
 
@@ -52,6 +60,8 @@ public class Individual implements Serializable{
 	public void setgender(Long gender){
 		this.gender = gender;
 	}
+
+  /*
 	private Long edu_id;
 	
 	public Long getedu_id(){
@@ -61,6 +71,19 @@ public class Individual implements Serializable{
 	public void setedu_id(Long edu_id){
 		this.edu_id = edu_id;
 	}
+  */
+
+  private EducationExt education;
+  public EducationExt geteducation()
+  {
+    return education;
+  }
+  public void seteducation(EducationExt education)
+  {
+    this.education = education;
+  }
+
+  /*
 	private Long sch_id;
 	
 	public Long getsch_id(){
@@ -70,6 +93,18 @@ public class Individual implements Serializable{
 	public void setsch_id(Long sch_id){
 		this.sch_id = sch_id;
 	}
+  */
+
+  private SchoolExt school;
+  public SchoolExt getschool()
+  {
+    return school;
+  }
+  public void setschool(SchoolExt school)
+  {
+    this.school = school;
+  }
+
 	private Long birth_year;
 	
 	public Long getbirth_year(){
@@ -79,6 +114,8 @@ public class Individual implements Serializable{
 	public void setbirth_year(Long birth_year){
 		this.birth_year = birth_year;
 	}
+
+  /*
 	private Long city_id;
 	
 	public Long getcity_id(){
@@ -88,6 +125,18 @@ public class Individual implements Serializable{
 	public void setcity_id(Long city_id){
 		this.city_id = city_id;
 	}
+  */
+
+  private CityExt city;
+  public CityExt getcity()
+  {
+    return city;
+  }
+  public void setcity(CityExt city)
+  {
+    this.city =city;
+  }
+
 	private String mainpage;
 	
 	public String getmainpage(){
@@ -196,6 +245,8 @@ public class Individual implements Serializable{
 	public void setauth_pass(Long auth_pass){
 		this.auth_pass = auth_pass;
 	}
+  
+  /*
 	private Long recompos_id;
 	
 	public Long getrecompos_id(){
@@ -205,6 +256,17 @@ public class Individual implements Serializable{
 	public void setrecompos_id(Long recompos_id){
 		this.recompos_id = recompos_id;
 	}
+  */
+
+  private RecomposExt recompos;
+  public RecomposExt getrecompos()
+  {
+    return recompos;
+  }
+  public void setrecompos(RecomposExt recompos)
+  {
+    this.recompos = recompos;
+  }
 
   private Set<LanguageExt> languages = new TreeSet<LanguageExt>();
   public void addlanguage (LanguageExt language)
@@ -219,6 +281,49 @@ public class Individual implements Serializable{
   {
     this.languages = languages;
   }
+
+  private Set<TranstypeExt> transtypes = new TreeSet<TranstypeExt>();
+  public void addtranstype (TranstypeExt transtype)
+  {
+    this.transtypes.add(transtype);
+  }
+  public Set<TranstypeExt> gettranstypes()
+  {
+    return this.transtypes;
+  }
+  public void settranstypes (Set<TranstypeExt> transtypes)
+  {
+    this.transtypes = transtypes;
+  }
+
+  private Set<FieldExt> fields = new TreeSet<FieldExt>();
+  public void addfield (FieldExt field)
+  {
+    this.fields.add(field);
+  }
+  public Set<FieldExt> getfields()
+  {
+    return this.fields;
+  }
+  public void setfields (Set<FieldExt> fields)
+  {
+    this.fields = fields;
+  }
+
+  private Set<DoctypeExt> doctypes = new TreeSet<DoctypeExt>();
+  public void adddoctype (DoctypeExt doctype)
+  {
+    this.doctypes.add(doctype);
+  }
+  public Set<DoctypeExt> getdoctypes()
+  {
+    return this.doctypes;
+  }
+  public void setdoctypes (Set<DoctypeExt> doctypes)
+  {
+    this.doctypes = doctypes;
+  }
+
 
 	public boolean equals(Object object)
     {

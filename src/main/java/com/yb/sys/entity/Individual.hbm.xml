@@ -15,10 +15,19 @@
         <one-to-one name="user" class="com.yb.sys.entity.UserExt" cascade="save-update" outer-join="false" /> 
 		<property name="name" column="name" type="java.lang.String" />
 		<property name="gender" column="gender" type="java.lang.Long" />
+
+        <!--
 		<property name="edu_id" column="edu_id" type="java.lang.Long" />
 		<property name="sch_id" column="sch_id" type="java.lang.Long" />
-		<property name="birth_year" column="birth_year" type="java.lang.Long" />
 		<property name="city_id" column="city_id" type="java.lang.Long" />
+		<property name="recompos_id" column="recompos_id" type="java.lang.Long" />
+        -->
+        <many-to-one name="education" class="com.yb.sys.entity.EducationExt" column="edu_id" cascade="none" />
+        <many-to-one name="school" class="com.yb.sys.entity.SchoolExt" column="sch_id" cascade="none" />
+        <many-to-one name="city" class="com.yb.sys.entity.CityExt" column="city_id" cascade="none" />
+        <many-to-one name="recompos" class="com.yb.sys.entity.RecomposExt" column="recompos_id" cascade="none" />
+
+		<property name="birth_year" column="birth_year" type="java.lang.Long" />
 		<property name="mainpage" column="mainpage" type="java.lang.String" />
 		<property name="workstyle" column="workstyle" type="java.lang.Long" />
 		<property name="lang_cert" column="lang_cert" type="java.lang.String" />
@@ -31,10 +40,23 @@
 		<property name="photo_suffix" column="photo_suffix" type="java.lang.String" />
 		<property name="auth_file" column="auth_file" type="java.lang.String" />
 		<property name="auth_pass" column="auth_pass" type="java.lang.Long" />
-		<property name="recompos_id" column="recompos_id" type="java.lang.Long" />
+
         <set name="languages" table="individual_lang">
           <key column="indiv_id" />
           <many-to-many column="lang_id" class="com.yb.sys.entity.LanguageExt" />
         </set>
+        <set name="transtypes" table="individual_transtype">
+          <key column="indiv_id" />
+          <many-to-many column="transtype_id" class="com.yb.sys.entity.TranstypeExt" />
+        </set>
+        <set name="fields" table="individual_field">
+          <key column="indiv_id" />
+          <many-to-many column="field_id" class="com.yb.sys.entity.FieldExt" />
+        </set>
+        <set name="doctypes" table="individual_doctype">
+          <key column="indiv_id" />
+          <many-to-many column="doctype_id" class="com.yb.sys.entity.DoctypeExt" />
+        </set>
+
     </class>
 </hibernate-mapping>

@@ -82,21 +82,37 @@
         <tr>
           <td>性别：</td>
           <td>
-            <input type="text" name="individualExt.gender" value="<c:out value="${ individualModel.individualExt.gender }" escapeXml="true" />" style="width:700px;"/>
+            <select name="individualExt.gender">
+              <option value="0" <c:if test="${individualModel.individualExt.gender==0}"><c:out value="selected"/></c:if> >男</option>
+              <option value="1" <c:if test="${individualModel.individualExt.gender==1}"><c:out value="selected"/></c:if> >女</option>
+            </select>
           </td>
         </tr>
         
         <tr>
           <td>教育水平：</td>
           <td>
-            <input type="text" name="individualExt.edu_id" value="<c:out value="${ individualModel.individualExt.edu_id }" escapeXml="true" />" style="width:700px;"/>
+            <select name="individualExt.education.id">
+              <c:forEach items="${individualModel.educationEnum}" var="var">
+                <option value="${var.id}" <c:if test="${individualModel.individualExt.education.id==var.id}"><c:out value="selected"/></c:if> >
+                  ${var.education}
+                </option>
+              </c:forEach>
+              <option value="100">haha</option>
+            </select>
           </td>
         </tr>
         
         <tr>
           <td>毕业院校：</td>
           <td>
-            <input type="text" name="individualExt.sch_id" value="<c:out value="${ individualModel.individualExt.sch_id }" escapeXml="true" />" style="width:700px;"/>
+            <select name="individualExt.school.id">
+              <c:forEach items="${individualModel.schoolEnum}" var="var">
+                <option value="${var.id}" <c:if test="${individualModel.individualExt.school.id==var.id}"><c:out value="selected"/></c:if> >
+                  ${var.school}
+                </option>
+              </c:forEach>
+            </select>
           </td>
         </tr>
         
@@ -110,7 +126,13 @@
         <tr>
           <td>所在城市：</td>
           <td>
-            <input type="text" name="individualExt.city_id" value="<c:out value="${ individualModel.individualExt.city_id }" escapeXml="true" />" style="width:700px;"/>
+            <select name="individualExt.city.id">
+              <c:forEach items="${individualModel.cityEnum}" var="var">
+                <option value="${var.id}" <c:if test="${individualModel.individualExt.city.id==var.id}"><c:out value="selected"/></c:if> >
+                  ${var.city}
+                </option>
+              </c:forEach>
+            </select>
           </td>
         </tr>
         
@@ -124,7 +146,10 @@
         <tr>
           <td>工作方式：</td>
           <td>
-            <input type="text" name="individualExt.workstyle" value="<c:out value="${ individualModel.individualExt.workstyle }" escapeXml="true" />" style="width:700px;"/>
+            <select name="individualExt.workstyle">
+              <option value="0" <c:if test="${individualModel.individualExt.workstyle==0}"><c:out value="selected"/></c:if> >全职</option>
+              <option value="1" <c:if test="${individualModel.individualExt.workstyle==1}"><c:out value="selected"/></c:if> >兼职</option>
+            </select>
           </td>
         </tr>
         
@@ -150,14 +175,14 @@
         </tr>
         
         <tr>
-          <td>工作年限：</td>
+          <td>工作经验（单位：年）：</td>
           <td>
             <input type="text" name="individualExt.exp_year" value="<c:out value="${ individualModel.individualExt.exp_year }" escapeXml="true" />" style="width:700px;"/>
           </td>
         </tr>
         
         <tr>
-          <td>翻译经验：</td>
+          <td>翻译经验（单位：万字）：</td>
           <td><input type="text" name="individualExt.exp_trans" value="<c:out value="${ individualModel.individualExt.exp_trans }" escapeXml="true" />" style="width:700px;"/>
           </td>
         </tr>
@@ -191,16 +216,25 @@
         </tr>
         
         <tr>
-          <td>是否认证：</td>
+          <td>是否认证通过：</td>
           <td>
-            <input type="text" name="individualExt.auth_pass" value="<c:out value="${ individualModel.individualExt.auth_pass }" escapeXml="true" />" style="width:700px;"/>
+            <select name="individualExt.auth_pass">
+              <option value="0" <c:if test="${individualModel.individualExt.auth_pass==0}"><c:out value="selected"/></c:if> >否</option>
+              <option value="1" <c:if test="${individualModel.individualExt.auth_pass==1}"><c:out value="selected"/></c:if> >是</option>
+            </select>
           </td>
         </tr>
         
         <tr>
           <td>推荐位：</td>
           <td>
-            <input type="text" name="individualExt.recompos_id" value="<c:out value="${ individualModel.individualExt.recompos_id }" escapeXml="true" />" style="width:700px;"/>
+            <select name="individualExt.recompos.id">
+              <c:forEach items="${individualModel.recomposEnum}" var="var">
+                <option value="${var.id}" <c:if test="${individualModel.individualExt.recompos.id==var.id}"><c:out value="selected"/></c:if> >
+                  ${var.recompos}
+                </option>
+              </c:forEach>
+            </select>
           </td>
         </tr>
 

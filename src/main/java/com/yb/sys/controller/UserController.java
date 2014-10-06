@@ -23,6 +23,19 @@ import com.common.upload.ReceivedFile;
 import com.yb.sys.entity.IndividualExt;
 import com.yb.sys.service.IIndividualServiceExt;
 
+import com.yb.sys.entity.EducationExt;
+import com.yb.sys.model.EducationModel;
+import com.yb.sys.service.IEducationServiceExt;
+import com.yb.sys.entity.CityExt;
+import com.yb.sys.model.CityModel;
+import com.yb.sys.service.ICityServiceExt;
+import com.yb.sys.entity.RecomposExt;
+import com.yb.sys.model.RecomposModel;
+import com.yb.sys.service.IRecomposServiceExt;
+import com.yb.sys.entity.SchoolExt;
+import com.yb.sys.model.SchoolModel;
+import com.yb.sys.service.ISchoolServiceExt;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,6 +50,22 @@ public class UserController {
 
 	@Resource(name = "individualService")
 	private IIndividualServiceExt individualService;
+
+  //Added by Yuanguo: when go to edit page, user should be alloed to select living city, education, school and etc. 
+  //These service beans are used to load the enumerations.
+	@Resource(name = "educationService")
+	private IEducationServiceExt educationService;
+
+	@Resource(name = "schoolService")
+	private ISchoolServiceExt schoolService;
+
+	@Resource(name = "cityService")
+	private ICityServiceExt cityService;
+
+	@Resource(name = "recomposService")
+	private IRecomposServiceExt recomposService;
+
+
 	
 	@RequestMapping(value = "/user/index")
 	public String index(@ModelAttribute UserModel userModel, ModelMap model){
@@ -111,6 +140,13 @@ public class UserController {
 		}
 		if(userModel.getDataId() != 0){
 			UserExt userExt = userService.load(userModel.getDataId(), true);
+
+      if(userExt.getindividual() != null)
+      {
+        System.out.println("Yuanguo: Please delete translation service first before delet user");
+        return "/invalid";
+      }
+
 			userService.delete(userExt);
 		}
 		return "forward:/user/query";
@@ -137,7 +173,11 @@ public class UserController {
       return "/invalid";
     }
 
-  	userModel.setUserExt(userExt);
+    userModel.setUserExt(userExt);
+
+		List<ICondition> conditions = new ArrayList<ICondition>();
+    userModel.setCityEnum(cityService.criteriaQuery(conditions));
+    userModel.setRecomposEnum(recomposService.criteriaQuery(conditions));
 
     if(userExt.getuser_type()==0) //自由译员
     {
@@ -148,6 +188,9 @@ public class UserController {
         System.out.println("Yuanguo: User has already published translation service");
         return "/invalid";
       }
+
+      userModel.setEducationEnum(educationService.criteriaQuery(conditions));
+      userModel.setSchoolEnum(schoolService.criteriaQuery(conditions));
 
       //create a new intance of IndividualExt; it will be passed to publish_indiv.jsp and its properties 
       //will be set with value there.
@@ -186,6 +229,7 @@ public class UserController {
       individualExt.setId(userExt.getId());
 
       individualService.create(individualExt);
+
 
       userModel.setDataId(userExt.getId()); 
       userModel.setFileType("photo"); //upload photo next;

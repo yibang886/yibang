@@ -35,8 +35,8 @@
 	  .append("|")
 	  .append("1")
 	  .append("|")
-	  .append("个人译员")
-	  .append("|").append(request.getContextPath() + "/individual/query.action").append("\";");
+	  .append("注册用户")
+	  .append("|").append(request.getContextPath() + "/user/query.action").append("\";");
 
     sbMenu.append("Tree[")
 	  .append(2)
@@ -47,9 +47,9 @@
 	  .append("|")
 	  .append("1")
 	  .append("|")
-	  .append("用户")
-	  .append("|").append(request.getContextPath() + "/user/query.action").append("\";");
-    
+	  .append("个人译员")
+	  .append("|").append(request.getContextPath() + "/individual/query.action").append("\";");
+
     sbMenu.append("Tree[")
 	  .append(3)
 	  .append("]")

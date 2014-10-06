@@ -3,6 +3,10 @@ package com.yb.sys.model;
 import java.util.List;
 
 import com.yb.sys.entity.IndividualExt;
+import com.yb.sys.entity.CityExt;
+import com.yb.sys.entity.EducationExt;
+import com.yb.sys.entity.SchoolExt;
+import com.yb.sys.entity.RecomposExt;
 
 public class IndividualModel {
 
@@ -27,6 +31,14 @@ public class IndividualModel {
 	private String operationType;
 	
 	private String errorMessage;
+
+  //Added by Yuanguo: when go to edit page, user should be alloed to select living city, education, school and etc. 
+  //These options (enumerations) should be passed from controller to edit.jsp; this is what the following properties 
+  //are intended for.
+  private List<CityExt> cityEnum;
+  private List<EducationExt> educationEnum;
+  private List<SchoolExt> schoolEnum;
+  private List<RecomposExt> recomposEnum;
 
 	public IndividualExt getIndividualExt() {
 		return individualExt;
@@ -113,4 +125,42 @@ public class IndividualModel {
 	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
 	}
+
+
+  //Added by Yuanguo:
+  public List<CityExt> getCityEnum()
+  {
+    return cityEnum;
+  }
+  public void setCityEnum(List<CityExt> cityEnum)
+  {
+    this.cityEnum = cityEnum;
+  }
+
+  public List<EducationExt> getEducationEnum()
+  {
+    return educationEnum;
+  }
+  public void setEducationEnum(List<EducationExt> educationEnum)
+  {
+    this.educationEnum = educationEnum;
+  }
+ 
+  public List<SchoolExt> getSchoolEnum()
+  {
+    return schoolEnum;
+  }
+  public void setSchoolEnum(List<SchoolExt> schoolEnum)
+  {
+    this.schoolEnum = schoolEnum;
+  }
+
+  public List<RecomposExt> getRecomposEnum()
+  {
+    return recomposEnum;
+  }
+  public void setRecomposEnum(List<RecomposExt> recomposEnum)
+  {
+    this.recomposEnum = recomposEnum;
+  }
 }

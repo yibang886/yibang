@@ -17,12 +17,41 @@ import com.yb.sys.entity.IndividualExt;
 import com.yb.sys.model.IndividualModel;
 import com.yb.sys.service.IIndividualServiceExt;
 
+import com.yb.sys.entity.EducationExt;
+import com.yb.sys.model.EducationModel;
+import com.yb.sys.service.IEducationServiceExt;
+import com.yb.sys.entity.CityExt;
+import com.yb.sys.model.CityModel;
+import com.yb.sys.service.ICityServiceExt;
+import com.yb.sys.entity.RecomposExt;
+import com.yb.sys.model.RecomposModel;
+import com.yb.sys.service.IRecomposServiceExt;
+import com.yb.sys.entity.SchoolExt;
+import com.yb.sys.model.SchoolModel;
+import com.yb.sys.service.ISchoolServiceExt;
+
 @Controller
 @Scope("request")
 public class IndividualController {
 
 	@Resource(name = "individualService")
 	private IIndividualServiceExt individualService;
+
+  //Added by Yuanguo: when go to edit page, user should be alloed to select living city, education, school and etc. 
+  //These service beans are used to load the enumerations.
+	@Resource(name = "educationService")
+	private IEducationServiceExt educationService;
+
+	@Resource(name = "schoolService")
+	private ISchoolServiceExt schoolService;
+
+	@Resource(name = "cityService")
+	private ICityServiceExt cityService;
+
+	@Resource(name = "recomposService")
+	private IRecomposServiceExt recomposService;
+  
+
 	
 	@RequestMapping(value = "/individual/index")
 	public String index(@ModelAttribute IndividualModel individualModel, ModelMap model){
@@ -83,6 +112,14 @@ public class IndividualController {
 		if(individualModel.getDataId() != 0){
 			IndividualExt individualExt = individualService.load(individualModel.getDataId(), true);
 			individualModel.setIndividualExt(individualExt);
+
+      //Yuanguo: pass enumerations like cities, educations, schools and etc to edit.jsp
+      List<ICondition> conditions = new ArrayList<ICondition>();
+      individualModel.setCityEnum(cityService.criteriaQuery(conditions));
+      individualModel.setEducationEnum(educationService.criteriaQuery(conditions));
+      individualModel.setSchoolEnum(schoolService.criteriaQuery(conditions));
+      individualModel.setRecomposEnum(recomposService.criteriaQuery(conditions));
+      
 			model.addAttribute(individualModel);
 		}
 		return "/sys/individual/edit";

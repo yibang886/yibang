@@ -4,6 +4,11 @@ import java.util.List;
 
 import com.yb.sys.entity.UserExt;
 import com.yb.sys.entity.IndividualExt;
+import com.yb.sys.entity.CityExt;
+import com.yb.sys.entity.EducationExt;
+import com.yb.sys.entity.RecomposExt;
+import com.yb.sys.entity.SchoolExt;
+
 
 public class UserModel {
 
@@ -44,6 +49,14 @@ public class UserModel {
   //   0: not skip;
   //   1: skip;
   private int skip;
+
+  //Added by Yuanguo: when go to publish page, user should be alloed to select living city, education, school 
+  //and etc. These options (enumerations) should be passed from controller to edit.jsp; this is what the 
+  //following properties are intended for.
+  private List<CityExt> cityEnum;
+  private List<EducationExt> educationEnum;
+  private List<SchoolExt> schoolEnum;
+  private List<RecomposExt> recomposEnum;
 
 	public UserExt getUserExt() {
 		return userExt;
@@ -159,5 +172,41 @@ public class UserModel {
   public void setSkip(int skip)
   {
     this.skip = skip;
+  }
+
+  public List<CityExt> getCityEnum()
+  {
+    return cityEnum;
+  }
+  public void setCityEnum(List<CityExt> cityEnum)
+  {
+    this.cityEnum = cityEnum;
+  }
+
+  public List<EducationExt> getEducationEnum()
+  {
+    return educationEnum;
+  }
+  public void setEducationEnum(List<EducationExt> educationEnum)
+  {
+    this.educationEnum = educationEnum;
+  }
+ 
+  public List<SchoolExt> getSchoolEnum()
+  {
+    return schoolEnum;
+  }
+  public void setSchoolEnum(List<SchoolExt> schoolEnum)
+  {
+    this.schoolEnum = schoolEnum;
+  }
+
+  public List<RecomposExt> getRecomposEnum()
+  {
+    return recomposEnum;
+  }
+  public void setRecomposEnum(List<RecomposExt> recomposEnum)
+  {
+    this.recomposEnum = recomposEnum;
   }
 }
