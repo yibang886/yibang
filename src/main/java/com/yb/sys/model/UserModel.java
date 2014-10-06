@@ -39,13 +39,12 @@ public class UserModel {
   //goPublish() in UserController.java;
   private IndividualExt individualExt;
 
-  //Added by Yuanguo; when user upload files (see upload_indiv.jsp), the controller needs to tell upload_indiv.jsp 
-  //which file (photo, language certificate and etc) to upload, and upload_indiv.jsp needs to tell controller which
-  //file it is uploading. The fileType is for this purpose.
-  //It is similar for company.
+  //Added by Yuanguo; when user upload files (see upload.jsp), the controller needs to tell upload.jsp which file (photo, 
+  //language certificate and etc) to upload, and upload.jsp needs to tell controller which file it is uploading. The fileType 
+  //is for this purpose.
   private String fileType;
 
-  //Added by Yuanguo: in upload_indiv.jsp, pass "skip or not" to controller;
+  //Added by Yuanguo: in upload.jsp, pass "skip or not" to controller;
   //   0: not skip;
   //   1: skip;
   private int skip;

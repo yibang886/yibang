@@ -40,6 +40,16 @@ public class IndividualModel {
   private List<SchoolExt> schoolEnum;
   private List<RecomposExt> recomposEnum;
 
+  //Added by Yuanguo; when user upload files (see upload.jsp), the controller needs to tell upload.jsp which file (photo, 
+  //language certificate and etc) to upload, and upload.jsp needs to tell controller which file it is uploading. The fileType 
+  //is for this purpose.
+  private String fileType;
+
+  //Added by Yuanguo: in upload.jsp, pass "skip or not" to controller;
+  //   0: not skip;
+  //   1: skip;
+  private int skip;
+
 	public IndividualExt getIndividualExt() {
 		return individualExt;
 	}
@@ -162,5 +172,25 @@ public class IndividualModel {
   public void setRecomposEnum(List<RecomposExt> recomposEnum)
   {
     this.recomposEnum = recomposEnum;
+  }
+
+  public String getFileType()
+  {
+    return fileType;
+  }
+
+  public void setFileType(String fileType)
+  {
+    this.fileType = fileType;
+  }
+
+  public int getSkip()
+  {
+    return skip;
+  }
+
+  public void setSkip(int skip)
+  {
+    this.skip = skip;
   }
 }

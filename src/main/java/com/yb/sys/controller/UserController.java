@@ -213,16 +213,22 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user/doPublish")
-	public String doPublish(@ModelAttribute UserModel userModel, ModelMap model){
+	public String doPublish(@ModelAttribute UserModel entityModel, ModelMap model){
 
     System.out.println("Yuanguo: In doPublish");
 
-    UserExt userExt = userModel.getUserExt();
+    UserExt userExt = entityModel.getUserExt();
+
+    //individual/upload.jsp (or company/upload.jsp) is used in two use cases: 1. user publishes a 
+    //individual; 2. individual modify. Thus, we make a 'mark' so that upload.jsp knows which case 
+    //it is; see /user/upload.jsp (or company/upload.jsp).
+    model.addAttribute("usecase", new String("publish")); 
 
     if(userExt.getuser_type()==0) //自由译员
     {
       //get the IndividualExt instance created in goPublish() and populated with value in publish_indiv.jsp;
-      IndividualExt individualExt = userModel.getIndividualExt();
+      IndividualExt individualExt = entityModel.getIndividualExt();
+
        
       //individual has a one-to-one relationship with user, thus set the same 'id' with the related user; see
       //Individual.hbm.xml;
@@ -230,12 +236,16 @@ public class UserController {
 
       individualService.create(individualExt);
 
+      entityModel.setDataId(userExt.getId()); 
+      entityModel.setFileType("photo"); //upload photo next;
 
-      userModel.setDataId(userExt.getId()); 
-      userModel.setFileType("photo"); //upload photo next;
-  	  model.addAttribute(userModel);
+      //Yuanguo: in individual/upload.jsp (or company/upload.jsp), we don't bother to differentiate between "userModel" 
+      //and "indvidualModel", so we use "entityModel" generally. However, it seems we cannot simply write:
+      //         model.addAttribute(entityModel);  
+      //although model.addAttribute(userModel) worked fine. Is this because of @ModelAttribute in the function signature? 
+  	  model.addAttribute("entityModel",entityModel);
 
-		  return "/sys/user/upload_indiv";
+		  return "/sys/individual/upload";
     }
     else if(userExt.getuser_type()==1) //翻译公司
     {
@@ -278,8 +288,13 @@ public class UserController {
 
     System.out.println("Yuanguo: In doUploadFile, userId="+userId+", fileType="+fileType+", skip="+skip);
 
-    UserModel userModel = new UserModel();
-    userModel.setDataId(userId); 
+    UserModel entityModel = new UserModel();
+    entityModel.setDataId(userId); 
+
+    //individual/upload.jsp (or company/upload.jsp) is used in two use cases: 1. user publishes a 
+    //individual; 2. individual modify. Thus, we make a 'mark' so that upload.jsp knows which case 
+    //it is; see /user/upload.jsp (or company/upload.jsp).
+    request.setAttribute("usecase", new String("publish"));
 
     if(userExt.getuser_type() == 0) //个人译员
     {
@@ -321,9 +336,10 @@ public class UserController {
         {
           System.out.println("Yuanguo: skip upload photo");
         }
-        userModel.setFileType("language_cert"); //upload language_cert next;
-        request.setAttribute("userModel",userModel); //this is the same as model.addAttribute(userModel);
-        return "/sys/user/upload_indiv";
+        entityModel.setFileType("language_cert"); //upload language_cert next;
+        request.setAttribute("entityModel",entityModel); //this is the same as model.addAttribute(entityModel);
+
+        return "/sys/individual/upload";
       }
       else if(fileType.equals("language_cert"))
       {
@@ -335,9 +351,9 @@ public class UserController {
         {
           System.out.println("Yuanguo: skip upload language_cert");
         }
-        userModel.setFileType("translation_cert"); //upload translation_cert next;
-        request.setAttribute("userModel",userModel);
-        return "/sys/user/upload_indiv";
+        entityModel.setFileType("translation_cert"); //upload translation_cert next;
+        request.setAttribute("entityModel",entityModel);
+        return "/sys/individual/upload";
       }
       else if(fileType.equals("translation_cert"))
       {
@@ -349,9 +365,9 @@ public class UserController {
         {
           System.out.println("Yuanguo: skip upload translation_cert");
         }
-        userModel.setFileType("profession_cert"); //upload profession_cert next;
-        request.setAttribute("userModel",userModel);
-        return "/sys/user/upload_indiv";
+        entityModel.setFileType("profession_cert"); //upload profession_cert next;
+        request.setAttribute("entityModel",entityModel);
+        return "/sys/individual/upload";
       }
       else if(fileType.equals("profession_cert"))
       {
@@ -363,9 +379,9 @@ public class UserController {
         {
           System.out.println("Yuanguo: skip upload profession_cert");
         }
-        userModel.setFileType("authentication_file"); //upload authentication_file next;
-        request.setAttribute("userModel",userModel);
-        return "/sys/user/upload_indiv";
+        entityModel.setFileType("authentication_file"); //upload authentication_file next;
+        request.setAttribute("entityModel",entityModel);
+        return "/sys/individual/upload";
       }
       else if(fileType.equals("authentication_file"))
       {
@@ -377,7 +393,7 @@ public class UserController {
         {
           System.out.println("Yuanguo: skip upload authentication_file");
         }
-        request.setAttribute("userModel",userModel);
+        request.setAttribute("entityModel",entityModel);
         return "forward:/user/query";
       }
       else

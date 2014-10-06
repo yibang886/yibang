@@ -201,12 +201,14 @@
           </td>
         </tr>
         
+        <%--
         <tr>
           <td>近期照片：</td>
           <td>
             <input type="text" name="individualExt.photo_suffix" value="<c:out value="${ individualModel.individualExt.photo_suffix }" escapeXml="true" />" style="width:700px;"/>
           </td>
         </tr>
+        --%>
         
         <tr>
           <td>认证资料：</td>
