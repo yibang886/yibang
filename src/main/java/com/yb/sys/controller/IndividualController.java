@@ -1,5 +1,7 @@
 package com.yb.sys.controller;
 
+import java.util.Calendar;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
@@ -190,7 +192,10 @@ public class IndividualController {
 
         String filePath = "/var/www/ybfiles/individual/"+indivId+"/photo";
 
-        List<ReceivedFile> files = UploadUtil.receive(request, filePath);
+        //add time stamp to the file suffix so that "src" in <img src="..."/> will change when the photo
+        //is updated. As a result, browser will re-load the image instead of using the cached one;
+        
+        List<ReceivedFile> files = UploadUtil.receive(request, filePath, "." + Calendar.getInstance().getTimeInMillis());
 
         if(files == null || files.size() == 0)
         {
@@ -205,6 +210,7 @@ public class IndividualController {
             System.out.println("Yuanguo: more than 1 photos uploaded");
           }
 
+          //we assume that only one file is received.
           File rawFile = files.get(0).getFile();
           String suffix = files.get(0).getSuffix();
 
@@ -215,7 +221,24 @@ public class IndividualController {
           individual.setphoto_suffix(suffix);
           individualService.save(individual);
 
-            System.out.println("Yuanguo: Saved");
+          //delete original files if ther is any;
+          File folder = new File(filePath);
+          if(folder.isDirectory())
+          {
+            String[] fileList = folder.list();
+            for(int i=0;i<fileList.length;i++)
+            {
+              if(!fileList[i].endsWith(suffix))
+              {
+                File beDeleted = new File(filePath, fileList[i]);
+                beDeleted.delete();
+              }
+            }
+          }
+          else
+          {
+            System.out.println("Yuanguo: warn, something is wrong, "+filePath+" is not a folder");
+          }
         }
       }
       else

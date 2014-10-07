@@ -306,7 +306,14 @@ public class UserController {
 
           String filePath = "/var/www/ybfiles/individual/"+userId+"/photo";
 
-          List<ReceivedFile> files = UploadUtil.receive(request, filePath);
+          //Yuanguo: add a number to the suffix of photo file and update it with system time in milli seconds 
+          //every time a new photo is uploaded; why?
+          //Because, if we don't add the number, when photo is updated, the "src" in <img src="..."/> is not 
+          //updated, as a result, the browser will use the cached image instead of reload the new one. 
+          //Someone on internet gave another solution: 
+          //     append "?t=Math.random()" to src.
+          //however, it will force a reload every time;
+          List<ReceivedFile> files = UploadUtil.receive(request, filePath, ".0");
 
           if(files == null || files.size() == 0)
           {
@@ -330,6 +337,25 @@ public class UserController {
             IndividualExt individual = individualService.load(userId, true);
             individual.setphoto_suffix(suffix);
             individualService.save(individual);
+
+            //delete original files if ther is any;
+            File folder = new File(filePath);
+            if(folder.isDirectory())
+            {
+              String[] fileList = folder.list();
+              for(int i=0;i<fileList.length;i++)
+              {
+                if(!fileList[i].endsWith(suffix))
+                {
+                  File beDeleted = new File(filePath, fileList[i]);
+                  beDeleted.delete();
+                }
+              }
+            }
+            else
+            {
+              System.out.println("Yuanguo: warn, something is wrong, "+filePath+" is not a folder");
+            }
           }
         }
         else

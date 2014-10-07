@@ -28,7 +28,7 @@ public class UploadUtil
     upload.setSizeMax(MAX_SIZE);
   }
 
-  public static List<ReceivedFile> receive(HttpServletRequest request, String filePath)
+  public static List<ReceivedFile> receive(HttpServletRequest request, String filePath, String pre_suffix)
   {
     String contentType = request.getContentType();
     System.out.println("Yuanguo: contentType="+contentType);
@@ -41,9 +41,14 @@ public class UploadUtil
     }
 
     File folder = new File(filePath);
+
+    if(folder.exists()&&folder.isFile())
+    {
+      folder.delete();
+    }
+
     if(!folder.exists())
     {
-      System.out.println("Yuanguo: Folder("+filePath+") does NOT exist, create it!");
       folder.mkdirs();
     }
 
@@ -60,6 +65,7 @@ public class UploadUtil
         {
           String fileName = fi.getName();
           String suffix = fileName.substring(fileName.lastIndexOf("."));
+          suffix = pre_suffix + suffix;
 
           //TODO: log
           System.out.println("Yuanguo: fileName="+fileName+", suffix="+suffix);
