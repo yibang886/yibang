@@ -13,12 +13,12 @@ CREATE TABLE IF NOT EXISTS transtype
   PRIMARY KEY (id)
 ) ENGINE InnoDB, DEFAULT CHARACTER SET utf8 AUTO_INCREMENT 1;
 
-INSERT INTO transtype(transtype) VALUES('全部');
 INSERT INTO transtype(transtype) VALUES('笔译');
 INSERT INTO transtype(transtype) VALUES('口译');
 INSERT INTO transtype(transtype) VALUES('同声传译');
 INSERT INTO transtype(transtype) VALUES('本地化');
 INSERT INTO transtype(transtype) VALUES('速记');
+INSERT INTO transtype(transtype) VALUES('其他');
 
 -- create table 'language' and insert pre-defined set of languages;
 DROP TABLE IF EXISTS language;
@@ -29,7 +29,6 @@ CREATE TABLE IF NOT EXISTS language
   PRIMARY KEY (id)
 ) ENGINE InnoDB, DEFAULT CHARACTER SET utf8 AUTO_INCREMENT 1;
 
-INSERT INTO language(language) VALUES('全部');
 INSERT INTO language(language) VALUES('阿塞拜疆语');
 INSERT INTO language(language) VALUES('阿布哈兹语');
 INSERT INTO language(language) VALUES('阿尔瓦语');
@@ -100,6 +99,7 @@ INSERT INTO language(language) VALUES('意大利语');
 INSERT INTO language(language) VALUES('印度尼西亚语');
 INSERT INTO language(language) VALUES('中文-简体');
 INSERT INTO language(language) VALUES('中文-繁体');
+INSERT INTO language(language) VALUES('其他');
 
 -- create table 'field' and insert pre-defined set of fields;
 DROP TABLE IF EXISTS field;
@@ -110,7 +110,6 @@ CREATE TABLE IF NOT EXISTS field
   PRIMARY KEY (id)
 ) ENGINE InnoDB, DEFAULT CHARACTER SET utf8 AUTO_INCREMENT 1;
 
-INSERT INTO field(field) VALUES('全部');
 INSERT INTO field(field) VALUES('医学');
 INSERT INTO field(field) VALUES('法律');
 INSERT INTO field(field) VALUES('机械');
@@ -138,6 +137,7 @@ INSERT INTO field(field) VALUES('能源');
 INSERT INTO field(field) VALUES('教育');
 INSERT INTO field(field) VALUES('食品');
 INSERT INTO field(field) VALUES('生物');
+INSERT INTO field(field) VALUES('其他');
 
 -- create table 'doctype' and insert pre-defined set of doc types;
 DROP TABLE IF EXISTS doctype;
@@ -148,7 +148,6 @@ CREATE TABLE IF NOT EXISTS doctype
   PRIMARY KEY (id)
 ) ENGINE InnoDB, DEFAULT CHARACTER SET utf8 AUTO_INCREMENT 1;
 
-INSERT INTO doctype(doctype) VALUES('全部');
 INSERT INTO doctype(doctype) VALUES('论文');
 INSERT INTO doctype(doctype) VALUES('简历');
 INSERT INTO doctype(doctype) VALUES('证件');
@@ -171,6 +170,7 @@ INSERT INTO doctype(doctype) VALUES('司法文书');
 INSERT INTO doctype(doctype) VALUES('新闻');
 INSERT INTO doctype(doctype) VALUES('审计');
 INSERT INTO doctype(doctype) VALUES('广告');
+INSERT INTO doctype(doctype) VALUES('其他');
 
 -- create table 'education' and insert pre-defined values;
 DROP TABLE IF EXISTS education;
@@ -186,6 +186,7 @@ INSERT INTO education(education) VALUES ('硕士研究生');
 INSERT INTO education(education) VALUES ('本科');
 INSERT INTO education(education) VALUES ('大专');
 INSERT INTO education(education) VALUES ('中专');
+INSERT INTO education(education) VALUES ('其他');
 
 -- create table 'school' and insert pre-defined values;
 DROP TABLE IF EXISTS school;
@@ -201,6 +202,7 @@ INSERT INTO school(school) VALUES ('北京大学');
 INSERT INTO school(school) VALUES ('北京交通大学');
 INSERT INTO school(school) VALUES ('人民大学');
 INSERT INTO school(school) VALUES ('北航');
+INSERT INTO school(school) VALUES ('其他');
 
 -- create table 'city' and insert pre-defined values;
 DROP TABLE IF EXISTS city;
@@ -216,6 +218,7 @@ INSERT INTO city(city) VALUES ('上海');
 INSERT INTO city(city) VALUES ('天津');
 INSERT INTO city(city) VALUES ('南京');
 INSERT INTO city(city) VALUES ('海外');
+INSERT INTO city(city) VALUES ('其他');
 
 -- create table 'recompos'
 -- 翻译信息的推荐位置; NO: 不在推荐位置显示；
@@ -396,19 +399,19 @@ INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES 
 
 INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,lang_cert,trans_cert,prof_cert,exp_year,exp_trans,works,introduct,photo_suffix,auth_file,auth_pass,recompos_id) VALUES (1,'霍远国',0,2,5,1985,1,'http://yuanguo.page.com',1,'individual/lang_cert/1/langcert.crt','individual/trans_cert/1/transcert.crt','individual/prof_cert/1/profcert.crt',4,15,'C语言入门','认证负责，经验丰富','.png','individual/auth_file/1/authfile.png',1,3);
 
-INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(1,2);
-INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(1,6);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(1,1);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(1,3);
 INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(1,5);
 
-INSERT INTO individual_lang(indiv_id,lang_id) VALUES(1,63);
-INSERT INTO individual_lang(indiv_id,lang_id) VALUES(1,70);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(1,62);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(1,69);
 
-INSERT INTO individual_field(indiv_id,field_id) VALUES(1,6);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(1,5);
 
 INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(1,2);
-INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(1,3);
 INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(1,4);
 INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(1,6);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(1,8);
 
 -- Sample Data: 北京设美译达翻译有限公司
 -- INSERT INTO company(name,logo,descrip,tel,mobile,email,address) VALUES ('北京设美译达翻译有限公司','logo/shemeiyida.jpeg','正规，信誉良好，快速准确','010-82158278','86+18612802724','watermelon-wxr@163.com','北京海淀科学院南路1号');
