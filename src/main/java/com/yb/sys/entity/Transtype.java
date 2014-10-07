@@ -1,8 +1,9 @@
 package com.yb.sys.entity;
 
 import java.io.Serializable;
+import java.lang.Comparable;
 
-public class Transtype implements Serializable{
+public class Transtype implements Serializable, Comparable<Transtype>{
 
 	/**
 	 * 
@@ -88,4 +89,13 @@ public class Transtype implements Serializable{
         
         return newObj;
 	}
+
+  public int compareTo(Transtype other)
+  {
+    if(id<other.id)
+      return -1;
+    if(id>other.id)
+      return 1;
+    return 0;
+  }
 }

@@ -137,19 +137,143 @@
         </tr>
         
         <tr>
-          <td>个人主页：</td>
-          <td>
-            <input type="text" name="individualExt.mainpage" value="<c:out value="${ individualModel.individualExt.mainpage }" escapeXml="true" />" style="width:700px;"/>
-          </td>
-        </tr>
-        
-        <tr>
           <td>工作方式：</td>
           <td>
             <select name="individualExt.workstyle">
               <option value="0" <c:if test="${individualModel.individualExt.workstyle==0}"><c:out value="selected"/></c:if> >全职</option>
               <option value="1" <c:if test="${individualModel.individualExt.workstyle==1}"><c:out value="selected"/></c:if> >兼职</option>
             </select>
+          </td>
+        </tr>
+
+        <tr>
+          <td>语种：</td>
+          <td>
+            <table id="lang_table">
+              <tr>
+                <td>
+                  <input type="button" value="全选" onclick="checkboxSelect('langCheckbox','all')"/>
+                  &nbsp;&nbsp;
+                  <input type="button" value="反选" onclick="checkboxSelect('langCheckbox','none')"/>
+                </td>
+              </tr>
+              <tr>
+                <c:forEach items="${individualModel.languageEnum}" var="var" varStatus="varStat">
+                  <c:if test="${varStat.index%10==0&&varStat.index!=0}"></tr><tr></c:if>
+                    <td>
+                      <input  type="checkbox" 
+                              name="langCheckbox" 
+                              value="${var.id}"
+                              <c:forEach items="${individualModel.individualExt.languages}" var="lang">
+                                <c:if test="${lang.id==var.id}">
+                                  <c:out value="checked"/>
+                                </c:if>
+                              </c:forEach>
+                      />${var.language}
+                    </td>
+                </c:forEach>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td>专业领域：</td>
+          <td>
+            <table id="field_table">
+              <tr>
+                <td>
+                  <input type="button" value="全选" onclick="checkboxSelect('fieldCheckbox','all')"/>
+                  &nbsp;&nbsp;
+                  <input type="button" value="反选" onclick="checkboxSelect('fieldCheckbox','none')"/>
+                </td>
+              </tr>
+              <tr>
+                <c:forEach items="${individualModel.fieldEnum}" var="var" varStatus="varStat">
+                  <c:if test="${varStat.index%10==0&&varStat.index!=0}"></tr><tr></c:if>
+                    <td>
+                      <input  type="checkbox" 
+                              name="fieldCheckbox" 
+                              value="${var.id}"
+                              <c:forEach items="${individualModel.individualExt.fields}" var="field">
+                                <c:if test="${field.id==var.id}">
+                                  <c:out value="checked"/>
+                                </c:if>
+                              </c:forEach>
+                      />${var.field}
+                    </td>
+                </c:forEach>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td>翻译类型：</td>
+          <td>
+            <table id="transtype_table">
+              <tr>
+                <td>
+                  <input type="button" value="全选" onclick="checkboxSelect('transtypeCheckbox','all')"/>
+                  &nbsp;&nbsp;
+                  <input type="button" value="反选" onclick="checkboxSelect('transtypeCheckbox','none')"/>
+                </td>
+              </tr>
+              <tr>
+                <c:forEach items="${individualModel.transtypeEnum}" var="var" varStatus="varStat">
+                  <c:if test="${varStat.index%10==0&&varStat.index!=0}"></tr><tr></c:if>
+                    <td>
+                      <input  type="checkbox" 
+                              name="transtypeCheckbox" 
+                              value="${var.id}"
+                              <c:forEach items="${individualModel.individualExt.transtypes}" var="transtype">
+                                <c:if test="${transtype.id==var.id}">
+                                  <c:out value="checked"/>
+                                </c:if>
+                              </c:forEach>
+                      />${var.transtype}
+                    </td>
+                </c:forEach>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td>文档类型：</td>
+          <td>
+            <table id="doctype_table">
+              <tr>
+                <td>
+                  <input type="button" value="全选" onclick="checkboxSelect('doctypeCheckbox','all')"/>
+                  &nbsp;&nbsp;
+                  <input type="button" value="反选" onclick="checkboxSelect('doctypeCheckbox','none')"/>
+                </td>
+              </tr>
+              <tr>
+                <c:forEach items="${individualModel.doctypeEnum}" var="var" varStatus="varStat">
+                  <c:if test="${varStat.index%10==0&&varStat.index!=0}"></tr><tr></c:if>
+                    <td>
+                      <input  type="checkbox" 
+                              name="doctypeCheckbox" 
+                              value="${var.id}"
+                              <c:forEach items="${individualModel.individualExt.doctypes}" var="doctype">
+                                <c:if test="${doctype.id==var.id}">
+                                  <c:out value="checked"/>
+                                </c:if>
+                              </c:forEach>
+                      />${var.doctype}
+                    </td>
+                </c:forEach>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>个人主页：</td>
+          <td>
+            <input type="text" name="individualExt.mainpage" value="<c:out value="${ individualModel.individualExt.mainpage }" escapeXml="true" />" style="width:700px;"/>
           </td>
         </tr>
         
@@ -202,6 +326,9 @@
         </tr>
         
         <%--
+        photo will be uploaded later.
+        -->
+        <%--
         <tr>
           <td>近期照片：</td>
           <td>
@@ -252,17 +379,40 @@
 </div>
 
 <script type="text/javascript">
-function doCreate(){
+function doCreate()
+{
     var form = document.getElementById("form");
     form.action = "<%=request.getContextPath()%>/individual/doCreate.action";
     form.submit();
 }
 
-function doEdit(){
+function doEdit()
+{
     var form = document.getElementById("form");
     form.action = "<%=request.getContextPath()%>/individual/doEdit.action";
     form.submit();
 }
+
+function checkboxSelect(name, all_none)
+{
+  var checkboxes = document.getElementsByName(name); 
+  var checked;
+  if(all_none=="all")
+  {
+    checked=true;
+  }
+  else
+  {
+    checked=false;
+  }
+
+  for(var i=0; i<checkboxes.length; i++)
+  {
+    checkboxes[i].checked = checked;
+  }
+}
+
+
 </script>
 </body>
 </html>

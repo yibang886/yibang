@@ -5,9 +5,11 @@ import java.util.TreeSet;
 
 import java.io.Serializable;
 
+import java.lang.Comparable;
+
 import com.yb.sys.entity.IndividualExt;
 
-public class Language implements Serializable{
+public class Language implements Serializable, Comparable<Language>{
 
 	/**
 	 * 
@@ -107,4 +109,14 @@ public class Language implements Serializable{
         
         return newObj;
 	}
+
+  public int compareTo(Language other)
+  {
+    if(id<other.id)
+      return -1;
+    if(id>other.id)
+      return 1;
+    return 0;
+  }
+
 }

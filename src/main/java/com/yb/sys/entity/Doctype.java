@@ -1,8 +1,9 @@
 package com.yb.sys.entity;
 
 import java.io.Serializable;
+import java.lang.Comparable;
 
-public class Doctype implements Serializable{
+public class Doctype implements Serializable, Comparable<Doctype>{
 
 	/**
 	 * 
@@ -88,4 +89,13 @@ public class Doctype implements Serializable{
         
         return newObj;
 	}
+
+  public int compareTo(Doctype other)
+  {
+    if(id<other.id)
+      return -1;
+    if(id>other.id)
+      return 1;
+    return 0;
+  }
 }

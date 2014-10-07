@@ -4,6 +4,8 @@ import java.util.Calendar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.io.File;
 
 import javax.annotation.Resource;
@@ -32,6 +34,18 @@ import com.yb.sys.service.IRecomposServiceExt;
 import com.yb.sys.entity.SchoolExt;
 import com.yb.sys.model.SchoolModel;
 import com.yb.sys.service.ISchoolServiceExt;
+import com.yb.sys.entity.LanguageExt;
+import com.yb.sys.model.LanguageModel;
+import com.yb.sys.service.ILanguageServiceExt;
+import com.yb.sys.entity.FieldExt;
+import com.yb.sys.model.FieldModel;
+import com.yb.sys.service.IFieldServiceExt;
+import com.yb.sys.entity.TranstypeExt;
+import com.yb.sys.model.TranstypeModel;
+import com.yb.sys.service.ITranstypeServiceExt;
+import com.yb.sys.entity.DoctypeExt;
+import com.yb.sys.model.DoctypeModel;
+import com.yb.sys.service.IDoctypeServiceExt;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,9 +74,21 @@ public class IndividualController {
 
 	@Resource(name = "recomposService")
 	private IRecomposServiceExt recomposService;
-  
 
+	@Resource(name = "languageService")
+	private ILanguageServiceExt languageService;
+  
+	@Resource(name = "fieldService")
+	private IFieldServiceExt fieldService;
+
+	@Resource(name = "transtypeService")
+	private ITranstypeServiceExt transtypeService;
 	
+	@Resource(name = "doctypeService")
+	private IDoctypeServiceExt doctypeService;
+
+
+
 	@RequestMapping(value = "/individual/index")
 	public String index(@ModelAttribute IndividualModel individualModel, ModelMap model){
 		model.addAttribute(individualModel);
@@ -129,6 +155,10 @@ public class IndividualController {
       individualModel.setEducationEnum(educationService.criteriaQuery(conditions));
       individualModel.setSchoolEnum(schoolService.criteriaQuery(conditions));
       individualModel.setRecomposEnum(recomposService.criteriaQuery(conditions));
+      individualModel.setLanguageEnum(languageService.criteriaQuery(conditions));
+      individualModel.setFieldEnum(fieldService.criteriaQuery(conditions));
+      individualModel.setTranstypeEnum(transtypeService.criteriaQuery(conditions));
+      individualModel.setDoctypeEnum(doctypeService.criteriaQuery(conditions));
       
 			model.addAttribute(individualModel);
 		}
@@ -136,10 +166,68 @@ public class IndividualController {
 	}
 	
 	@RequestMapping(value = "/individual/doEdit")
-	public String doEdit(@ModelAttribute IndividualModel entityModel, ModelMap model){
+	public String doEdit(@ModelAttribute IndividualModel entityModel, ModelMap model, HttpServletRequest request){
 
 		if(entityModel.getIndividualExt() != null && entityModel.getIndividualExt().getId() != 0){
+
 			IndividualExt individualExt = entityModel.getIndividualExt();
+
+      //language checkbox
+      String[] lang_ids = request.getParameterValues("langCheckbox");
+      Set<LanguageExt> languages = new TreeSet<LanguageExt>();
+      if(lang_ids != null)
+      {
+        for(String lang_id:lang_ids)
+        {
+          LanguageExt lang = new LanguageExt();
+          lang.setId(Long.parseLong(lang_id));
+          languages.add(lang);
+        }
+      }
+      individualExt.setlanguages(languages);
+
+      //field checkbox
+      String[] field_ids = request.getParameterValues("fieldCheckbox");
+      Set<FieldExt> fields = new TreeSet<FieldExt>();
+      if(field_ids != null)
+      {
+        for(String field_id:field_ids)
+        {
+          FieldExt field = new FieldExt();
+          field.setId(Long.parseLong(field_id));
+          fields.add(field);
+        }
+      }
+      individualExt.setfields(fields);
+
+      //transtype checkbox
+      String[] transtype_ids = request.getParameterValues("transtypeCheckbox");
+      Set<TranstypeExt> transtypes = new TreeSet<TranstypeExt>();
+      if(transtype_ids != null)
+      {
+        for(String transtype_id:transtype_ids)
+        {
+          TranstypeExt transtype = new TranstypeExt();
+          transtype.setId(Long.parseLong(transtype_id));
+          transtypes.add(transtype);
+        }
+      }
+      individualExt.settranstypes(transtypes);
+
+      //doctype checkbox
+      String[] doctype_ids = request.getParameterValues("doctypeCheckbox");
+      Set<DoctypeExt> doctypes = new TreeSet<DoctypeExt>();
+      if(doctype_ids != null)
+      {
+        for(String doctype_id:doctype_ids)
+        {
+          DoctypeExt doctype = new DoctypeExt();
+          doctype.setId(Long.parseLong(doctype_id));
+          doctypes.add(doctype);
+        }
+      }
+      individualExt.setdoctypes(doctypes);
+
 			IndividualExt individualExtPer = individualService.load(entityModel.getIndividualExt().getId(), true);
 			individualService.save(individualExt);
 
@@ -156,6 +244,7 @@ public class IndividualController {
 
 		return "/invalid";
 	}
+
 
   //Yuanguo: we want to receive uploaded file by HttpServletRequest, thus we use this kind of controller which 
   //takes request and response as parameters;

@@ -2,7 +2,9 @@ package com.yb.sys.entity;
 
 import java.io.Serializable;
 
-public class Field implements Serializable{
+import java.lang.Comparable;
+
+public class Field implements Serializable, Comparable<Field>{
 
 	/**
 	 * 
@@ -88,4 +90,14 @@ public class Field implements Serializable{
         
         return newObj;
 	}
+
+  public int compareTo(Field other)
+  {
+    if(id<other.id)
+      return -1;
+    if(id>other.id)
+      return 1;
+    return 0;
+  }
+
 }
