@@ -33,6 +33,8 @@ import com.yb.sys.entity.SchoolExt;
 import com.yb.sys.model.SchoolModel;
 import com.yb.sys.service.ISchoolServiceExt;
 
+import com.yb.sys.entity.LanguageExt;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -85,6 +87,12 @@ public class IndividualController {
 	public String goView(@ModelAttribute IndividualModel individualModel, ModelMap model){
 		if(individualModel.getDataId() != 0){
 			IndividualExt individualExt = individualService.load(individualModel.getDataId(), true);
+      
+      System.out.println("Yuanguo: languages");
+      for(LanguageExt lang: individualExt.getlanguages())
+      {
+        System.out.println("Yuanguo:"+lang.getId()+", "+lang.getlanguage());
+      }
 			individualModel.setIndividualExt(individualExt);
 		}
 		
