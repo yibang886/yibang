@@ -23,6 +23,8 @@
   <form id="form" name="individualForm" method="post">
     <table class="table_add">
       <thead>
+
+        <%--
         <tr>
           <td>发布用户：</td>
           <td>
@@ -71,6 +73,7 @@
             <input type="text" name="individualExt.user.weixin" value="<c:out value="${ individualModel.individualExt.user.weixin }" escapeXml="true" />" style="width:700px;" readonly="true" class="myinput" />
           </td>
         </tr>
+        --%>
         
         <tr>
           <td>姓名：</td>
