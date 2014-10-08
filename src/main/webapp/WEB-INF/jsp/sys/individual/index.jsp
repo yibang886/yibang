@@ -28,11 +28,11 @@
         <td colspan="2">
           <table border="0" cellpadding="0" cellspacing="0" class="table_date" id="dataTable">
             <tr>
-                  <th width="20%">近期照片 </th>
-                  <th width="20%">姓名 </th>
-                  <th width="10%">性别 </th>
-                  <th width="20%">出生 </th>
-                  <th width="20%">邮箱 </th>
+                  <th width="20%"><div>近期照片 </div></th>
+                  <th width="20%"><div>姓名 </div></th>
+                  <th width="10%"><div>性别 </div></th>
+                  <th width="20%"><div>出生年 </div></th>
+                  <th width="20%"><div>邮箱 </div></th>
                   <th width="20%">操作 </th>
             </tr>
 
@@ -40,7 +40,10 @@
               <tr onmouseover="this.className='over'" onmouseout="this.className='out'">
                     <td><div><img src="/ybfiles/individual/${var.id}/photo/small${var.photo_suffix}"/></div></td>
                     <td><div><c:out value="${var.name}" escapeXml="true"/></div></td>
-                    <td><div><c:out value="${var.gender}" escapeXml="true"/></div></td>
+                    <td><div>
+                        <c:if test="${var.gender==0}"><c:out value="男" escapeXml="true"/></c:if>
+                        <c:if test="${var.gender==1}"><c:out value="女" escapeXml="true"/></c:if>
+                    </div></td>
                     <td><div><c:out value="${var.birth_year}" escapeXml="true"/></div></td>
                     <td><div><c:out value="${var.user.email}" escapeXml="true"/></div></td>
                     <td>
