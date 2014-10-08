@@ -29,10 +29,10 @@
           <table border="0" cellpadding="0" cellspacing="0" class="table_date"
             id="dataTable">
             <tr>
-                  <th width="20%">登录邮箱 </th>
-                  <th width="20%">移动电话 </th>
-                  <th width="20%">QQ号码 </th>
-                  <th width="20%">微信 </th>
+                  <th width="20%"><div>登录邮箱 </div></th>
+                  <th width="20%"><div>移动电话 </div></th>
+                  <th width="20%"><div>QQ号码 </div></th>
+                  <th width="20%"><div>微信 </div></th>
                   <th width="20%">操作 </th>
             </tr>
             <c:forEach var="var" items="${userModel.items}">
@@ -47,9 +47,9 @@
                       &nbsp;&nbsp;
                       <a href="<%=request.getContextPath()%>/user/goEdit.action?dataId=${ var.id }" >编辑</a>
                       &nbsp;&nbsp;
-                      <a href="<%=request.getContextPath()%>/user/doDelete.action?dataId=${ var.id }" >删除</a>
-                      &nbsp;&nbsp;
                       <a href="<%=request.getContextPath()%>/user/goPublish.action?dataId=${ var.id }" >发布服务</a>
+                      &nbsp;&nbsp;
+                      <a href="<%=request.getContextPath()%>/user/doDelete.action?dataId=${ var.id }" >删除</a>
                     </td>
               </tr>
             </c:forEach>
