@@ -229,6 +229,14 @@ public class IndividualController {
       individualExt.setdoctypes(doctypes);
 
 			IndividualExt individualExtPer = individualService.load(entityModel.getIndividualExt().getId(), true);
+
+      //We don't set these fields in edit.jsp, so we keep the existing values;
+      individualExt.setphoto_suffix(individualExtPer.getphoto_suffix());
+      individualExt.settrans_cert(individualExtPer.gettrans_cert());
+      individualExt.setlang_cert(individualExtPer.getlang_cert());
+      individualExt.setprof_cert(individualExtPer.getprof_cert());
+      individualExt.setauth_file(individualExtPer.getauth_file());
+
 			individualService.save(individualExt);
 
       entityModel.setDataId(individualExt.getId());
