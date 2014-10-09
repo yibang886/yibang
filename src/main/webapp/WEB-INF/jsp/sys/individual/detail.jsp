@@ -161,7 +161,6 @@
       </td>
     </tr>
 
-              
     <tr>
       <td><div>语言等级证书：</div></td>
       <td>
@@ -196,7 +195,7 @@
     </tr>
               
     <tr>
-      <td><div>工作年限：</div></td>
+      <td><div>工作经验：</div></td>
       <td>
         <div>
           <c:if test="${!empty individualModel.individualExt.exp_year}">

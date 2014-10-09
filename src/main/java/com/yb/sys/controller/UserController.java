@@ -2,6 +2,8 @@ package com.yb.sys.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.annotation.Resource;
 
@@ -35,6 +37,18 @@ import com.yb.sys.service.IRecomposServiceExt;
 import com.yb.sys.entity.SchoolExt;
 import com.yb.sys.model.SchoolModel;
 import com.yb.sys.service.ISchoolServiceExt;
+import com.yb.sys.entity.LanguageExt;
+import com.yb.sys.model.LanguageModel;
+import com.yb.sys.service.ILanguageServiceExt;
+import com.yb.sys.entity.FieldExt;
+import com.yb.sys.model.FieldModel;
+import com.yb.sys.service.IFieldServiceExt;
+import com.yb.sys.entity.TranstypeExt;
+import com.yb.sys.model.TranstypeModel;
+import com.yb.sys.service.ITranstypeServiceExt;
+import com.yb.sys.entity.DoctypeExt;
+import com.yb.sys.model.DoctypeModel;
+import com.yb.sys.service.IDoctypeServiceExt;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -64,6 +78,18 @@ public class UserController {
 
 	@Resource(name = "recomposService")
 	private IRecomposServiceExt recomposService;
+
+	@Resource(name = "languageService")
+	private ILanguageServiceExt languageService;
+  
+	@Resource(name = "fieldService")
+	private IFieldServiceExt fieldService;
+
+	@Resource(name = "transtypeService")
+	private ITranstypeServiceExt transtypeService;
+	
+	@Resource(name = "doctypeService")
+	private IDoctypeServiceExt doctypeService;
 
 
 	
@@ -153,12 +179,14 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user/goPublish")
-	public String goPublish(@ModelAttribute UserModel userModel, ModelMap model){
+	public String goPublish(@ModelAttribute UserModel entityModel, ModelMap model){
+
+		entityModel.setOperationType("publish");
     /*
      * program gets here from index.jsp (see line: user/goPublish.action?dataId=${ var.id }), so
      * dataId should be the ID of the user;
      */
-    Long userId = userModel.getDataId();
+    Long userId = entityModel.getDataId();
 		if( userId == 0){
       //throw Exception("DataId is invalid for goPublish() function");
       System.out.println("Yuanguo: DataId is invalid for goPublish() function");
@@ -173,11 +201,15 @@ public class UserController {
       return "/invalid";
     }
 
-    userModel.setUserExt(userExt);
+    entityModel.setDataId(userId);
 
 		List<ICondition> conditions = new ArrayList<ICondition>();
-    userModel.setCityEnum(cityService.criteriaQuery(conditions));
-    userModel.setRecomposEnum(recomposService.criteriaQuery(conditions));
+    entityModel.setCityEnum(cityService.criteriaQuery(conditions));
+    entityModel.setRecomposEnum(recomposService.criteriaQuery(conditions));
+    entityModel.setLanguageEnum(languageService.criteriaQuery(conditions));
+    entityModel.setFieldEnum(fieldService.criteriaQuery(conditions));
+    entityModel.setTranstypeEnum(transtypeService.criteriaQuery(conditions));
+    entityModel.setDoctypeEnum(doctypeService.criteriaQuery(conditions));
 
     if(userExt.getuser_type()==0) //自由译员
     {
@@ -189,15 +221,15 @@ public class UserController {
         return "/invalid";
       }
 
-      userModel.setEducationEnum(educationService.criteriaQuery(conditions));
-      userModel.setSchoolEnum(schoolService.criteriaQuery(conditions));
+      entityModel.setEducationEnum(educationService.criteriaQuery(conditions));
+      entityModel.setSchoolEnum(schoolService.criteriaQuery(conditions));
 
       //create a new intance of IndividualExt; it will be passed to publish_indiv.jsp and its properties 
       //will be set with value there.
-      userModel.setIndividualExt(new IndividualExt());
-  	  model.addAttribute(userModel);
+      entityModel.setIndividualExt(new IndividualExt());
+  	  model.addAttribute("entityModel",entityModel);
 
-		  return "/sys/user/publish_indiv";
+		  return "/sys/individual/edit";
     }
     else if(userExt.getuser_type()==1) //翻译公司
     {
@@ -213,11 +245,11 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user/doPublish")
-	public String doPublish(@ModelAttribute UserModel entityModel, ModelMap model){
+	public String doPublish(@ModelAttribute UserModel entityModel, ModelMap model, HttpServletRequest request){
 
     System.out.println("Yuanguo: In doPublish");
 
-    UserExt userExt = entityModel.getUserExt();
+    UserExt userExt = userService.load(entityModel.getDataId(), true);
 
     //individual/upload.jsp (or company/upload.jsp) is used in two use cases: 1. user publishes a 
     //individual; 2. individual modify. Thus, we make a 'mark' so that upload.jsp knows which case 
@@ -233,6 +265,62 @@ public class UserController {
       //individual has a one-to-one relationship with user, thus set the same 'id' with the related user; see
       //Individual.hbm.xml;
       individualExt.setId(userExt.getId());
+
+      //language checkbox
+      String[] lang_ids = request.getParameterValues("langCheckbox");
+      Set<LanguageExt> languages = new TreeSet<LanguageExt>();
+      if(lang_ids != null)
+      {
+        for(String lang_id:lang_ids)
+        {
+          LanguageExt lang = new LanguageExt();
+          lang.setId(Long.parseLong(lang_id));
+          languages.add(lang);
+        }
+      }
+      individualExt.setlanguages(languages);
+
+      //field checkbox
+      String[] field_ids = request.getParameterValues("fieldCheckbox");
+      Set<FieldExt> fields = new TreeSet<FieldExt>();
+      if(field_ids != null)
+      {
+        for(String field_id:field_ids)
+        {
+          FieldExt field = new FieldExt();
+          field.setId(Long.parseLong(field_id));
+          fields.add(field);
+        }
+      }
+      individualExt.setfields(fields);
+
+      //transtype checkbox
+      String[] transtype_ids = request.getParameterValues("transtypeCheckbox");
+      Set<TranstypeExt> transtypes = new TreeSet<TranstypeExt>();
+      if(transtype_ids != null)
+      {
+        for(String transtype_id:transtype_ids)
+        {
+          TranstypeExt transtype = new TranstypeExt();
+          transtype.setId(Long.parseLong(transtype_id));
+          transtypes.add(transtype);
+        }
+      }
+      individualExt.settranstypes(transtypes);
+
+      //doctype checkbox
+      String[] doctype_ids = request.getParameterValues("doctypeCheckbox");
+      Set<DoctypeExt> doctypes = new TreeSet<DoctypeExt>();
+      if(doctype_ids != null)
+      {
+        for(String doctype_id:doctype_ids)
+        {
+          DoctypeExt doctype = new DoctypeExt();
+          doctype.setId(Long.parseLong(doctype_id));
+          doctypes.add(doctype);
+        }
+      }
+      individualExt.setdoctypes(doctypes);
 
       individualService.create(individualExt);
 

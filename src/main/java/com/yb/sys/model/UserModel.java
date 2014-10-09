@@ -8,6 +8,10 @@ import com.yb.sys.entity.CityExt;
 import com.yb.sys.entity.EducationExt;
 import com.yb.sys.entity.RecomposExt;
 import com.yb.sys.entity.SchoolExt;
+import com.yb.sys.entity.LanguageExt;
+import com.yb.sys.entity.FieldExt;
+import com.yb.sys.entity.TranstypeExt;
+import com.yb.sys.entity.DoctypeExt;
 
 
 public class UserModel {
@@ -56,6 +60,10 @@ public class UserModel {
   private List<EducationExt> educationEnum;
   private List<SchoolExt> schoolEnum;
   private List<RecomposExt> recomposEnum;
+  private List<LanguageExt> languageEnum;
+  private List<FieldExt> fieldEnum;
+  private List<TranstypeExt> transtypeEnum;
+  private List<DoctypeExt> doctypeEnum;
 
 	public UserExt getUserExt() {
 		return userExt;
@@ -207,5 +215,41 @@ public class UserModel {
   public void setRecomposEnum(List<RecomposExt> recomposEnum)
   {
     this.recomposEnum = recomposEnum;
+  }
+
+  public List<LanguageExt> getLanguageEnum()
+  {
+    return languageEnum;
+  }
+  public void setLanguageEnum(List<LanguageExt> languageEnum)
+  {
+    this.languageEnum = languageEnum;
+  }
+
+  public List<FieldExt> getFieldEnum()
+  {
+    return fieldEnum;
+  }
+  public void setFieldEnum(List<FieldExt> fieldEnum)
+  {
+    this.fieldEnum = fieldEnum;
+  }
+
+  public List<TranstypeExt> getTranstypeEnum()
+  {
+    return transtypeEnum;
+  }
+  public void setTranstypeEnum(List<TranstypeExt> transtypeEnum)
+  {
+    this.transtypeEnum = transtypeEnum;
+  }
+
+  public List<DoctypeExt> getDoctypeEnum()
+  {
+    return doctypeEnum;
+  }
+  public void setDoctypeEnum(List<DoctypeExt> doctypeEnum)
+  {
+    this.doctypeEnum = doctypeEnum;
   }
 }

@@ -139,28 +139,28 @@ public class IndividualController {
 	}
 	
 	@RequestMapping(value = "/individual/goEdit")
-	public String goEdit(@ModelAttribute IndividualModel individualModel, ModelMap model){
+	public String goEdit(@ModelAttribute IndividualModel entityModel, ModelMap model){
     //Yuanguo: 
     //create and edit use the same page (edit.jsp) to enter individual info; edit.jsp 
     //makes use of "operationType" to decide to jump to "doCreate" or "doEdit"; see 
     //edit.jsp;
-		individualModel.setOperationType("edit");
-		if(individualModel.getDataId() != 0){
-			IndividualExt individualExt = individualService.load(individualModel.getDataId(), true);
-			individualModel.setIndividualExt(individualExt);
+		entityModel.setOperationType("edit");
+		if(entityModel.getDataId() != 0){
+			IndividualExt individualExt = individualService.load(entityModel.getDataId(), true);
+			entityModel.setIndividualExt(individualExt);
 
       //Yuanguo: pass enumerations like cities, educations, schools and etc to edit.jsp
       List<ICondition> conditions = new ArrayList<ICondition>();
-      individualModel.setCityEnum(cityService.criteriaQuery(conditions));
-      individualModel.setEducationEnum(educationService.criteriaQuery(conditions));
-      individualModel.setSchoolEnum(schoolService.criteriaQuery(conditions));
-      individualModel.setRecomposEnum(recomposService.criteriaQuery(conditions));
-      individualModel.setLanguageEnum(languageService.criteriaQuery(conditions));
-      individualModel.setFieldEnum(fieldService.criteriaQuery(conditions));
-      individualModel.setTranstypeEnum(transtypeService.criteriaQuery(conditions));
-      individualModel.setDoctypeEnum(doctypeService.criteriaQuery(conditions));
+      entityModel.setCityEnum(cityService.criteriaQuery(conditions));
+      entityModel.setEducationEnum(educationService.criteriaQuery(conditions));
+      entityModel.setSchoolEnum(schoolService.criteriaQuery(conditions));
+      entityModel.setRecomposEnum(recomposService.criteriaQuery(conditions));
+      entityModel.setLanguageEnum(languageService.criteriaQuery(conditions));
+      entityModel.setFieldEnum(fieldService.criteriaQuery(conditions));
+      entityModel.setTranstypeEnum(transtypeService.criteriaQuery(conditions));
+      entityModel.setDoctypeEnum(doctypeService.criteriaQuery(conditions));
       
-			model.addAttribute(individualModel);
+			model.addAttribute("entityModel",entityModel);
 		}
 		return "/sys/individual/edit";
 	}
