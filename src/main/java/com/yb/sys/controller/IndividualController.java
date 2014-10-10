@@ -118,26 +118,6 @@ public class IndividualController {
 		return "/sys/individual/detail";
 	}
 	
-	@RequestMapping(value = "/individual/goCreate")
-	public String goCreate(@ModelAttribute IndividualModel individualModel, ModelMap model){
-    //Yuanguo: 
-    //create and edit use the same page (edit.jsp) to enter individual info; edit.jsp 
-    //makes use of "operationType" to decide to jump to "doCreate" or "doEdit"; see 
-    //edit.jsp;
-		individualModel.setOperationType("create");
-		model.addAttribute(individualModel);
-		return "/sys/individual/edit";
-	}
-	
-	@RequestMapping(value = "/individual/doCreate")
-	public String doCreate(@ModelAttribute IndividualModel individualModel, ModelMap model){
-		if(individualModel.getIndividualExt() != null){
-			individualService.create(individualModel.getIndividualExt());
-		}
-		
-		return "forward:/individual/query";
-	}
-	
   //Yuanguo: individual/edit.jsp has two usecases: 
   //   1. user entity publishes (creates) an individual enity; 
   //   2. individual entity modification operation; 

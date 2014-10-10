@@ -19,8 +19,10 @@
         <th width="11%">个人译员信息列表</th>
         <th width="89%">
           <div>
-            <!-- <input name="add" type="button" value="导出excel" onclick="toExcel();" /> --> 
+            <%-- <input name="add" type="button" value="导出excel" onclick="toExcel();" /> --%> 
+            <%-- 不能直接创建个人译员；只能通过用户发布的方式
             <input type="button" value="新增" onclick="goCreate()" />&nbsp;&nbsp;
+            --%>
           </div>
         </th>
       </tr>
@@ -76,11 +78,14 @@
   }
 
 
+    /*
+     *不能直接创建个人译员；只能通过用户发布的方式
     function goCreate(){
         var form = document.getElementById("form");
         form.action = "<%=request.getContextPath()%>/individual/goCreate.action";
         form.submit();
     }
+    */
     
     function doDelete(){
         var form = document.getElementById("form");
@@ -93,8 +98,6 @@
         form.action = "<%=request.getContextPath()%>/individual/query.action";
         form.submit();
     }
-    
-    
   </script>
 </body>
 </html>
