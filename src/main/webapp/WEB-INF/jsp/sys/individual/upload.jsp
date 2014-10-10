@@ -8,16 +8,75 @@
 <%@ include file="/core/includecss.jsp"%>
 
 <script type="text/javascript">
-function doUploadFile(usecase,fileType,userId,skip){  //individual has 'one-to-one' map with user, so their ID are the same;
-    var form = document.getElementById("uploadForm");
 
-    //this upload.jsp is used in two use cases: 1. user publishes a individual; 2. individual modify. Thus, we need to know
-    //which case it is; it determines the action of the form (/user/doUploadFile.action or /individual/doUploadFile.action).
-    form.action = "<%=request.getContextPath()%>/"
-                  +((usecase=="publish")?"user":"individual")
+function strEndWith(str, suffix)
+{
+  var reg=new RegExp(suffix+"$");
+  return reg.test(str);
+}
+
+function doUploadFile(usecase,fileType,userId,skip)  
+{
+  if(skip==0) //not skip
+  {
+    var msg="";
+    if(fileType=="photo")
+    {
+      msg="照片";
+    }
+    else if(fileType=="language_cert")
+    {
+      msg="语言等级证书扫描图片";
+    }
+    else if(fileType=="translation_cert")
+    {
+      msg="翻译证书扫描图片";
+    }
+    else if(fileType=="profession_cert")
+    {
+      msg="专业证书扫描图片";
+    }
+    else if(fileType=="authentication_file")
+    {
+      msg="认证资料扫描图片";
+    }
+    else
+    {
+      alert("上传文件类型("+fileType+")非法， 暂时不能上传文件，请点击'跳过'");
+      return "";
+    }
+
+    var fileName = document.getElementById("upfile").value;
+
+    if(fileName=="")
+    {
+      alert("请选择'"+msg+"文件'，然后点击'上传'");
+      return "";
+    }
+
+    if( !strEndWith(fileName,".png") && 
+        !strEndWith(fileName,".jpg") && 
+        !strEndWith(fileName,".jpe") && 
+        !strEndWith(fileName,".jpeg") &&
+        !strEndWith(fileName,".gif") &&
+        !strEndWith(fileName,".jfif") )
+    {
+      alert(msg+"只能为.png，.jpg，.jpe，.jpeg，.gif或.jfif文件");
+      return "";
+    }
+  }
+
+  var form = document.getElementById("uploadForm");
+
+  //Yuanguo: individual/edit.jsp has two usecases: 
+  //   1. user entity publishes (creates) an individual enity; 
+  //   2. individual entity modification operation; 
+  //Thus, we need to know which case it is; it determines the action of the form (/user/doUploadFile.action or /individual/doUploadFile.action).
+  form.action = "<%=request.getContextPath()%>/"
+                  +((usecase=="publish")?"user":"individual") //individual has 'one-to-one' map with user, so their ID are the same;
                   +"/doUploadFile.action?dataId="+userId+"&fileType="+fileType+"&skip="+skip;
 
-    form.submit();
+  form.submit();
 }
 </script>
 
@@ -39,7 +98,7 @@ function doUploadFile(usecase,fileType,userId,skip){  //individual has 'one-to-o
           </c:if>
           <c:if test="${ entityModel.fileType eq 'language_cert' }">
             <td>
-              <b>上传语言证书</b>
+              <b>上传语言等级证书</b>
             </td>
           </c:if>
           <c:if test="${ entityModel.fileType eq 'translation_cert' }">
@@ -61,7 +120,7 @@ function doUploadFile(usecase,fileType,userId,skip){  //individual has 'one-to-o
 
         <tr>
           <td>文件：</td>
-          <td><input type="file" name="upfile" multiple="false"/></td>
+          <td><input type="file" id="upfile" name="upfile" multiple="false"/></td>
         </tr>
 
       </thead>

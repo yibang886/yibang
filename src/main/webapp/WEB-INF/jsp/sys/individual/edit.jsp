@@ -148,7 +148,7 @@
           <td>
             <table id="lang_table">
               <tr>
-                <td>
+                <td colspan="10">
                   <input type="button" value="全选" onclick="checkboxSelect('langCheckbox','all')"/>
                   &nbsp;&nbsp;
                   <input type="button" value="反选" onclick="checkboxSelect('langCheckbox','none')"/>
@@ -189,7 +189,7 @@
           <td>
             <table id="field_table">
               <tr>
-                <td>
+                <td colspan="10">
                   <input type="button" value="全选" onclick="checkboxSelect('fieldCheckbox','all')"/>
                   &nbsp;&nbsp;
                   <input type="button" value="反选" onclick="checkboxSelect('fieldCheckbox','none')"/>
@@ -230,7 +230,7 @@
           <td>
             <table id="transtype_table">
               <tr>
-                <td>
+                <td colspan="10">
                   <input type="button" value="全选" onclick="checkboxSelect('transtypeCheckbox','all')"/>
                   &nbsp;&nbsp;
                   <input type="button" value="反选" onclick="checkboxSelect('transtypeCheckbox','none')"/>
@@ -271,7 +271,7 @@
           <td>
             <table id="doctype_table">
               <tr>
-                <td>
+                <td colspan="10">
                   <input type="button" value="全选" onclick="checkboxSelect('doctypeCheckbox','all')"/>
                   &nbsp;&nbsp;
                   <input type="button" value="反选" onclick="checkboxSelect('doctypeCheckbox','none')"/>
@@ -342,7 +342,7 @@
               <input type="text" name="individualExt.exp_year" value="<c:out value="${ entityModel.individualExt.exp_year }" escapeXml="true" />" style="width:700px;"/>
             </c:if>
             <c:if test="${ entityModel.operationType eq 'publish' }">
-              <input type="text" name="individualExt.exp_year" value="" style="width:700px;"/>
+              <input type="text" name="individualExt.exp_year" value="0" style="width:700px;"/>
             </c:if>
           </td>
         </tr>
@@ -354,7 +354,7 @@
               <input type="text" name="individualExt.exp_trans" value="<c:out value="${ entityModel.individualExt.exp_trans }" escapeXml="true" />" style="width:700px;"/>
             </c:if>
             <c:if test="${ entityModel.operationType eq 'publish' }">
-              <input type="text" name="individualExt.exp_trans" value="" style="width:700px;"/>
+              <input type="text" name="individualExt.exp_trans" value="0" style="width:700px;"/>
             </c:if>
           </td>
         </tr>
