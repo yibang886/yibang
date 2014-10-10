@@ -138,18 +138,23 @@ public class IndividualController {
 		return "forward:/individual/query";
 	}
 	
+  //Yuanguo: individual/edit.jsp has two usecases: 
+  //   1. user entity publishes (creates) an individual enity; 
+  //   2. individual entity modification operation; 
+  //in individual/edit.jsp (or company/edit.jsp), we don't bother to differentiate between "userModel" 
+  //and "indvidualModel", so we use "entityModel" generally.  
 	@RequestMapping(value = "/individual/goEdit")
 	public String goEdit(@ModelAttribute IndividualModel entityModel, ModelMap model){
-    //Yuanguo: 
-    //create and edit use the same page (edit.jsp) to enter individual info; edit.jsp 
-    //makes use of "operationType" to decide to jump to "doCreate" or "doEdit"; see 
-    //edit.jsp;
+
+    //For usecase 1, edit.jsp should return to /user/goPublish; and for usecase 2, edit.jsp should return 
+    //to /individual/doEdit. The edit.jsp knows which usecase by "operationType";
 		entityModel.setOperationType("edit");
+
 		if(entityModel.getDataId() != 0){
 			IndividualExt individualExt = individualService.load(entityModel.getDataId(), true);
 			entityModel.setIndividualExt(individualExt);
 
-      //Yuanguo: pass enumerations like cities, educations, schools and etc to edit.jsp
+      //pass enumerations like cities, educations, schools and etc to individual/edit.jsp
       List<ICondition> conditions = new ArrayList<ICondition>();
       entityModel.setCityEnum(cityService.criteriaQuery(conditions));
       entityModel.setEducationEnum(educationService.criteriaQuery(conditions));
@@ -172,7 +177,7 @@ public class IndividualController {
 
 			IndividualExt individualExt = entityModel.getIndividualExt();
 
-      //language checkbox
+      //get languages selected by language checkbox
       String[] lang_ids = request.getParameterValues("langCheckbox");
       Set<LanguageExt> languages = new TreeSet<LanguageExt>();
       if(lang_ids != null)
@@ -186,7 +191,7 @@ public class IndividualController {
       }
       individualExt.setlanguages(languages);
 
-      //field checkbox
+      //get fields selected by field checkbox
       String[] field_ids = request.getParameterValues("fieldCheckbox");
       Set<FieldExt> fields = new TreeSet<FieldExt>();
       if(field_ids != null)
@@ -200,7 +205,7 @@ public class IndividualController {
       }
       individualExt.setfields(fields);
 
-      //transtype checkbox
+      //get transtypes slected by transtype checkbox
       String[] transtype_ids = request.getParameterValues("transtypeCheckbox");
       Set<TranstypeExt> transtypes = new TreeSet<TranstypeExt>();
       if(transtype_ids != null)
@@ -214,7 +219,7 @@ public class IndividualController {
       }
       individualExt.settranstypes(transtypes);
 
-      //doctype checkbox
+      //get doctypes selected by doctype checkbox
       String[] doctype_ids = request.getParameterValues("doctypeCheckbox");
       Set<DoctypeExt> doctypes = new TreeSet<DoctypeExt>();
       if(doctype_ids != null)
@@ -230,7 +235,7 @@ public class IndividualController {
 
 			IndividualExt individualExtPer = individualService.load(entityModel.getIndividualExt().getId(), true);
 
-      //We don't set these fields in edit.jsp, so we keep the existing values;
+      //We don't set these fields in edit.jsp, so we need to keep the existing values, or they will become null;
       individualExt.setphoto_suffix(individualExtPer.getphoto_suffix());
       individualExt.settrans_cert(individualExtPer.gettrans_cert());
       individualExt.setlang_cert(individualExtPer.getlang_cert());
@@ -240,12 +245,12 @@ public class IndividualController {
 			individualService.save(individualExt);
 
       entityModel.setDataId(individualExt.getId());
+
       entityModel.setFileType("photo"); //upload photo next;
+
+      entityModel.setOperationType("edit");
+
   	  model.addAttribute("entityModel",entityModel);
-    
-      //individual/upload.jsp is used in two use cases: 1. user publishes a individual; 2. individual modify. 
-      //Thus, we make a 'mark' so that upload.jsp knows which case it is; see /user/upload.jsp;
-      model.addAttribute("usecase", new String("modify"));
 
       return "/sys/individual/upload";
 		}
@@ -279,7 +284,7 @@ public class IndividualController {
     IndividualModel entityModel = new IndividualModel();
     entityModel.setDataId(indivId); 
 
-    request.setAttribute("usecase", new String("modify"));
+    entityModel.setOperationType("edit");
 
     if(fileType.equals("photo"))
     {
@@ -291,7 +296,6 @@ public class IndividualController {
 
         //add time stamp to the file suffix so that "src" in <img src="..."/> will change when the photo
         //is updated. As a result, browser will re-load the image instead of using the cached one;
-        
         List<ReceivedFile> files = UploadUtil.receive(request, filePath, "." + Calendar.getInstance().getTimeInMillis());
 
         if(files == null || files.size() == 0)
@@ -344,7 +348,7 @@ public class IndividualController {
       }
 
       entityModel.setFileType("language_cert"); //upload language_cert next;
-      request.setAttribute("entityModel",entityModel); //this is the same as model.addAttribute(entityModel);
+      request.setAttribute("entityModel",entityModel); //this is the same as model.addAttribute("entityModel",entityModel);
 
       return "/sys/individual/upload";
     }

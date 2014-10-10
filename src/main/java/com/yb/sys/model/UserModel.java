@@ -39,7 +39,7 @@ public class UserModel {
 	private String errorMessage;
 
   //Added by Yuanguo; when user publish translation service, it needs to create a blank instance of IndividualExt
-  //and pass it to publish_indiv.jsp to be populated. The individualExt is used to pass the instance. See function 
+  //and pass it to indvidual/edit.jsp to be populated. The individualExt is used to pass the instance. See function 
   //goPublish() in UserController.java;
   private IndividualExt individualExt;
 

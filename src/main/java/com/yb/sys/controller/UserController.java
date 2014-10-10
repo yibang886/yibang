@@ -178,15 +178,22 @@ public class UserController {
 		return "forward:/user/query";
 	}
 
+  //Yuanguo: individual/edit.jsp has two usecases: 
+  //   1. user entity publishes (creates) an individual enity; 
+  //   2. individual entity modification operation; 
+  //in individual/edit.jsp (or company/edit.jsp), we don't bother to differentiate between "userModel" 
+  //and "indvidualModel", so we use "entityModel" generally.  
 	@RequestMapping(value = "/user/goPublish")
 	public String goPublish(@ModelAttribute UserModel entityModel, ModelMap model){
 
+    //For usecase 1, edit.jsp should return to /user/goPublish; and for usecase 2, edit.jsp should return 
+    //to /individual/doEdit. The edit.jsp knows which usecase by "operationType";
 		entityModel.setOperationType("publish");
-    /*
-     * program gets here from index.jsp (see line: user/goPublish.action?dataId=${ var.id }), so
-     * dataId should be the ID of the user;
-     */
+
+    //program gets here from index.jsp (see line: user/goPublish.action?dataId=${ var.id }), so
+    //dataId should be the ID of the user;
     Long userId = entityModel.getDataId();
+
 		if( userId == 0){
       //throw Exception("DataId is invalid for goPublish() function");
       System.out.println("Yuanguo: DataId is invalid for goPublish() function");
@@ -201,8 +208,10 @@ public class UserController {
       return "/invalid";
     }
 
+    //in doPublish() function, we need the userId, so we pass it to edit.jsp and then pass to doPublish();
     entityModel.setDataId(userId);
 
+    //pass enumerations like cities, educations, schools and etc to individual/edit.jsp
 		List<ICondition> conditions = new ArrayList<ICondition>();
     entityModel.setCityEnum(cityService.criteriaQuery(conditions));
     entityModel.setRecomposEnum(recomposService.criteriaQuery(conditions));
@@ -224,9 +233,13 @@ public class UserController {
       entityModel.setEducationEnum(educationService.criteriaQuery(conditions));
       entityModel.setSchoolEnum(schoolService.criteriaQuery(conditions));
 
-      //create a new intance of IndividualExt; it will be passed to publish_indiv.jsp and its properties 
-      //will be set with value there.
+      //create a new intance of IndividualExt; it will be passed to individual/edit.jsp and it will be populated there.
       entityModel.setIndividualExt(new IndividualExt());
+
+      //Yuanguo: it seems we cannot simply write:
+      //         model.addAttribute(entityModel);  
+      //although model.addAttribute(userModel) worked fine (when parameter "entityModel" was named userModel before). Is 
+      //this because of @ModelAttribute in the function signature?
   	  model.addAttribute("entityModel",entityModel);
 
 		  return "/sys/individual/edit";
@@ -251,22 +264,18 @@ public class UserController {
 
     UserExt userExt = userService.load(entityModel.getDataId(), true);
 
-    //individual/upload.jsp (or company/upload.jsp) is used in two use cases: 1. user publishes a 
-    //individual; 2. individual modify. Thus, we make a 'mark' so that upload.jsp knows which case 
-    //it is; see /user/upload.jsp (or company/upload.jsp).
-    model.addAttribute("usecase", new String("publish")); 
+    entityModel.setOperationType("publish");
 
     if(userExt.getuser_type()==0) //自由译员
     {
-      //get the IndividualExt instance created in goPublish() and populated with value in publish_indiv.jsp;
+      //get the IndividualExt instance created in goPublish() and populated with value in individual/edit.jsp;
       IndividualExt individualExt = entityModel.getIndividualExt();
-
        
       //individual has a one-to-one relationship with user, thus set the same 'id' with the related user; see
       //Individual.hbm.xml;
       individualExt.setId(userExt.getId());
 
-      //language checkbox
+      //get languages selected by language checkbox
       String[] lang_ids = request.getParameterValues("langCheckbox");
       Set<LanguageExt> languages = new TreeSet<LanguageExt>();
       if(lang_ids != null)
@@ -280,7 +289,7 @@ public class UserController {
       }
       individualExt.setlanguages(languages);
 
-      //field checkbox
+      //get fields selected by field checkbox
       String[] field_ids = request.getParameterValues("fieldCheckbox");
       Set<FieldExt> fields = new TreeSet<FieldExt>();
       if(field_ids != null)
@@ -294,7 +303,7 @@ public class UserController {
       }
       individualExt.setfields(fields);
 
-      //transtype checkbox
+      //get transtypes slected by transtype checkbox
       String[] transtype_ids = request.getParameterValues("transtypeCheckbox");
       Set<TranstypeExt> transtypes = new TreeSet<TranstypeExt>();
       if(transtype_ids != null)
@@ -308,7 +317,7 @@ public class UserController {
       }
       individualExt.settranstypes(transtypes);
 
-      //doctype checkbox
+      //get doctypes selected by doctype checkbox
       String[] doctype_ids = request.getParameterValues("doctypeCheckbox");
       Set<DoctypeExt> doctypes = new TreeSet<DoctypeExt>();
       if(doctype_ids != null)
@@ -322,15 +331,14 @@ public class UserController {
       }
       individualExt.setdoctypes(doctypes);
 
+      //save the IndividualExt instance created in goPublish() and populated with value in individual/edit.jsp;
       individualService.create(individualExt);
 
+      //pass userId to upload.jsp and then pass to doUploadFile();
       entityModel.setDataId(userExt.getId()); 
+
       entityModel.setFileType("photo"); //upload photo next;
 
-      //Yuanguo: in individual/upload.jsp (or company/upload.jsp), we don't bother to differentiate between "userModel" 
-      //and "indvidualModel", so we use "entityModel" generally. However, it seems we cannot simply write:
-      //         model.addAttribute(entityModel);  
-      //although model.addAttribute(userModel) worked fine. Is this because of @ModelAttribute in the function signature? 
   	  model.addAttribute("entityModel",entityModel);
 
 		  return "/sys/individual/upload";
@@ -353,7 +361,7 @@ public class UserController {
 	@RequestMapping(value = "/user/doUploadFile")
 	public String doUploadFile(HttpServletRequest request, HttpServletResponse response)
   {
-    System.out.println("Yuanguo: In doUploadFile");
+    System.out.println("Yuanguo: In UserController.doUploadFile");
 
     Long userId = Long.parseLong(request.getParameter("dataId"));
 
@@ -379,10 +387,7 @@ public class UserController {
     UserModel entityModel = new UserModel();
     entityModel.setDataId(userId); 
 
-    //individual/upload.jsp (or company/upload.jsp) is used in two use cases: 1. user publishes a 
-    //individual; 2. individual modify. Thus, we make a 'mark' so that upload.jsp knows which case 
-    //it is; see /user/upload.jsp (or company/upload.jsp).
-    request.setAttribute("usecase", new String("publish"));
+    entityModel.setOperationType("publish");
 
     if(userExt.getuser_type() == 0) //个人译员
     {
@@ -397,7 +402,7 @@ public class UserController {
           //Yuanguo: add a number to the suffix of photo file and update it with system time in milli seconds 
           //every time a new photo is uploaded; why?
           //Because, if we don't add the number, when photo is updated, the "src" in <img src="..."/> is not 
-          //updated, as a result, the browser will use the cached image instead of reload the new one. 
+          //updated, as a result, the browser will use the cached image instead of reloading the new one. 
           //Someone on internet gave another solution: 
           //     append "?t=Math.random()" to src.
           //however, it will force a reload every time;
@@ -451,7 +456,7 @@ public class UserController {
           System.out.println("Yuanguo: skip upload photo");
         }
         entityModel.setFileType("language_cert"); //upload language_cert next;
-        request.setAttribute("entityModel",entityModel); //this is the same as model.addAttribute(entityModel);
+        request.setAttribute("entityModel",entityModel); //this is the same as model.addAttribute("entityModel",entityModel);
 
         return "/sys/individual/upload";
       }

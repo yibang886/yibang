@@ -71,10 +71,10 @@ function doUploadFile(usecase,fileType,userId,skip){  //individual has 'one-to-o
   <table class="table_add">
     <tr>
       <td>
-        <input type="button" value="上传" onclick="doUploadFile('<c:out value="${usecase}" escapeXml="true" />', '<c:out value="${ entityModel.fileType }" escapeXml="true" />', '<c:out value="${ entityModel.dataId }" escapeXml="true" />', 0)" />
+        <input type="button" value="上传" onclick="doUploadFile('<c:out value="${entityModel.operationType}" escapeXml="true" />', '<c:out value="${ entityModel.fileType }" escapeXml="true" />', '<c:out value="${ entityModel.dataId }" escapeXml="true" />', 0)" />
       </td>
       <td>
-        <input type="button" value="跳过" onclick="doUploadFile('<c:out value="${usecase}" escapeXml="true" />', '<c:out value="${ entityModel.fileType }" escapeXml="true" />', '<c:out value="${ entityModel.dataId }" escapeXml="true" />', 1)" />
+        <input type="button" value="跳过" onclick="doUploadFile('<c:out value="${entityModel.operationType}" escapeXml="true" />', '<c:out value="${ entityModel.fileType }" escapeXml="true" />', '<c:out value="${ entityModel.dataId }" escapeXml="true" />', 1)" />
       </td>
     </tr>
   <table>
