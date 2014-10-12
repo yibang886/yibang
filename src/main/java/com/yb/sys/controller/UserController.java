@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import java.io.File;
+
 import javax.annotation.Resource;
 
 import org.springframework.context.annotation.Scope;
@@ -53,11 +55,14 @@ import com.yb.sys.service.IDoctypeServiceExt;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.io.File;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 @Scope("request")
 public class UserController {
+
+  private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Resource(name = "userService")
 	private IUserServiceExt userService;
@@ -169,7 +174,7 @@ public class UserController {
 
       if(userExt.getindividual() != null)
       {
-        System.out.println("Yuanguo: Please delete translation service first before delet user");
+        logger.info("Cannot delete user entity before corresponding individual is deleted");
         return "/invalid";
       }
 
@@ -195,16 +200,14 @@ public class UserController {
     Long userId = entityModel.getDataId();
 
 		if( userId == 0){
-      //throw Exception("DataId is invalid for goPublish() function");
-      System.out.println("Yuanguo: DataId is invalid for goPublish() function");
+      logger.error("DataId ("+userId+") is invalid");
       return "/invalid";
 		}
 
   	UserExt userExt = userService.load(userId, true);
     if(userExt == null)
     {
-      //throw Exception("Failed to load user by ID:"+userId);
-      System.out.println("Failed to load user by ID:"+userId);
+      logger.error("Failed to load user by ID:"+userId);
       return "/invalid";
     }
 
@@ -225,8 +228,7 @@ public class UserController {
       IndividualExt indiv = individualService.load(userId, true);  //individual has the same Id as user;
       if(indiv != null)
       {
-        //throw Exception("User has already published translation service");
-        System.out.println("Yuanguo: User has already published translation service");
+        logger.info("User has already published translation service");
         return "/invalid";
       }
 
@@ -249,8 +251,7 @@ public class UserController {
     }
     else
     {
-      //throw Exception("Cannot publish translation service because user_type is invalid");
-      System.out.println("Yuanguo: Cannot publish translation service because user_type is invalid");
+      logger.error("Cannot publish translation service because user_type ("+userExt.getuser_type()+") is invalid");
       return "/invalid";
     }
 
@@ -259,9 +260,6 @@ public class UserController {
 
 	@RequestMapping(value = "/user/doPublish")
 	public String doPublish(@ModelAttribute UserModel entityModel, ModelMap model, HttpServletRequest request){
-
-    System.out.println("Yuanguo: In doPublish");
-
     UserExt userExt = userService.load(entityModel.getDataId(), true);
 
     entityModel.setOperationType("publish");
@@ -348,8 +346,7 @@ public class UserController {
     }
     else
     {
-      //throw Exception("Cannot publish translation service because user_type is invalid");
-      System.out.println("Yuanguo: Cannot publish translation service because user_type is invalid");
+      logger.error("Failed to publish translation service because user_type ("+userExt.getuser_type()+") is invalid");
       return "/invalid";
     }
 
@@ -361,28 +358,24 @@ public class UserController {
 	@RequestMapping(value = "/user/doUploadFile")
 	public String doUploadFile(HttpServletRequest request, HttpServletResponse response)
   {
-    System.out.println("Yuanguo: In UserController.doUploadFile");
-
     Long userId = Long.parseLong(request.getParameter("dataId"));
 
 		if( userId == 0){
-      //throw Exception("DataId is invalid for doUploadFile() function");
-      System.out.println("Yuanguo: DataId is invalid for doUploadFile() function");
+      logger.error("DataId ("+userId+") is invalid");
       return "/invalid";
 		}
 
   	UserExt userExt = userService.load(userId, true);
     if(userExt == null)
     {
-      //throw Exception("Failed to load user by ID:"+userId);
-      System.out.println("Yuanguo: Failed to load user by ID:"+userId);
+      logger.error("Failed to load user by ID:"+userId);
       return "/invalid";
     }
 
     String fileType = request.getParameter("fileType");
     int skip = Integer.parseInt(request.getParameter("skip"));
 
-    System.out.println("Yuanguo: In doUploadFile, userId="+userId+", fileType="+fileType+", skip="+skip);
+    logger.debug("userId="+userId+", fileType="+fileType+", skip="+skip);
 
     UserModel entityModel = new UserModel();
     entityModel.setDataId(userId); 
@@ -395,7 +388,7 @@ public class UserController {
       {
         if(skip == 0)
         {
-          System.out.println("Yuanguo: receiving photo");
+          logger.info("receiving photo...");
 
           String filePath = "/var/www/ybfiles/individual/"+userId+"/photo";
 
@@ -410,15 +403,13 @@ public class UserController {
 
           if(files == null || files.size() == 0)
           {
-            //TODO:error 
-            System.out.println("Yuanguo: error occurred when receiving photo");
+            logger.error("error occurred when receiving photo");
           }
           else 
           {
             if(files.size() != 1)
             {
-              //TODO: warning
-              System.out.println("Yuanguo: more than 1 photos uploaded");
+              logger.warn("more than 1 photos are uploaded, we only care about the first one");
             }
 
             File rawFile = files.get(0).getFile();
@@ -447,13 +438,13 @@ public class UserController {
             }
             else
             {
-              System.out.println("Yuanguo: warn, something is wrong, "+filePath+" is not a folder");
+              logger.warn("Something is wrong, "+filePath+" is not a folder");
             }
           }
         }
         else
         {
-          System.out.println("Yuanguo: skip upload photo");
+          logger.info("skip uploading photo");
         }
         entityModel.setFileType("language_cert"); //upload language_cert next;
         request.setAttribute("entityModel",entityModel); //this is the same as model.addAttribute("entityModel",entityModel);
@@ -464,11 +455,12 @@ public class UserController {
       {
         if(skip == 0)
         {
-          System.out.println("Yuanguo: TODO, upload language_cert");
+          //TODO
+          logger.info("receiving language_cert...");
         }
         else
         {
-          System.out.println("Yuanguo: skip upload language_cert");
+          logger.info("skip uploading language_cert");
         }
         entityModel.setFileType("translation_cert"); //upload translation_cert next;
         request.setAttribute("entityModel",entityModel);
@@ -478,11 +470,12 @@ public class UserController {
       {
         if(skip == 0)
         {
-          System.out.println("Yuanguo: TODO, upload translation_cert");
+          //TODO
+          logger.info("receiving translation_cert...");
         }
         else
         {
-          System.out.println("Yuanguo: skip upload translation_cert");
+          logger.info("skip uploading translation_cert");
         }
         entityModel.setFileType("profession_cert"); //upload profession_cert next;
         request.setAttribute("entityModel",entityModel);
@@ -492,11 +485,12 @@ public class UserController {
       {
         if(skip == 0)
         {
-          System.out.println("Yuanguo: TODO, upload profession_cert");
+          //TODO
+          logger.info("receiving profession_cert...");
         }
         else
         {
-          System.out.println("Yuanguo: skip upload profession_cert");
+          logger.info("skip uploading profession_cert");
         }
         entityModel.setFileType("authentication_file"); //upload authentication_file next;
         request.setAttribute("entityModel",entityModel);
@@ -506,19 +500,19 @@ public class UserController {
       {
         if(skip == 0)
         {
-          System.out.println("Yuanguo: TODO, upload authentication_file");
+          //TODO
+          logger.info("receiving authentication_file...");
         }
         else
         {
-          System.out.println("Yuanguo: skip upload authentication_file");
+          logger.info("skip uploading authentication_file");
         }
         request.setAttribute("entityModel",entityModel);
         return "forward:/user/query";
       }
       else
       {
-        //throw Exception("Failed to upload file because fileType("+fileType+") is invalid");
-        System.out.println("Yuanguo: Failed to upload file because fileType("+fileType+") is invalid");
+        logger.error("Failed to upload file because fileType("+fileType+") is invalid");
         return "/invalid";
       }
     }
@@ -527,8 +521,7 @@ public class UserController {
     }
     else
     {
-      //throw Exception("Fail to upload file because user_type is invalid");
-      System.out.println("Yuanguo: Fail to upload file because user_type is invalid");
+      logger.error("Fail to upload file because user_type ("+userExt.getuser_type()+") is invalid");
       return "/invalid";
     }
 

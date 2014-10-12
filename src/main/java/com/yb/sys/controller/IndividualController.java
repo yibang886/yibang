@@ -54,9 +54,14 @@ import com.common.img.ImageUtil;
 import com.common.upload.UploadUtil;
 import com.common.upload.ReceivedFile;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Controller
 @Scope("request")
 public class IndividualController {
+
+  private static final Logger logger = LoggerFactory.getLogger(IndividualController.class);
 
 	@Resource(name = "individualService")
 	private IIndividualServiceExt individualService;
@@ -244,22 +249,17 @@ public class IndividualController {
 	@RequestMapping(value = "/individual/doUploadFile")
 	public String doUploadFile(HttpServletRequest request, HttpServletResponse response)
   {
-    System.out.println("Yuanguo: In IndividualController.doUploadFile()");
-
     Long indivId = Long.parseLong(request.getParameter("dataId"));
 
-    System.out.println("Yuanguo: indivId = "+indivId);
-
 		if( indivId == 0){
-      //throw Exception("DataId is invalid for doUploadFile() function");
-      System.out.println("Yuanguo: DataId is invalid for doUploadFile() function");
+      logger.error("DataId ("+indivId+") is invalid");
       return "/invalid";
 		}
 
     String fileType = request.getParameter("fileType");
     int skip = Integer.parseInt(request.getParameter("skip"));
 
-    System.out.println("Yuanguo: In doUploadFile, indivId="+indivId+", fileType="+fileType+", skip="+skip);
+    logger.debug("indivId="+indivId+", fileType="+fileType+", skip="+skip);
 
     IndividualModel entityModel = new IndividualModel();
     entityModel.setDataId(indivId); 
@@ -270,7 +270,7 @@ public class IndividualController {
     {
       if(skip == 0)
       {
-        System.out.println("Yuanguo: receiving photo");
+        logger.info("receiving photo...");
 
         String filePath = "/var/www/ybfiles/individual/"+indivId+"/photo";
 
@@ -280,15 +280,13 @@ public class IndividualController {
 
         if(files == null || files.size() == 0)
         {
-          //TODO:error 
-          System.out.println("Yuanguo: error occurred when receiving photo");
+          logger.error("error occurred when receiving photo");
         }
         else 
         {
           if(files.size() != 1)
           {
-            //TODO: warning
-            System.out.println("Yuanguo: more than 1 photos uploaded");
+            logger.warn("more than 1 photos are uploaded, we only care about the first one");
           }
 
           //we assume that only one file is received.
@@ -318,13 +316,13 @@ public class IndividualController {
           }
           else
           {
-            System.out.println("Yuanguo: warn, something is wrong, "+filePath+" is not a folder");
+            logger.warn("Something is wrong, "+filePath+" is not a folder");
           }
         }
       }
       else
       {
-        System.out.println("Yuanguo: skip upload photo");
+        logger.info("skip uploading photo");
       }
 
       entityModel.setFileType("language_cert"); //upload language_cert next;
@@ -336,11 +334,12 @@ public class IndividualController {
     {
       if(skip == 0)
       {
-        System.out.println("Yuanguo: TODO, upload language_cert");
+        //TODO
+        logger.info("receiving language_cert...");
       }
       else
       {
-        System.out.println("Yuanguo: skip upload language_cert");
+        logger.info("skip uploading language_cert");
       }
       entityModel.setFileType("translation_cert"); //upload translation_cert next;
       request.setAttribute("entityModel",entityModel);
@@ -350,11 +349,12 @@ public class IndividualController {
     {
       if(skip == 0)
       {
-        System.out.println("Yuanguo: TODO, upload translation_cert");
+        //TODO
+        logger.info("receiving translation_cert...");
       }
       else
       {
-        System.out.println("Yuanguo: skip upload translation_cert");
+        logger.info("skip uploading translation_cert");
       }
       entityModel.setFileType("profession_cert"); //upload profession_cert next;
       request.setAttribute("entityModel",entityModel);
@@ -364,11 +364,12 @@ public class IndividualController {
     {
       if(skip == 0)
       {
-        System.out.println("Yuanguo: TODO, upload profession_cert");
+        //TODO
+        logger.info("receiving profession_cert...");
       }
       else
       {
-        System.out.println("Yuanguo: skip upload profession_cert");
+        logger.info("skip uploading profession_cert");
       }
       entityModel.setFileType("authentication_file"); //upload authentication_file next;
       request.setAttribute("entityModel",entityModel);
@@ -378,19 +379,19 @@ public class IndividualController {
     {
       if(skip == 0)
       {
-        System.out.println("Yuanguo: TODO, upload authentication_file");
+        //TODO
+        logger.info("receiving authentication_file...");
       }
       else
       {
-        System.out.println("Yuanguo: skip upload authentication_file");
+        logger.info("skip uploading authentication_file");
       }
       request.setAttribute("entityModel",entityModel);
       return "forward:/individual/query";
     }
     else
     {
-      //throw Exception("Failed to upload file because fileType("+fileType+") is invalid");
-      System.out.println("Yuanguo: Failed to upload file because fileType("+fileType+") is invalid");
+      logger.error("Failed to upload file because fileType("+fileType+") is invalid");
       return "/invalid";
     }
   }
