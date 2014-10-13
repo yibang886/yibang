@@ -266,15 +266,15 @@ CREATE TABLE IF NOT EXISTS individual
   city_id INT UNSIGNED NOT NULL,               /*所在城市*/
   mainpage VARCHAR(128),                       /*个人主页,博客等*/
   workstyle INT UNSIGNED NOT NULL DEFAULT 1,   /*工作方式, 0:全职；1:兼职*/
-  lang_cert VARCHAR(64),                       /*语言等级证书*/
-  trans_cert VARCHAR(64),                      /*翻译证书*/
-  prof_cert VARCHAR(64),                       /*专业证书*/
   exp_year INT UNSIGNED NOT NULL DEFAULT 0,    /*工作年限*/
   exp_trans INT UNSIGNED NOT NULL DEFAULT 0,   /*翻译经验，单位：万字，例如15表示15万字*/
   works VARCHAR(64),                           /*翻译作品*/
   introduct VARCHAR(1024) NOT NULL,            /*个人简介*/
-  photo_suffix VARCHAR(64),
-  auth_file VARCHAR(64),                       /*认证资料路径*/
+  photo_suffix VARCHAR(64),                    /*照片图片文件名后缀*/
+  langcert_suffix VARCHAR(64),                 /*语言等级证书图片文件名后缀*/
+  transcert_suffix VARCHAR(64),                /*翻译证书图片文件名后缀*/
+  profcert_suffix VARCHAR(64),                 /*专业证书图片文件名后缀*/
+  authfile_suffix VARCHAR(64),                 /*认证资料图片文件名后缀*/
   auth_pass INT UNSIGNED NOT NULL DEFAULT 0,   /*是否通过认证, 0:未通过; 1:通过*/    
   recompos_id INT UNSIGNED NOT NULL,           /*在主页中的推荐位置*/ 
   FOREIGN KEY(edu_id) REFERENCES education(id) ON DELETE RESTRICT ON UPDATE RESTRICT, 
@@ -397,7 +397,7 @@ CREATE TABLE IF NOT EXISTS company_doctype
 -- Sample Data: 个人译员 
 INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('yuanguo.h_001@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',0,0);
 
-INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,lang_cert,trans_cert,prof_cert,exp_year,exp_trans,works,introduct,photo_suffix,auth_file,auth_pass,recompos_id) VALUES (1,'霍远国',0,2,5,1985,1,'http://yuanguo.page.com',1,'individual/lang_cert/1/langcert.crt','individual/trans_cert/1/transcert.crt','individual/prof_cert/1/profcert.crt',4,15,'C语言入门','认证负责，经验丰富','.png','individual/auth_file/1/authfile.png',1,3);
+INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,exp_year,exp_trans,works,introduct,auth_pass,recompos_id) VALUES (1,'霍远国',0,2,5,1985,1,'http://yuanguo.page.com',1,4,15,'C语言入门','认证负责，经验丰富',1,3);
 
 INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(1,1);
 INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(1,3);

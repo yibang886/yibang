@@ -307,34 +307,6 @@
           </td>
         </tr>
         
-        <%--
-        <tr>
-          <td>语言等级证书：</td>
-          <td>
-            <c:if test="${ entityModel.operationType eq 'edit' }">
-              <input type="text" name="individualExt.lang_cert" value="<c:out value="${ entityModel.individualExt.lang_cert }" escapeXml="true" />" style="width:700px;"/>
-            </c:if>
-            <c:if test="${ entityModel.operationType eq 'publish' }">
-              <input type="text" name="individualExt.lang_cert" value="" style="width:700px;"/>
-            </c:if>
-          </td>
-        </tr>
-        
-        <tr>
-          <td>翻译证书：</td>
-          <td>
-            <input type="text" name="individualExt.trans_cert" value="<c:out value="${ entityModel.individualExt.trans_cert }" escapeXml="true" />" style="width:700px;"/>
-          </td>
-        </tr>
-        
-        <tr>
-          <td>专业证书：</td>
-          <td>
-            <input type="text" name="individualExt.prof_cert" value="<c:out value="${ entityModel.individualExt.prof_cert }" escapeXml="true" />" style="width:700px;"/>
-          </td>
-        </tr>
-        --%>
-        
         <tr>
           <td>工作经验（单位：年）：</td>
           <td>
@@ -394,25 +366,6 @@
             </c:if>
           </td>
         </tr>
-        
-        <%--
-        photo will be uploaded later.
-        -->
-        <%--
-        <tr>
-          <td>近期照片：</td>
-          <td>
-            <input type="text" name="individualExt.photo_suffix" value="<c:out value="${ entityModel.individualExt.photo_suffix }" escapeXml="true" />" style="width:700px;"/>
-          </td>
-        </tr>
-        
-        <tr>
-          <td>认证资料：</td>
-          <td>
-            <input type="text" name="individualExt.auth_file" value="<c:out value="${ entityModel.individualExt.auth_file }" escapeXml="true" />" style="width:700px;"/>
-          </td>
-        </tr>
-        --%>
         
         <tr>
           <td>是否认证通过：</td>

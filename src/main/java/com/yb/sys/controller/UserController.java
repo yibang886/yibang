@@ -384,137 +384,128 @@ public class UserController {
 
     if(userExt.getuser_type() == 0) //个人译员
     {
+      String view;
       if(fileType.equals("photo"))
       {
-        if(skip == 0)
-        {
-          logger.info("receiving photo...");
-
-          String filePath = "/var/www/ybfiles/individual/"+userId+"/photo";
-
-          //Yuanguo: add a number to the suffix of photo file and update it with system time in milli seconds 
-          //every time a new photo is uploaded; why?
-          //Because, if we don't add the number, when photo is updated, the "src" in <img src="..."/> is not 
-          //updated, as a result, the browser will use the cached image instead of reloading the new one. 
-          //Someone on internet gave another solution: 
-          //     append "?t=Math.random()" to src.
-          //however, it will force a reload every time;
-          List<ReceivedFile> files = UploadUtil.receive(request, filePath, ".0");
-
-          if(files == null || files.size() == 0)
-          {
-            logger.error("error occurred when receiving photo");
-          }
-          else 
-          {
-            if(files.size() != 1)
-            {
-              logger.warn("more than 1 photos are uploaded, we only care about the first one");
-            }
-
-            File rawFile = files.get(0).getFile();
-            String suffix = files.get(0).getSuffix();
-
-            ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 50, 1f);
-            ImageUtil.resize(rawFile, new File(filePath+"/large"+suffix), 200, 1f);
-
-            IndividualExt individual = individualService.load(userId, true);
-            individual.setphoto_suffix(suffix);
-            individualService.save(individual);
-
-            //delete original files if ther is any;
-            File folder = new File(filePath);
-            if(folder.isDirectory())
-            {
-              String[] fileList = folder.list();
-              for(int i=0;i<fileList.length;i++)
-              {
-                if(!fileList[i].endsWith(suffix))
-                {
-                  File beDeleted = new File(filePath, fileList[i]);
-                  beDeleted.delete();
-                }
-              }
-            }
-            else
-            {
-              logger.warn("Something is wrong, "+filePath+" is not a folder");
-            }
-          }
-        }
-        else
-        {
-          logger.info("skip uploading photo");
-        }
         entityModel.setFileType("language_cert"); //upload language_cert next;
-        request.setAttribute("entityModel",entityModel); //this is the same as model.addAttribute("entityModel",entityModel);
-
-        return "/sys/individual/upload";
+        view = "/sys/individual/upload";
       }
       else if(fileType.equals("language_cert"))
       {
-        if(skip == 0)
-        {
-          //TODO
-          logger.info("receiving language_cert...");
-        }
-        else
-        {
-          logger.info("skip uploading language_cert");
-        }
         entityModel.setFileType("translation_cert"); //upload translation_cert next;
-        request.setAttribute("entityModel",entityModel);
-        return "/sys/individual/upload";
+        view = "/sys/individual/upload";
       }
       else if(fileType.equals("translation_cert"))
       {
-        if(skip == 0)
-        {
-          //TODO
-          logger.info("receiving translation_cert...");
-        }
-        else
-        {
-          logger.info("skip uploading translation_cert");
-        }
         entityModel.setFileType("profession_cert"); //upload profession_cert next;
-        request.setAttribute("entityModel",entityModel);
-        return "/sys/individual/upload";
+        view = "/sys/individual/upload";
       }
       else if(fileType.equals("profession_cert"))
       {
-        if(skip == 0)
-        {
-          //TODO
-          logger.info("receiving profession_cert...");
-        }
-        else
-        {
-          logger.info("skip uploading profession_cert");
-        }
+
         entityModel.setFileType("authentication_file"); //upload authentication_file next;
-        request.setAttribute("entityModel",entityModel);
-        return "/sys/individual/upload";
+        view = "/sys/individual/upload";
       }
       else if(fileType.equals("authentication_file"))
       {
-        if(skip == 0)
-        {
-          //TODO
-          logger.info("receiving authentication_file...");
-        }
-        else
-        {
-          logger.info("skip uploading authentication_file");
-        }
-        request.setAttribute("entityModel",entityModel);
-        return "forward:/user/query";
+        view = "forward:/user/query";
       }
       else
       {
-        logger.error("Failed to upload file because fileType("+fileType+") is invalid");
-        return "/invalid";
+        logger.error("fileType("+fileType+") is invalid, will skip upload the file");
+        skip = 1;
+        view = "/invalid";
       }
+
+      if(skip == 0)
+      {
+        logger.info("Receiving " + fileType);
+
+        String filePath = "/var/www/ybfiles/individual/"+userId+"/"+fileType;
+
+        //Yuanguo: add a number to the suffix of image file; the number will be updated with system time in 
+        //milli seconds every time a new image is uploaded; why?
+        //Because, if we don't add the number, when the image is updated, the "src" in <img src="..."/> is 
+        //not updated, as a result, the browser will use the cached image instead of reloading the new one. 
+        //Someone on internet gave another solution: 
+        //     append "?t=Math.random()" to src.
+        //however, it will force a reload every time;
+        List<ReceivedFile> files = UploadUtil.receive(request, filePath, ".0");
+
+        if(files == null || files.size() == 0)
+        {
+          logger.error("error occurred when receiving " + fileType);
+        }
+        else
+        {
+          if(files.size() > 1)
+          {
+            logger.warn("more than 1 images are uploaded, we only care about the first one");
+          }
+
+          File rawFile = files.get(0).getFile();
+          String suffix = files.get(0).getSuffix();
+
+          IndividualExt individual = individualService.load(userId, true);
+
+          if(fileType.equals("photo"))
+          {
+            //generate a large photo and a small photo
+            ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 50, 1f);
+            ImageUtil.resize(rawFile, new File(filePath+"/large"+suffix), 200, 1f);
+
+            individual.setphoto_suffix(suffix);
+          }
+          else if(fileType.equals("language_cert"))
+          {
+            ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
+            individual.setlangcert_suffix(suffix);
+          }
+          else if(fileType.equals("translation_cert"))
+          {
+            ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
+            individual.settranscert_suffix(suffix);
+          }
+          else if(fileType.equals("profession_cert"))
+          {
+            ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
+            individual.setprofcert_suffix(suffix);
+          }
+          else if(fileType.equals("authentication_file"))
+          {
+            ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
+            individual.setauthfile_suffix(suffix);
+          }
+             
+          individualService.save(individual);
+
+          //delete original files if ther is any;
+          File folder = new File(filePath);
+          if(folder.isDirectory())
+          {
+            String[] fileList = folder.list();
+            for(int i=0;i<fileList.length;i++)
+            {
+              if(!fileList[i].endsWith(suffix))
+              {
+                File beDeleted = new File(filePath, fileList[i]);
+                beDeleted.delete();
+              }
+            }
+          }
+          else
+          {
+            logger.warn("Something is wrong, "+filePath+" is not a folder");
+          }
+        }
+      }
+      else
+      {
+        logger.info("Skip uploading " + fileType);
+      }
+
+      request.setAttribute("entityModel",entityModel); //this is the same as model.addAttribute("entityModel",entityModel);
+      return view;
     }
     else if(userExt.getuser_type()==1) //翻译公司
     {

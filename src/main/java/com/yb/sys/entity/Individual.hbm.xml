@@ -30,15 +30,15 @@
 		<property name="birth_year" column="birth_year" type="java.lang.Long" />
 		<property name="mainpage" column="mainpage" type="java.lang.String" />
 		<property name="workstyle" column="workstyle" type="java.lang.Long" />
-		<property name="lang_cert" column="lang_cert" type="java.lang.String" />
-		<property name="trans_cert" column="trans_cert" type="java.lang.String" />
-		<property name="prof_cert" column="prof_cert" type="java.lang.String" />
+		<property name="langcert_suffix" column="langcert_suffix" type="java.lang.String" />
+		<property name="transcert_suffix" column="transcert_suffix" type="java.lang.String" />
+		<property name="profcert_suffix" column="profcert_suffix" type="java.lang.String" />
 		<property name="exp_year" column="exp_year" type="java.lang.Long" />
 		<property name="exp_trans" column="exp_trans" type="java.lang.Long" />
 		<property name="works" column="works" type="java.lang.String" />
 		<property name="introduct" column="introduct" type="java.lang.String" />
 		<property name="photo_suffix" column="photo_suffix" type="java.lang.String" />
-		<property name="auth_file" column="auth_file" type="java.lang.String" />
+		<property name="authfile_suffix" column="authfile_suffix" type="java.lang.String" />
 		<property name="auth_pass" column="auth_pass" type="java.lang.Long" />
 
         <set name="languages" table="individual_lang">

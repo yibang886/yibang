@@ -155,32 +155,32 @@ public class Individual implements Serializable{
 	public void setworkstyle(Long workstyle){
 		this.workstyle = workstyle;
 	}
-	private String lang_cert;
+	private String langcert_suffix;
 	
-	public String getlang_cert(){
-		return lang_cert;
+	public String getlangcert_suffix(){
+		return langcert_suffix;
 	}
 	
-	public void setlang_cert(String lang_cert){
-		this.lang_cert = lang_cert;
+	public void setlangcert_suffix(String langcert_suffix){
+		this.langcert_suffix = langcert_suffix;
 	}
-	private String trans_cert;
+	private String transcert_suffix;
 	
-	public String gettrans_cert(){
-		return trans_cert;
-	}
-	
-	public void settrans_cert(String trans_cert){
-		this.trans_cert = trans_cert;
-	}
-	private String prof_cert;
-	
-	public String getprof_cert(){
-		return prof_cert;
+	public String gettranscert_suffix(){
+		return transcert_suffix;
 	}
 	
-	public void setprof_cert(String prof_cert){
-		this.prof_cert = prof_cert;
+	public void settranscert_suffix(String transcert_suffix){
+		this.transcert_suffix = transcert_suffix;
+	}
+	private String profcert_suffix;
+	
+	public String getprofcert_suffix(){
+		return profcert_suffix;
+	}
+	
+	public void setprofcert_suffix(String profcert_suffix){
+		this.profcert_suffix = profcert_suffix;
 	}
 	private Long exp_year;
 	
@@ -227,14 +227,14 @@ public class Individual implements Serializable{
 	public void setphoto_suffix(String photo_suffix){
 		this.photo_suffix = photo_suffix;
 	}
-	private String auth_file;
+	private String authfile_suffix;
 	
-	public String getauth_file(){
-		return auth_file;
+	public String getauthfile_suffix(){
+		return authfile_suffix;
 	}
 	
-	public void setauth_file(String auth_file){
-		this.auth_file = auth_file;
+	public void setauthfile_suffix(String authfile_suffix){
+		this.authfile_suffix = authfile_suffix;
 	}
 	private Long auth_pass;
 	
