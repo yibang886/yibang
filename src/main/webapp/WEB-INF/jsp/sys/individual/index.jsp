@@ -31,10 +31,10 @@
           <table border="0" cellpadding="0" cellspacing="0" class="table_date" id="dataTable">
             <tr>
                   <th width="20%"><div>近期照片 </div></th>
-                  <th width="20%"><div>姓名 </div></th>
-                  <th width="10%"><div>性别 </div></th>
-                  <th width="20%"><div>出生年 </div></th>
-                  <th width="20%"><div>邮箱 </div></th>
+                  <th width="15%"><div>姓名 </div></th>
+                  <th width="l5%"><div>邮箱 </div></th>
+                  <th width="15%"><div>审核状态 </div></th>
+                  <th width="15%"><div>认证状态 </div></th>
                   <th width="20%">操作 </th>
             </tr>
 
@@ -42,16 +42,25 @@
               <tr onmouseover="this.className='over'" onmouseout="this.className='out'">
                     <td><div><img src="/ybfiles/individual/${var.id}/photo/small${var.photo_suffix}"/></div></td>
                     <td><div><c:out value="${var.name}" escapeXml="true"/></div></td>
-                    <td><div>
-                        <c:if test="${var.gender==0}"><c:out value="男" escapeXml="true"/></c:if>
-                        <c:if test="${var.gender==1}"><c:out value="女" escapeXml="true"/></c:if>
-                    </div></td>
-                    <td><div><c:out value="${var.birth_year}" escapeXml="true"/></div></td>
                     <td><div><c:out value="${var.user.email}" escapeXml="true"/></div></td>
+                    <td><div>
+                        <c:if test="${var.valid_pass==0}"><c:out value="待审核" escapeXml="true"/></c:if>
+                        <c:if test="${var.valid_pass==1}"><c:out value="审核通过" escapeXml="true"/></c:if>
+                        <c:if test="${var.valid_pass==2}"><c:out value="审核未通过" escapeXml="true"/></c:if>
+                    </div></td>
+                    <td><div>
+                        <c:if test="${var.auth_pass==0}"><c:out value="待认证" escapeXml="true"/></c:if>
+                        <c:if test="${var.auth_pass==1}"><c:out value="认证通过" escapeXml="true"/></c:if>
+                        <c:if test="${var.auth_pass==2}"><c:out value="认证未通过" escapeXml="true"/></c:if>
+                    </div></td>
                     <td>
                       <a href="<%=request.getContextPath()%>/individual/goView.action?dataId=${ var.id }" >查看</a>
                       &nbsp;&nbsp;
                       <a href="<%=request.getContextPath()%>/individual/goEdit.action?dataId=${ var.id }" >编辑</a>
+                      &nbsp;&nbsp;
+                      <a href="<%=request.getContextPath()%>/individual/goValidate.action?dataId=${ var.id }" >审核</a>
+                      &nbsp;&nbsp;
+                      <a href="<%=request.getContextPath()%>/individual/goAuthenticate.action?dataId=${ var.id }" >认证</a>
                       &nbsp;&nbsp;
                       <a href="<%=request.getContextPath()%>/individual/doDelete.action?dataId=${ var.id }" >删除</a>
                     </td>

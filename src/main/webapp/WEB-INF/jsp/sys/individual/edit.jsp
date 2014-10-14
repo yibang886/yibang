@@ -366,18 +366,38 @@
             </c:if>
           </td>
         </tr>
+
+        <tr>
+          <td>审核状态：</td>
+          <td>
+            <select name="individualExt.valid_pass">
+              <c:if test="${ entityModel.operationType eq 'edit' }">
+                <option value="0" <c:if test="${entityModel.individualExt.valid_pass==0}"><c:out value="selected"/></c:if> >待审核</option>
+                <option value="1" <c:if test="${entityModel.individualExt.valid_pass==1}"><c:out value="selected"/></c:if> >审核通过</option>
+                <option value="1" <c:if test="${entityModel.individualExt.valid_pass==2}"><c:out value="selected"/></c:if> >审核未通过</option>
+              </c:if>
+              <c:if test="${ entityModel.operationType eq 'publish' }">
+                <option value="0" selected="true" >待认证</option>
+                <option value="1">认证通过</option>
+                <option value="2">认证未通过</option>
+              </c:if>
+            </select>
+          </td>
+        </tr>
         
         <tr>
-          <td>是否认证通过：</td>
+          <td>认证状态：</td>
           <td>
             <select name="individualExt.auth_pass">
               <c:if test="${ entityModel.operationType eq 'edit' }">
-                <option value="0" <c:if test="${entityModel.individualExt.auth_pass==0}"><c:out value="selected"/></c:if> >否</option>
-                <option value="1" <c:if test="${entityModel.individualExt.auth_pass==1}"><c:out value="selected"/></c:if> >是</option>
+                <option value="0" <c:if test="${entityModel.individualExt.auth_pass==0}"><c:out value="selected"/></c:if> >待认证</option>
+                <option value="1" <c:if test="${entityModel.individualExt.auth_pass==1}"><c:out value="selected"/></c:if> >认证通过</option>
+                <option value="1" <c:if test="${entityModel.individualExt.auth_pass==2}"><c:out value="selected"/></c:if> >认证未通过</option>
               </c:if>
               <c:if test="${ entityModel.operationType eq 'publish' }">
-                <option value="0" selected="true" >否</option>
-                <option value="1">是</option>
+                <option value="0" selected="true" >待认证</option>
+                <option value="1">认证通过</option>
+                <option value="2">认证未通过</option>
               </c:if>
             </select>
           </td>

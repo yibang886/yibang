@@ -275,7 +275,8 @@ CREATE TABLE IF NOT EXISTS individual
   transcert_suffix VARCHAR(64),                /*翻译证书图片文件名后缀*/
   profcert_suffix VARCHAR(64),                 /*专业证书图片文件名后缀*/
   authfile_suffix VARCHAR(64),                 /*认证资料图片文件名后缀*/
-  auth_pass INT UNSIGNED NOT NULL DEFAULT 0,   /*是否通过认证, 0:未通过; 1:通过*/    
+  auth_pass INT UNSIGNED NOT NULL DEFAULT 0,   /*是否通过认证, 0:待认证; 1:认证通过; 2:认证未通过*/    
+  valid_pass INT UNSIGNED NOT NULL DEFAULT 0,  /*是否通过审核, 0:待审核; 1:审核通过; 2:审核未通过*/
   recompos_id INT UNSIGNED NOT NULL,           /*在主页中的推荐位置*/ 
   FOREIGN KEY(edu_id) REFERENCES education(id) ON DELETE RESTRICT ON UPDATE RESTRICT, 
   FOREIGN KEY(sch_id) REFERENCES school(id) ON DELETE RESTRICT ON UPDATE RESTRICT, 
@@ -397,7 +398,7 @@ CREATE TABLE IF NOT EXISTS company_doctype
 -- Sample Data: 个人译员 
 INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('yuanguo.h_001@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',0,0);
 
-INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,exp_year,exp_trans,works,introduct,auth_pass,recompos_id) VALUES (1,'霍远国',0,2,5,1985,1,'http://yuanguo.page.com',1,4,15,'C语言入门','认证负责，经验丰富',1,3);
+INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,exp_year,exp_trans,works,introduct,auth_pass,valid_pass,recompos_id) VALUES (1,'James',0,2,5,1985,1,'http://yuanguo.page.com',1,4,15,'C语言入门','认证负责，经验丰富',0,0,3);
 
 INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(1,1);
 INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(1,3);

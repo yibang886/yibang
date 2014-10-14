@@ -245,6 +245,16 @@ public class Individual implements Serializable{
 	public void setauth_pass(Long auth_pass){
 		this.auth_pass = auth_pass;
 	}
+
+  private Long valid_pass;
+  public Long getvalid_pass()
+  {
+    return valid_pass;
+  }
+  public void setvalid_pass(Long valid_pass)
+  {
+    this.valid_pass = valid_pass;
+  }
   
   /*
 	private Long recompos_id;

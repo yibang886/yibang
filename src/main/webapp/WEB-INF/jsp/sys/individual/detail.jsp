@@ -282,22 +282,41 @@
         </div>
       </td>
     </tr>
-              
+
     <tr>
-      <td><div>是否通过认证：</div></td>
+      <td><div>审核状态：</div></td>
       <td>
         <div>
-          <c:if test="${ individualModel.individualExt.auth_pass eq 1 }">
-            <c:out value="是" escapeXml="true" />
+          <c:if test="${ individualModel.individualExt.valid_pass eq 0 }">
+            <c:out value="待审核" escapeXml="true" />
           </c:if>            
+          <c:if test="${ individualModel.individualExt.valid_pass eq 1 }">
+            <c:out value="审核通过" escapeXml="true" />
+          </c:if>            
+          <c:if test="${ individualModel.individualExt.valid_pass eq 2 }">
+            <c:out value="审核未通过" escapeXml="true" />
+          </c:if>            
+        </div>
+      </td>
+    </tr>
+              
+    <tr>
+      <td><div>认证状态：</div></td>
+      <td>
+        <div>
           <c:if test="${ individualModel.individualExt.auth_pass eq 0 }">
-            <c:out value="否" escapeXml="true" />
+            <c:out value="待认证" escapeXml="true" />
+          </c:if>            
+          <c:if test="${ individualModel.individualExt.auth_pass eq 1 }">
+            <c:out value="认证通过" escapeXml="true" />
+          </c:if>            
+          <c:if test="${ individualModel.individualExt.auth_pass eq 2 }">
+            <c:out value="认证未通过" escapeXml="true" />
           </c:if>            
         </div>
       </td>
     </tr>
 
-              
     <tr>
       <td><div>推荐位：</div></td>
       <td>

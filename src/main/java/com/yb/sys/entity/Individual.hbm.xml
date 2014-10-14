@@ -40,6 +40,7 @@
 		<property name="photo_suffix" column="photo_suffix" type="java.lang.String" />
 		<property name="authfile_suffix" column="authfile_suffix" type="java.lang.String" />
 		<property name="auth_pass" column="auth_pass" type="java.lang.Long" />
+		<property name="valid_pass" column="valid_pass" type="java.lang.Long" />
 
         <set name="languages" table="individual_lang">
           <key column="indiv_id" />
