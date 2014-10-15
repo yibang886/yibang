@@ -397,4 +397,33 @@ public class IndividualController {
 		}
 		return "forward:/individual/query";
 	}
+
+
+	@RequestMapping(value = "/individual/goAuthenticate")
+	public String goAuthenticate(@ModelAttribute IndividualModel individualModel, ModelMap model){
+
+		individualModel.setOperationType("authenticate");
+
+		if(individualModel.getDataId() != 0){
+			IndividualExt individualExt = individualService.load(individualModel.getDataId(), true);
+			individualModel.setIndividualExt(individualExt);
+		}
+		
+		model.addAttribute(individualModel);
+		return "/sys/individual/detail";
+	}
+
+	@RequestMapping(value = "/individual/goValidate")
+	public String goValidate(@ModelAttribute IndividualModel individualModel, ModelMap model){
+
+		individualModel.setOperationType("validate");
+
+		if(individualModel.getDataId() != 0){
+			IndividualExt individualExt = individualService.load(individualModel.getDataId(), true);
+			individualModel.setIndividualExt(individualExt);
+		}
+		
+		model.addAttribute(individualModel);
+		return "/sys/individual/detail";
+	}
 }
