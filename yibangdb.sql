@@ -396,7 +396,7 @@ CREATE TABLE IF NOT EXISTS company_doctype
 ) ENGINE InnoDB, DEFAULT CHARACTER SET utf8;
 
 -- Sample Data: 个人译员 
-INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('yuanguo.h_001@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',0,0);
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('watermelon-wxr@163.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',0,0);
 
 INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,exp_year,exp_trans,works,introduct,auth_pass,valid_pass,recompos_id) VALUES (1,'James',0,2,5,1985,1,'http://yuanguo.page.com',1,4,15,'C语言入门','认证负责，经验丰富',0,0,3);
 

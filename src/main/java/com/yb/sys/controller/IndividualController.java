@@ -57,6 +57,13 @@ import com.common.upload.ReceivedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.mail.Session;
+import java.util.Properties;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.InternetAddress;
+import javax.mail.Message;
+import javax.mail.Transport;
+
 @Controller
 @Scope("request")
 public class IndividualController {
@@ -411,6 +418,121 @@ public class IndividualController {
 		
 		model.addAttribute(individualModel);
 		return "/sys/individual/detail";
+	}
+
+	@RequestMapping(value = "/individual/doValidateAuthenticate")
+	public String doValidateAuthenticate(HttpServletRequest request, HttpServletResponse response){
+
+    String submitOrCancel = request.getParameter("submitOrCancel");
+    String operation = request.getParameter("operationType");
+
+    if(operation.equals("authenticate") || operation.equals("validate"))
+    {
+      if(submitOrCancel.equals("submit"))
+      {
+        Long indivId = Long.parseLong(request.getParameter("indivId"));
+    
+        if(indivId != 0)
+        {
+          IndividualExt individual = individualService.load(indivId, true);
+    
+          if(individual != null)
+          {
+            String result = request.getParameter("result");
+        
+            Long dbResult = 0L;
+            boolean sendMail = false;
+            if(result.equals("pass"))
+            {
+              logger.info(operation+" passed for individual (id="+indivId+")");
+              dbResult = 1L;
+              sendMail = true;
+            }
+            else if(result.equals("fail"))
+            {
+              logger.info(operation+" failed for individual (id="+indivId+")");
+              dbResult = 2L;
+              sendMail = true;
+            }
+            else
+            {
+              logger.info(operation+" not performed for individual (id="+indivId+")");
+              dbResult = 0L;
+              sendMail = false;
+            }
+
+            String operationCN;
+
+            if(operation.equals("authenticate")) 
+            {
+              individual.setauth_pass(dbResult);
+              operationCN="认证";
+            }
+            else
+            {
+              individual.setvalid_pass(dbResult);
+              operationCN="审核";
+            }
+
+            individualService.save(individual);
+
+            if(sendMail)
+            {
+              logger.info("send mail...");
+              String emailContent = request.getParameter("emailContent");
+              logger.info(emailContent);
+
+              try{
+                String host = "smtp.163.com";
+                String yibangEmail = "yibang886@163.com";
+                String password = "yibang887";
+
+                Properties props = System.getProperties();
+                props.put("mail.smtp.host", host);
+                props.put("mail.smtp.auth", "true");
+
+                Session mailsession = Session.getDefaultInstance(props); 
+                mailsession.setDebug(false);  
+                MimeMessage message = new MimeMessage(mailsession);
+                message.setFrom(new InternetAddress(yibangEmail));
+                message.addRecipient(Message.RecipientType.TO, new InternetAddress(individual.getuser().getemail()));
+                message.addRecipient(Message.RecipientType.CC, new InternetAddress(yibangEmail));
+                message.setSubject("译邦网"+operationCN+"结果");
+                message.setText(emailContent);
+                message.saveChanges();
+                Transport transport = mailsession.getTransport("smtp");  
+                transport.connect(host, yibangEmail, password); 
+                transport.sendMessage(message, message.getAllRecipients());  
+                transport.close();
+              }
+              catch(Exception e)
+              {
+                logger.error("Exception occurred when sending email");
+                e.printStackTrace();
+              }
+            }
+          }
+          else
+          {
+            logger.error(operation+"failed because cannot load individual by id "+indivId);
+          }
+        }
+        else
+        {
+          logger.error(operation+"failed because individual id ("+indivId+") is invalid");
+        }
+      }
+      else
+      {
+        logger.info(operation+" canceled, so do nothing");
+      }
+    }
+    else
+    {
+      logger.error("operation ("+operation+") is invalid, so do nothing");
+    }
+
+		return "forward:/individual/query";
 	}
 
 	@RequestMapping(value = "/individual/goValidate")

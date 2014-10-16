@@ -21,7 +21,7 @@
     }
   }
 
-  function clickRadio(operationType)
+  function clickRadio(operationType, username)
   {
     var checkedRadioId;
     var radios = document.getElementsByName("passFailUnknown");
@@ -48,18 +48,47 @@
     if(checkedRadioId == "pass")
     {
       var txtArea = document.getElementById("emailContent");
-      txtArea.value = "恭喜你！\n你已经通过译邦翻译平台的"+op+"！";
+      txtArea.value = username+"您好！\n" + 
+                      "恭喜你！你已经通过译邦翻译平台的"+op+"！";
     }
     else if(checkedRadioId == "fail")
     {
       var txtArea = document.getElementById("emailContent");
-      txtArea.value = "很遗憾！\n您未能通过译邦翻译平台的"+op+"。\n"+
-                      "请重新认真填写您的个人资料！";
+      txtArea.value = username+"您好！\n" +
+                      "很遗憾！您未能通过译邦翻译平台的"+op+"。请重新认真填写您的个人资料！";
     }
     else
     {
       var txtArea = document.getElementById("emailContent");
       txtArea.value = "";
+    }
+  }
+
+  function submitOrCancel(subOrCan, operationType, indivId)
+  {
+    var form = document.getElementById("valid_auth_form");
+
+    if(subOrCan == "submit")
+    {
+      var checkedRadioId;
+      var radios = document.getElementsByName("passFailUnknown");
+      for(var i=0; i< radios.length; i++)
+      {
+        var radio = radios[i];
+        if(radio.checked == true)
+        {
+          checkedRadioId = radio.id;
+          break;
+        }
+      }
+
+      form.action = "<%=request.getContextPath()%>/individual/doValidateAuthenticate.action?submitOrCancel=submit&operationType="+operationType+"&indivId="+indivId+"&result="+checkedRadioId;
+      form.submit();
+    }
+    else
+    {
+      form.action = "<%=request.getContextPath()%>/individual/doValidateAuthenticate.action?submitOrCancel=cancel&operationType="+operationType;
+      form.submit();
     }
   }
 
@@ -440,50 +469,53 @@
   </table>
 
   <c:if test="${ individualModel.operationType eq 'validate' || individualModel.operationType eq 'authenticate' }">
-    <table border="0" cellpadding="0" cellspacing="0" class="table_date" id="valid_auth">
-
-      <tr>
-        <th width="15%">
-          <div>
-            <c:if test="${ individualModel.operationType eq 'validate' }">请审核此译员</c:if>
-            <c:if test="${ individualModel.operationType eq 'authenticate' }">请认证此译员</c:if>
-          </div>
-        </th>
-        <th width="85%"><div></div></th>
-      </tr>
-
-      <tr>
-        <td>
-          <div>
-            <c:if test="${ individualModel.operationType eq 'validate' }">审核结果</c:if>
-            <c:if test="${ individualModel.operationType eq 'authenticate' }">认证结果</c:if>
-          </div>
-        </td>
-        <td>
-          <div>
-            <input type="radio" name="passFailUnknown" id="pass" onclick="clickRadio('${individualModel.operationType}')"/>通过
-            <input type="radio" name="passFailUnknown" id="fail" onclick="clickRadio('${individualModel.operationType}')"/>未通过
-            <input type="radio" name="passFailUnknown" id="unknown" onclick="clickRadio('${individualModel.operationType}')"/>
-              <c:if test="${ individualModel.operationType eq 'validate' }">暂不审核</c:if>
-              <c:if test="${ individualModel.operationType eq 'authenticate' }">暂不认证</c:if>
-          </div>
-        </td>
-      </tr>
-
-      <tr>
-        <td>
-          <div>邮件内容</div>
-        </td>
-        <td>
-          <div><textarea rows="5" cols="80" id="emailContent"></textarea></div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <input type="button" id="valid_auth_button" onclick="" value="提交并发送邮件"/>
-        </td>
-      </tr>
-    </table>
+    <form id="valid_auth_form" name="validAuthForm" method="post">
+      <table border="0" cellpadding="0" cellspacing="0" class="table_date" id="valid_auth">
+  
+        <tr>
+          <th width="15%">
+            <div>
+              <c:if test="${ individualModel.operationType eq 'validate' }">请审核此译员</c:if>
+              <c:if test="${ individualModel.operationType eq 'authenticate' }">请认证此译员</c:if>
+            </div>
+          </th>
+          <th width="85%"><div></div></th>
+        </tr>
+  
+        <tr>
+          <td>
+            <div>
+              <c:if test="${ individualModel.operationType eq 'validate' }">审核结果</c:if>
+              <c:if test="${ individualModel.operationType eq 'authenticate' }">认证结果</c:if>
+            </div>
+          </td>
+          <td>
+            <div>
+              <input type="radio" name="passFailUnknown" id="pass" onclick="clickRadio('${individualModel.operationType}','${individualModel.individualExt.name}')"/>通过
+              <input type="radio" name="passFailUnknown" id="fail" onclick="clickRadio('${individualModel.operationType}','${individualModel.individualExt.name}')"/>未通过
+              <input type="radio" name="passFailUnknown" id="unknown" onclick="clickRadio('${individualModel.operationType}','${individualModel.individualExt.name}')"/>
+                <c:if test="${ individualModel.operationType eq 'validate' }">暂不审核</c:if>
+                <c:if test="${ individualModel.operationType eq 'authenticate' }">暂不认证</c:if>
+            </div>
+          </td>
+        </tr>
+  
+        <tr>
+          <td>
+            <div>邮件内容</div>
+          </td>
+          <td>
+            <div><textarea name="emailContent" rows="5" cols="80" id="emailContent"></textarea></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input type="button" id="valid_auth_button" onclick="submitOrCancel('submit','${individualModel.operationType}', ${individualModel.individualExt.id})" value="提交"/>
+            <input type="button" id="valid_auth_button" onclick="submitOrCancel('cancel','${individualModel.operationType}', ${individualModel.individualExt.id})" value="取消"/>
+          </td>
+        </tr>
+      </table>
+    </form>
   </c:if>
 
 </div>
