@@ -377,9 +377,9 @@
                 <option value="1" <c:if test="${entityModel.individualExt.valid_pass==2}"><c:out value="selected"/></c:if> >审核未通过</option>
               </c:if>
               <c:if test="${ entityModel.operationType eq 'publish' }">
-                <option value="0" selected="true" >待认证</option>
-                <option value="1">认证通过</option>
-                <option value="2">认证未通过</option>
+                <option value="0" selected="true" >待审核</option>
+                <option value="1">审核通过</option>
+                <option value="2">审核未通过</option>
               </c:if>
             </select>
           </td>

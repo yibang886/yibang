@@ -37,7 +37,11 @@ public class LanguageController {
 		List<ICondition> conditions = new ArrayList<ICondition>();
 		if(languageQueryCon != null){
 		}
-		languageModel.setItems(languageService.criteriaQuery(conditions));
+
+    float allNum = languageService.criteriaQueryCount(conditions);
+    languageModel.setPageCount((int)Math.ceil(allNum/languageModel.getPageSize()));
+		languageModel.setItems(languageService.criteriaQuery(conditions, null, languageModel.getCurrentPage(), languageModel.getPageSize()));
+
 		model.addAttribute(languageModel);
 		return "/sys/language/index";
 	}

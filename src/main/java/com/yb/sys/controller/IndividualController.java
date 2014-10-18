@@ -112,7 +112,22 @@ public class IndividualController {
 	public String query(@ModelAttribute IndividualModel individualModel, ModelMap model){
 		IndividualExt individualQueryCon = individualModel.getIndividualQueryCon();
 		List<ICondition> conditions = new ArrayList<ICondition>();
+
+    logger.info("individualQueryCon is null? "+ (individualQueryCon==null));
+
 		if(individualQueryCon != null){
+
+      if(individualQueryCon.getauth_pass()!=null && individualQueryCon.getauth_pass() < 3L)
+      {
+        conditions.add(new EqCondition("auth_pass", individualQueryCon.getauth_pass()));
+        logger.info("Yuanguo: add cond: auth_pass = "+individualQueryCon.getauth_pass());
+      }
+      if(individualQueryCon.getvalid_pass()!=null && individualQueryCon.getvalid_pass() < 3L)
+      {
+        conditions.add(new EqCondition("valid_pass", individualQueryCon.getvalid_pass()));
+        logger.info("Yuanguo: add cond: valid_pass = "+individualQueryCon.getvalid_pass());
+      }
+
 		}
 		individualModel.setItems(individualService.criteriaQuery(conditions));
 		model.addAttribute(individualModel);
@@ -297,7 +312,7 @@ public class IndividualController {
     }
     else if(fileType.equals("authentication_file"))
     {
-      view = "forward:/user/query";
+      view = "forward:/individual/query";
     }
     else
     {
@@ -409,6 +424,8 @@ public class IndividualController {
 	@RequestMapping(value = "/individual/goAuthenticate")
 	public String goAuthenticate(@ModelAttribute IndividualModel individualModel, ModelMap model){
 
+    logger.error("Yuanguo, in goAuthentication: "+(individualModel.getIndividualQueryCon() == null));
+
 		individualModel.setOperationType("authenticate");
 
 		if(individualModel.getDataId() != 0){
@@ -421,8 +438,12 @@ public class IndividualController {
 	}
 
 	@RequestMapping(value = "/individual/doValidateAuthenticate")
-	public String doValidateAuthenticate(HttpServletRequest request, HttpServletResponse response){
-
+	public String doValidateAuthenticate(
+            @ModelAttribute IndividualModel individualModel, 
+            ModelMap model, 
+            HttpServletRequest request, 
+            HttpServletResponse response)
+  {
     String submitOrCancel = request.getParameter("submitOrCancel");
     String operation = request.getParameter("operationType");
 
@@ -532,6 +553,27 @@ public class IndividualController {
       logger.error("operation ("+operation+") is invalid, so do nothing");
     }
 
+
+    IndividualExt queryCon = individualModel.getIndividualQueryCon();
+    logger.error("Yuanguo:"+queryCon.getauth_pass());
+
+    //get languages selected by language checkbox
+    String[] lang_ids = request.getParameterValues("langCheckbox");
+    Set<LanguageExt> languages = new TreeSet<LanguageExt>();
+    logger.info("lang_ids==null?" + (lang_ids==null));
+    if(lang_ids != null)
+    {
+      for(String lang_id:lang_ids)
+      {
+        logger.info("lang_id: " + lang_id);
+
+        LanguageExt lang = new LanguageExt();
+        lang.setId(Long.parseLong(lang_id));
+        languages.add(lang);
+      }
+    }
+    queryCon.setlanguages(languages);
+    
 		return "forward:/individual/query";
 	}
 

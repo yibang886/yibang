@@ -468,8 +468,8 @@
     </tr>
   </table>
 
-  <c:if test="${ individualModel.operationType eq 'validate' || individualModel.operationType eq 'authenticate' }">
-    <form id="valid_auth_form" name="validAuthForm" method="post">
+  <form id="valid_auth_form" name="validAuthForm" method="post">
+    <c:if test="${ individualModel.operationType eq 'validate' || individualModel.operationType eq 'authenticate' }">
       <table border="0" cellpadding="0" cellspacing="0" class="table_date" id="valid_auth">
   
         <tr>
@@ -515,8 +515,18 @@
           </td>
         </tr>
       </table>
-    </form>
-  </c:if>
+    </c:if>
+
+    <%--
+       pass query condions back to controller;
+    --%>
+    <input type="hidden" value="${individualModel.individualQueryCon.auth_pass}" name="individualQueryCon.auth_pass"/>
+    <input type="hidden" value="${individualModel.individualQueryCon.valid_pass}" name="individualQueryCon.valid_pass"/>
+    <c:forEach items="${individualModel.individualQueryCon.languages}" var="var">
+      <input type="checkbox" style="display:none" name="langCheckbox" value="${var.id}" checked="true"/>
+    </c:forEach>
+
+  </form>
 
 </div>
 </body>

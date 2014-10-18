@@ -13,19 +13,58 @@
   <div class="weizhi">
     <div class="weizhi_bj">个人译员信息</div>
   </div>
+
+
   <form id="form" method="post">
+
+    <table border="0" cellpadding="0" cellspacing="0" class="table_list">
+      <tr>
+        <th width="33%">按条件过滤</th>
+        <th width="33%"/>
+        <th width="33%"/>
+      </tr>
+
+      <tr>
+        <td>
+          <div>
+            <b>审核状态：</b>
+            <select name="individualQueryCon.valid_pass">
+              <option value="3" <c:if test="${individualModel.individualQueryCon==null || individualModel.individualQueryCon.valid_pass>=3}"><c:out value="selected"/></c:if> >全部</option>
+              <option value="0" <c:if test="${individualModel.individualQueryCon.valid_pass==0}"><c:out value="selected"/></c:if> >待审核</option>
+              <option value="1" <c:if test="${individualModel.individualQueryCon.valid_pass==1}"><c:out value="selected"/></c:if> >审核通过</option>
+              <option value="2" <c:if test="${individualModel.individualQueryCon.valid_pass==2}"><c:out value="selected"/></c:if> >审核未通过</option>
+            </select>
+          </div>
+        </td>
+        <td>
+          <div>
+            <b>认证状态：</b>
+            <select name="individualQueryCon.auth_pass">
+              <option value="3" <c:if test="${individualModel.individualQueryCon==null || individualModel.individualQueryCon.auth_pass>=3}"><c:out value="selected"/></c:if> >全部</option>
+              <option value="0" <c:if test="${individualModel.individualQueryCon.auth_pass==0}"><c:out value="selected"/></c:if> >待认证</option>
+              <option value="1" <c:if test="${individualModel.individualQueryCon.auth_pass==1}"><c:out value="selected"/></c:if> >认证通过</option>
+              <option value="2" <c:if test="${individualModel.individualQueryCon.auth_pass==2}"><c:out value="selected"/></c:if> >认证未通过</option>
+            </select>
+          </div>
+        </td>
+        <td>
+          <div>
+            <input type="button" value="过滤" onclick="doQuery()"/>
+          </div>
+        </td>
+      </tr>
+    </table>
+
     <table border="0" cellpadding="0" cellspacing="0" class="table_list">
       <tr>
         <th width="11%">个人译员信息列表</th>
         <th width="89%">
           <div>
-            <%-- <input name="add" type="button" value="导出excel" onclick="toExcel();" /> --%> 
-            <%-- 不能直接创建个人译员；只能通过用户发布的方式
-            <input type="button" value="新增" onclick="goCreate()" />&nbsp;&nbsp;
-            --%>
           </div>
         </th>
       </tr>
+
+
       <tr>
         <td colspan="2">
           <table border="0" cellpadding="0" cellspacing="0" class="table_date" id="dataTable">
@@ -54,15 +93,15 @@
                         <c:if test="${var.auth_pass==2}"><c:out value="认证未通过" escapeXml="true"/></c:if>
                     </div></td>
                     <td>
-                      <a href="<%=request.getContextPath()%>/individual/goView.action?dataId=${ var.id }" >查看</a>
+                      <a onclick="goView(${var.id})">查看</a>
                       &nbsp;&nbsp;
-                      <a href="<%=request.getContextPath()%>/individual/goEdit.action?dataId=${ var.id }" >编辑</a>
+                      <a onclick="goEdit(${var.id})">编辑</a>
                       &nbsp;&nbsp;
-                      <a href="<%=request.getContextPath()%>/individual/goValidate.action?dataId=${ var.id }" >审核</a>
+                      <a onclick="goValidate(${var.id})">审核</a>
                       &nbsp;&nbsp;
-                      <a href="<%=request.getContextPath()%>/individual/goAuthenticate.action?dataId=${ var.id }" >认证</a>
+                      <a onclick="goAuthenticate(${var.id})">认证</a>
                       &nbsp;&nbsp;
-                      <a href="<%=request.getContextPath()%>/individual/doDelete.action?dataId=${ var.id }" >删除</a>
+                      <a onclick="doDelete(${var.id})">删除</a>
                     </td>
               </tr>
             </c:forEach>
@@ -76,7 +115,9 @@
         </td>
       </tr>
     </table>
+
     <input type="hidden" name="currentPage" value="${individualModel.currentPage}"/>
+
   </form>
 
   <script type="text/javascript">
@@ -85,16 +126,6 @@
     $("input[name='currentPage']").val(pageNum);
     $("#form").submit();
   }
-
-
-    /*
-     *不能直接创建个人译员；只能通过用户发布的方式
-    function goCreate(){
-        var form = document.getElementById("form");
-        form.action = "<%=request.getContextPath()%>/individual/goCreate.action";
-        form.submit();
-    }
-    */
     
     function doDelete(){
         var form = document.getElementById("form");
@@ -107,6 +138,37 @@
         form.action = "<%=request.getContextPath()%>/individual/query.action";
         form.submit();
     }
+
+    function goView(id){
+        var form = document.getElementById("form");
+        form.action = "<%=request.getContextPath()%>/individual/goView.action?dataId="+id 
+        form.submit();
+    }
+
+    function goEdit(id){
+        var form = document.getElementById("form");
+        form.action = "<%=request.getContextPath()%>/individual/goEdit.action?dataId="+id 
+        form.submit();
+    }
+
+    function goValidate(id){
+        var form = document.getElementById("form");
+        form.action = "<%=request.getContextPath()%>/individual/goValidate.action?dataId="+id 
+        form.submit();
+    }
+
+    function goAuthenticate(id){
+        var form = document.getElementById("form");
+        form.action = "<%=request.getContextPath()%>/individual/goAuthenticate.action?dataId="+id 
+        form.submit();
+    }
+
+    function doDelete(id){
+        var form = document.getElementById("form");
+        form.action = "<%=request.getContextPath()%>/individual/doDelete.action?dataId="+id 
+        form.submit();
+    }
+
   </script>
 </body>
 </html>
