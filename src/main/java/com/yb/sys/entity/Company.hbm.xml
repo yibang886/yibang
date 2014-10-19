@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.yb.sys.entity.CompanyExt" table="company">
+        <id name="id" type="java.lang.Long">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+		<property name="name" column="name" type="java.lang.String" />
+		<property name="city_id" column="city_id" type="java.lang.Long" />
+		<property name="address" column="address" type="java.lang.String" />
+		<property name="website" column="website" type="java.lang.String" />
+		<property name="inroduct" column="inroduct" type="java.lang.String" />
+		<property name="logo_suffix" column="logo_suffix" type="java.lang.String" />
+		<property name="authfile_suffix" column="authfile_suffix" type="java.lang.String" />
+		<property name="auth_pass" column="auth_pass" type="java.lang.Long" />
+		<property name="valid_pass" column="valid_pass" type="java.lang.Long" />
+		<property name="recompos_id" column="recompos_id" type="java.lang.Long" />
+    </class>
+</hibernate-mapping>
