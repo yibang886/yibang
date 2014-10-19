@@ -66,7 +66,7 @@
 
   function submitOrCancel(subOrCan, operationType, indivId)
   {
-    var form = document.getElementById("valid_auth_form");
+    var form = document.getElementById("form");
 
     if(subOrCan == "submit")
     {
@@ -90,6 +90,13 @@
       form.action = "<%=request.getContextPath()%>/individual/doValidateAuthenticate.action?submitOrCancel=cancel&operationType="+operationType;
       form.submit();
     }
+  }
+
+  function goBack()
+  {
+    var form = document.getElementById("form");
+    form.action = "<%=request.getContextPath()%>/individual/query.action";
+    form.submit();
   }
 
 </script>
@@ -468,7 +475,7 @@
     </tr>
   </table>
 
-  <form id="valid_auth_form" name="validAuthForm" method="post">
+  <form id="form" name="validAuthForm" method="post">
     <c:if test="${ individualModel.operationType eq 'validate' || individualModel.operationType eq 'authenticate' }">
       <table border="0" cellpadding="0" cellspacing="0" class="table_date" id="valid_auth">
   
@@ -515,6 +522,10 @@
           </td>
         </tr>
       </table>
+    </c:if>
+
+    <c:if test="${individualModel.operationType eq 'view'}">
+      <input type="button" value="返回" onclick="goBack()"/>
     </c:if>
 
     <%--

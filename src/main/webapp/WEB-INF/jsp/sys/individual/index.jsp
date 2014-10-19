@@ -93,6 +93,10 @@
                         <c:if test="${var.auth_pass==2}"><c:out value="认证未通过" escapeXml="true"/></c:if>
                     </div></td>
                     <td>
+                      <%--
+                      what not use href here? because we want to pass the individualModel.individualQueryCon back
+                      to controller; thus we need to submit the form;
+                      --%>
                       <a onclick="goView(${var.id})">查看</a>
                       &nbsp;&nbsp;
                       <a onclick="goEdit(${var.id})">编辑</a>

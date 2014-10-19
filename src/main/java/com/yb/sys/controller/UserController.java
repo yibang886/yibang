@@ -23,6 +23,7 @@ import com.yb.sys.service.IUserServiceExt;
 import com.common.img.ImageUtil;
 import com.common.upload.UploadUtil;
 import com.common.upload.ReceivedFile;
+import com.common.upload.ReceivedData;
 
 import com.yb.sys.entity.IndividualExt;
 import com.yb.sys.service.IIndividualServiceExt;
@@ -430,7 +431,8 @@ public class UserController {
         //Someone on internet gave another solution: 
         //     append "?t=Math.random()" to src.
         //however, it will force a reload every time;
-        List<ReceivedFile> files = UploadUtil.receive(request, filePath, ".0");
+        ReceivedData receivedData = UploadUtil.receive(request, true, false, filePath, ".0");
+        List<ReceivedFile> files = receivedData.getFileList(); 
 
         if(files == null || files.size() == 0)
         {

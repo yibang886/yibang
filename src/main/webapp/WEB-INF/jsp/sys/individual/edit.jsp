@@ -9,14 +9,6 @@
 </head>
 <body>
 <div id="wrapper">
-  <%-- Yuanguo: make use of "operationType" to decide to doCreate or doEdit; see goCreate and goEdit in IndividualController.java --%>
-  <c:if test="${ entityModel.operationType eq 'publish' }">
-    <input type="button" value="发布" onclick="doPublish(${entityModel.dataId})" />
-  </c:if>
-  <c:if test="${ entityModel.operationType eq 'edit' }">
-    <input type="button" value="保存" onclick="doEdit()"/>
-  </c:if>
-
   <form id="form" name="individualForm" method="post">
     <table class="table_add">
       <thead>
@@ -433,7 +425,28 @@
     <c:if test="${ entityModel.operationType eq 'edit' }">
       <input type="hidden" value="${ entityModel.individualExt.id }" name="individualExt.id"/>
     </c:if>
+
+    <%--
+       pass query condions back to controller;
+    --%>
+    <input type="hidden" value="${entityModel.individualQueryCon.auth_pass}" name="individualQueryCon.auth_pass"/>
+    <input type="hidden" value="${entityModel.individualQueryCon.valid_pass}" name="individualQueryCon.valid_pass"/>
+    <c:forEach items="${entityModel.individualQueryCon.languages}" var="var">
+      <input type="checkbox" style="display:none" name="langCheckbox" value="${var.id}" checked="true"/>
+    </c:forEach>
   </form>
+
+  <%-- Yuanguo: make use of "operationType" to decide to doPublish or doEdit; see goPublish in UserController.java and goEdit in IndividualController.java --%>
+  <c:if test="${ entityModel.operationType eq 'publish' }">
+    <input type="button" value="发布" onclick="doPublish(${entityModel.dataId})" />
+    <input type="button" value="取消" onclick="cancelIt('publish')"/>
+  </c:if>
+  <c:if test="${ entityModel.operationType eq 'edit' }">
+    <input type="button" value="保存" onclick="doEdit()"/>
+    <input type="button" value="取消" onclick="cancelIt('edit')"/>
+  </c:if>
+
+
 </div>
 
 <script type="text/javascript">
@@ -467,6 +480,21 @@ function checkboxSelect(name, all_none)
   for(var i=0; i<checkboxes.length; i++)
   {
     checkboxes[i].checked = checked;
+  }
+}
+
+function cancelIt(operationType)
+{
+  var form = document.getElementById("form");
+  if(operationType == "publish")
+  {
+    form.action = "<%=request.getContextPath()%>/user/query.action";
+    form.submit();
+  }
+  else if (operationType == "edit")
+  {
+    form.action = "<%=request.getContextPath()%>/individual/query.action";
+    form.submit();
   }
 }
 

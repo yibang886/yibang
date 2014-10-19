@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.Map;
 import java.io.File;
 
 import javax.annotation.Resource;
@@ -13,6 +14,7 @@ import javax.annotation.Resource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -53,6 +55,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.common.img.ImageUtil;
 import com.common.upload.UploadUtil;
 import com.common.upload.ReceivedFile;
+import com.common.upload.ReceivedData;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,24 +114,14 @@ public class IndividualController {
 	@RequestMapping(value = "/individual/query")
 	public String query(@ModelAttribute IndividualModel individualModel, ModelMap model){
 		IndividualExt individualQueryCon = individualModel.getIndividualQueryCon();
+    logger.debug("individualQueryCon is null? "+ (individualQueryCon==null));
+
 		List<ICondition> conditions = new ArrayList<ICondition>();
 
-    logger.info("individualQueryCon is null? "+ (individualQueryCon==null));
-
 		if(individualQueryCon != null){
-
-      if(individualQueryCon.getauth_pass()!=null && individualQueryCon.getauth_pass() < 3L)
-      {
-        conditions.add(new EqCondition("auth_pass", individualQueryCon.getauth_pass()));
-        logger.info("Yuanguo: add cond: auth_pass = "+individualQueryCon.getauth_pass());
-      }
-      if(individualQueryCon.getvalid_pass()!=null && individualQueryCon.getvalid_pass() < 3L)
-      {
-        conditions.add(new EqCondition("valid_pass", individualQueryCon.getvalid_pass()));
-        logger.info("Yuanguo: add cond: valid_pass = "+individualQueryCon.getvalid_pass());
-      }
-
+      generateConditions(conditions, individualQueryCon);
 		}
+
 		individualModel.setItems(individualService.criteriaQuery(conditions));
 		model.addAttribute(individualModel);
 		return "/sys/individual/index";
@@ -136,6 +129,8 @@ public class IndividualController {
 	
 	@RequestMapping(value = "/individual/goView")
 	public String goView(@ModelAttribute IndividualModel individualModel, ModelMap model){
+
+		individualModel.setOperationType("view");
 		if(individualModel.getDataId() != 0){
 			IndividualExt individualExt = individualService.load(individualModel.getDataId(), true);
 			individualModel.setIndividualExt(individualExt);
@@ -179,6 +174,9 @@ public class IndividualController {
 	
 	@RequestMapping(value = "/individual/doEdit")
 	public String doEdit(@ModelAttribute IndividualModel entityModel, ModelMap model, HttpServletRequest request){
+
+    IndividualExt queryCon = entityModel.getIndividualQueryCon();
+    logger.debug("queryCon==null? "+(queryCon==null) );
 
 		if(entityModel.getIndividualExt() != null && entityModel.getIndividualExt().getId() != 0){
 
@@ -265,11 +263,9 @@ public class IndividualController {
 		return "/invalid";
 	}
 
-
-  //Yuanguo: we want to receive uploaded file by HttpServletRequest, thus we use this kind of controller which 
-  //takes request and response as parameters;
+  //Yuanguo: we want to receive uploaded file by HttpServletRequest, thus we add  request and response as parameters;
 	@RequestMapping(value = "/individual/doUploadFile")
-	public String doUploadFile(HttpServletRequest request, HttpServletResponse response)
+	public String doUploadFile(@ModelAttribute IndividualModel entityModel, ModelMap model, HttpServletRequest request, HttpServletResponse response)
   {
     Long indivId = Long.parseLong(request.getParameter("dataId"));
 
@@ -283,7 +279,7 @@ public class IndividualController {
 
     logger.debug("indivId="+indivId+", fileType="+fileType+", skip="+skip);
 
-    IndividualModel entityModel = new IndividualModel();
+    //IndividualModel entityModel = new IndividualModel();
     entityModel.setDataId(indivId); 
 
     entityModel.setOperationType("edit");
@@ -306,13 +302,12 @@ public class IndividualController {
     }
     else if(fileType.equals("profession_cert"))
     {
-
       entityModel.setFileType("authentication_file"); //upload authentication_file next;
       view = "/sys/individual/upload";
     }
     else if(fileType.equals("authentication_file"))
     {
-      view = "forward:/individual/query";
+      view = null; //we will query and return to index.jsp directly;
     }
     else
     {
@@ -321,7 +316,14 @@ public class IndividualController {
       view = "/invalid";
     }
 
-    if(skip == 0)
+    ReceivedData receivedData; 
+
+    if(skip == 1) //skip receiving file, but we have to receive ordinary fields;
+    {
+      logger.info("Skip uploading " + fileType);
+      receivedData = UploadUtil.receive(request, false, true, null, null);
+    }
+    else
     {
       logger.info("Receiving " + fileType);
 
@@ -329,7 +331,9 @@ public class IndividualController {
 
       //add time stamp to the file suffix so that "src" in <img src="..."/> will change when the image 
       //is updated. As a result, browser will re-load the image instead of using the cached one;
-      List<ReceivedFile> files = UploadUtil.receive(request, filePath, "." + Calendar.getInstance().getTimeInMillis());
+      receivedData = UploadUtil.receive(request, false, false, filePath, "." + Calendar.getInstance().getTimeInMillis());
+
+      List<ReceivedFile> files = receivedData.getFileList(); 
 
       if(files == null || files.size() == 0)
       {
@@ -398,13 +402,59 @@ public class IndividualController {
         }
       }
     }
-    else
+
+    //whenever file uploading is skipped, we did receive text fields; currently, we are using these text files to
+    //pass individualQueryCon; because the "enctype" of upload form is "multipart/form-data", individualQueryCon 
+    //can not be bound by Spring automatically, thus, we receive the fileds and bind it ourselves;
+    Map<String,String> textMap = receivedData.getTextMap();
+
+    IndividualExt queryCon = new IndividualExt();
+    if(textMap.containsKey("individualQueryCon.auth_pass"))
     {
-      logger.info("Skip uploading " + fileType);
+      try{
+        Long value = Long.parseLong(textMap.get("individualQueryCon.auth_pass"));
+        queryCon.setauth_pass(value);
+      }
+      catch(Throwable e)
+      {
+        logger.error("Exception caught!");
+        e.printStackTrace();
+      }
+    }
+    if(textMap.containsKey("individualQueryCon.valid_pass"))
+    {
+      try{
+        Long value = Long.parseLong(textMap.get("individualQueryCon.valid_pass"));
+        queryCon.setvalid_pass(value);
+      }
+      catch(Throwable e)
+      {
+        logger.error("Exception caught!");
+        e.printStackTrace();
+      }
     }
 
-    request.setAttribute("entityModel",entityModel); //this is the same as model.addAttribute("entityModel",entityModel);
-    return view;
+    entityModel.setIndividualQueryCon(queryCon);
+    model.addAttribute("entityModel",entityModel);
+
+    if(fileType.equals("authentication_file")) //last step of uploading, so go to query page;
+    {
+      //Yuanguo: Simply returning "forward:/individual/query" can pass the *original* individualQueryCon in entityModel (in this case, 
+      //the original individualQueryCon is null because the form is "multipart/form-data" and Spring doesn't bind it automatically) to 
+      //query() function; but the modification on individualQueryCon (like above) doesn't take effect; I don't know why;
+      //Thus, do the query here and return directly to index.jsp instead of forwarding to /individual/query;
+  		//return "forward:/individual/query";
+  		List<ICondition> conditions = new ArrayList<ICondition>();
+  
+      generateConditions(conditions, queryCon);
+  
+  		entityModel.setItems(individualService.criteriaQuery(conditions));
+  		return "/sys/individual/index";
+    }
+    else  // not last step of uploading, so go to next step;
+    {
+      return view;
+    }
   }
 
 	
@@ -424,7 +474,7 @@ public class IndividualController {
 	@RequestMapping(value = "/individual/goAuthenticate")
 	public String goAuthenticate(@ModelAttribute IndividualModel individualModel, ModelMap model){
 
-    logger.error("Yuanguo, in goAuthentication: "+(individualModel.getIndividualQueryCon() == null));
+    logger.debug("individualQueryCon is null? "+(individualModel.getIndividualQueryCon() == null));
 
 		individualModel.setOperationType("authenticate");
 
@@ -439,7 +489,7 @@ public class IndividualController {
 
 	@RequestMapping(value = "/individual/doValidateAuthenticate")
 	public String doValidateAuthenticate(
-            @ModelAttribute IndividualModel individualModel, 
+            @ModelAttribute IndividualModel entityModel, 
             ModelMap model, 
             HttpServletRequest request, 
             HttpServletResponse response)
@@ -501,7 +551,7 @@ public class IndividualController {
             {
               logger.info("send mail...");
               String emailContent = request.getParameter("emailContent");
-              logger.info(emailContent);
+              logger.debug(emailContent);
 
               try{
                 String host = "smtp.163.com";
@@ -554,18 +604,18 @@ public class IndividualController {
     }
 
 
-    IndividualExt queryCon = individualModel.getIndividualQueryCon();
-    logger.error("Yuanguo:"+queryCon.getauth_pass());
+    IndividualExt queryCon = entityModel.getIndividualQueryCon();
+    logger.debug("auth_pass:"+queryCon.getauth_pass());
 
     //get languages selected by language checkbox
     String[] lang_ids = request.getParameterValues("langCheckbox");
     Set<LanguageExt> languages = new TreeSet<LanguageExt>();
-    logger.info("lang_ids==null?" + (lang_ids==null));
+    logger.debug("lang_ids==null?" + (lang_ids==null));
     if(lang_ids != null)
     {
       for(String lang_id:lang_ids)
       {
-        logger.info("lang_id: " + lang_id);
+        logger.debug("lang_id: " + lang_id);
 
         LanguageExt lang = new LanguageExt();
         lang.setId(Long.parseLong(lang_id));
@@ -573,8 +623,19 @@ public class IndividualController {
       }
     }
     queryCon.setlanguages(languages);
-    
-		return "forward:/individual/query";
+
+    //Yuanguo: Simply returning "forward:/individual/query" can pass the *original* individualQueryCon in entityModel to 
+    //query() function; but the modification on individualQueryCon (like above) doesn't take effect; I don't know why;
+    //Thus, do the query here and return directly to index.jsp instead of forwarding to /individual/query;
+
+		//return "forward:/individual/query";
+		List<ICondition> conditions = new ArrayList<ICondition>();
+
+    generateConditions(conditions, queryCon);
+
+		entityModel.setItems(individualService.criteriaQuery(conditions));
+		model.addAttribute(entityModel);
+		return "/sys/individual/index";
 	}
 
 	@RequestMapping(value = "/individual/goValidate")
@@ -590,4 +651,21 @@ public class IndividualController {
 		model.addAttribute(individualModel);
 		return "/sys/individual/detail";
 	}
+
+  private static void generateConditions(List<ICondition> condList, IndividualExt queryCon)
+  {
+    if(queryCon!=null)
+    {
+      if(queryCon.getauth_pass()!=null && queryCon.getauth_pass() < 3L)
+      {
+        condList.add(new EqCondition("auth_pass", queryCon.getauth_pass()));
+        logger.debug("add condition: auth_pass = "+queryCon.getauth_pass());
+      }
+      if(queryCon.getvalid_pass()!=null && queryCon.getvalid_pass() < 3L)
+      {
+        condList.add(new EqCondition("valid_pass", queryCon.getvalid_pass()));
+        logger.debug("add condition: valid_pass = "+queryCon.getvalid_pass());
+      }
+    }
+  }
 }
