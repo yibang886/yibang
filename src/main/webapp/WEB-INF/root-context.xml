@@ -88,6 +88,7 @@
       <property name="mappingResources">
         <list>
           <value>com/yb/sys/entity/Individual.hbm.xml</value>
+          <value>com/yb/sys/entity/Company.hbm.xml</value>
           <value>com/yb/sys/entity/User.hbm.xml</value>
           <value>com/yb/sys/entity/Language.hbm.xml</value>
           <value>com/yb/sys/entity/Field.hbm.xml</value>
@@ -118,6 +119,7 @@
         <property name="beanNames">
           <list>
             <value>individualService</value>
+            <value>companyService</value>
             <value>userService</value>
             <value>languageService</value>
             <value>fieldService</value>
@@ -144,6 +146,12 @@
       <property name="individualDao" ref="individualDao" />
     </bean>
 
+    <bean id="companyDao" class="com.yb.sys.dao.CompanyDao">
+      <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+    </bean>
+    <bean id="companyService" class="com.yb.sys.service.CompanyServiceExt">
+      <property name="companyDao" ref="companyDao" />
+    </bean>
 
     <bean id="userDao" class="com.yb.sys.dao.UserDao">
       <property name="sessionFactory"><ref bean="sessionFactory"/></property>

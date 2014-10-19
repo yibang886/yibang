@@ -59,8 +59,8 @@
 	  .append("|")
 	  .append("1")
 	  .append("|")
-	  .append("语种")
-	  .append("|").append(request.getContextPath() + "/language/query.action").append("\";");
+	  .append("翻译公司")
+	  .append("|").append(request.getContextPath() + "/company/query.action").append("\";");
 
     sbMenu.append("Tree[")
 	  .append(4)
@@ -71,8 +71,8 @@
 	  .append("|")
 	  .append("1")
 	  .append("|")
-	  .append("专业领域")
-	  .append("|").append(request.getContextPath() + "/field/query.action").append("\";");
+	  .append("语种")
+	  .append("|").append(request.getContextPath() + "/language/query.action").append("\";");
 
     sbMenu.append("Tree[")
 	  .append(5)
@@ -83,8 +83,8 @@
 	  .append("|")
 	  .append("1")
 	  .append("|")
-	  .append("服务项目")
-	  .append("|").append(request.getContextPath() + "/transtype/query.action").append("\";");
+	  .append("专业领域")
+	  .append("|").append(request.getContextPath() + "/field/query.action").append("\";");
 
     sbMenu.append("Tree[")
 	  .append(6)
@@ -95,8 +95,8 @@
 	  .append("|")
 	  .append("1")
 	  .append("|")
-	  .append("文档类型")
-	  .append("|").append(request.getContextPath() + "/doctype/query.action").append("\";");
+	  .append("服务项目")
+	  .append("|").append(request.getContextPath() + "/transtype/query.action").append("\";");
 
     sbMenu.append("Tree[")
 	  .append(7)
@@ -107,8 +107,8 @@
 	  .append("|")
 	  .append("1")
 	  .append("|")
-	  .append("推荐位")
-	  .append("|").append(request.getContextPath() + "/recompos/query.action").append("\";");
+	  .append("文档类型")
+	  .append("|").append(request.getContextPath() + "/doctype/query.action").append("\";");
 
     sbMenu.append("Tree[")
 	  .append(8)
@@ -119,8 +119,8 @@
 	  .append("|")
 	  .append("1")
 	  .append("|")
-	  .append("教育水平")
-	  .append("|").append(request.getContextPath() + "/education/query.action").append("\";");
+	  .append("推荐位")
+	  .append("|").append(request.getContextPath() + "/recompos/query.action").append("\";");
 
     sbMenu.append("Tree[")
 	  .append(9)
@@ -131,8 +131,8 @@
 	  .append("|")
 	  .append("1")
 	  .append("|")
-	  .append("城市")
-	  .append("|").append(request.getContextPath() + "/city/query.action").append("\";");
+	  .append("教育水平")
+	  .append("|").append(request.getContextPath() + "/education/query.action").append("\";");
 
     sbMenu.append("Tree[")
 	  .append(10)
@@ -140,6 +140,18 @@
 	  .append(" = ")
 	  .append("\"")
 	  .append("11")
+	  .append("|")
+	  .append("1")
+	  .append("|")
+	  .append("城市")
+	  .append("|").append(request.getContextPath() + "/city/query.action").append("\";");
+
+    sbMenu.append("Tree[")
+	  .append(11)
+	  .append("]")
+	  .append(" = ")
+	  .append("\"")
+	  .append("12")
 	  .append("|")
 	  .append("1")
 	  .append("|")

@@ -415,32 +415,34 @@ INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(1,4);
 INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(1,6);
 INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(1,8);
 
+
+
 -- Sample Data: 北京设美译达翻译有限公司
--- INSERT INTO company(name,logo,descrip,tel,mobile,email,address) VALUES ('北京设美译达翻译有限公司','logo/shemeiyida.jpeg','正规，信誉良好，快速准确','010-82158278','86+18612802724','watermelon-wxr@163.com','北京海淀科学院南路1号');
--- 
--- INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),3);  -- 此公司支持笔译
--- INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),4);  -- 此公司支持口译
--- INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),5);  -- 此公司支持同声传译
--- 
--- INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),5);  -- 此公司支持英语翻译
--- INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),11); -- 此公司支持日语翻译
--- INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),3);  -- 此公司支持简体中文的翻译
--- INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),6);  -- 此公司支持法语的翻译
--- 
--- INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),3);  -- 此公司支持医学领域的翻译
--- INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),6);  -- 此公司支持外贸领域的翻译
--- INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),9);  -- 此公司支持工程领域的翻译
--- INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),12); -- 此公司支持建筑领域的翻译
--- INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),13); -- 此公司支持航空领域的翻译
--- INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),14); -- 此公司支持化工领域的翻译
--- 
--- INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),6);   -- 此公司支持图书翻译
--- INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),7);   -- 此公司支持文献翻译
--- INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),8);   -- 此公司支持合同翻译
--- INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),9);   -- 此公司支持协议翻译
--- INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),10);  -- 此公司支持专利翻译
--- INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),11);  -- 此公司支持标书翻译
--- 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('yuanguo.h_001@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',1,1000);
+INSERT INTO company(id,name,city_id,address,website,inroduct,auth_pass,valid_pass,recompos_id) VALUES (2,'北京设美译达翻译有限公司',1,'北京市朝阳区花园路9号','www.baidu.com','公司规模大，正规，信誉良好，快速准确',0,0,1);
+
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持笔译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),2);  -- 此公司支持口译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),3);  -- 此公司支持同声传译
+ 
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),62);  -- 此公司支持英语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),49);  -- 此公司支持日语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),69);  -- 此公司支持简体中文的翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),20);  -- 此公司支持法语的翻译
+ 
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持医学领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),4);  -- 此公司支持外贸领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),7);  -- 此公司支持工程领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),10); -- 此公司支持建筑领域的翻译
+ 
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),4);   -- 此公司支持图书翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),5);   -- 此公司支持文献翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),6);   -- 此公司支持合同翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),7);   -- 此公司支持协议翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),8);  -- 此公司支持专利翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),9);  -- 此公司支持标书翻译
+ 
+
 -- Sample Data: 365翻译公司
 -- INSERT INTO company(name,logo,descrip,tel,mobile,email,address) VALUES ('365翻译公司','logo/365.jpeg','全国快速网上报价，行业No1；10年行业经验，80种语言互译，60个专业领域','021-12341234','86+15810535719','365@gmail.com','上海松江路31号');
 -- 
