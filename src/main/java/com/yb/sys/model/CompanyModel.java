@@ -3,6 +3,12 @@ package com.yb.sys.model;
 import java.util.List;
 
 import com.yb.sys.entity.CompanyExt;
+import com.yb.sys.entity.CityExt;
+import com.yb.sys.entity.RecomposExt;
+import com.yb.sys.entity.LanguageExt;
+import com.yb.sys.entity.FieldExt;
+import com.yb.sys.entity.TranstypeExt;
+import com.yb.sys.entity.DoctypeExt;
 
 public class CompanyModel {
 
@@ -27,6 +33,26 @@ public class CompanyModel {
 	private String operationType;
 	
 	private String errorMessage;
+
+  //Added by Yuanguo: when go to edit page, user should be allowed to select living city and etc. 
+  //These options (enumerations) should be passed from controller to edit.jsp; this is what the following properties 
+  //are intended for.
+  private List<CityExt> cityEnum;
+  private List<RecomposExt> recomposEnum;
+  private List<LanguageExt> languageEnum;
+  private List<FieldExt> fieldEnum;
+  private List<TranstypeExt> transtypeEnum;
+  private List<DoctypeExt> doctypeEnum;
+
+  //Added by Yuanguo; when user upload files (see upload.jsp), the controller needs to tell upload.jsp which file (logo, 
+  //authfile and etc) to upload, and upload.jsp needs to tell controller which file it is uploading. The fileType 
+  //is for this purpose.
+  private String fileType;
+
+  //Added by Yuanguo: in upload.jsp, pass "skip or not" to controller;
+  //   0: not skip;
+  //   1: skip;
+  private int skip;
 
 	public CompanyExt getCompanyExt() {
 		return companyExt;
@@ -113,4 +139,79 @@ public class CompanyModel {
 	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
 	}
+
+  //Added by Yuanguo:
+  public List<CityExt> getCityEnum()
+  {
+    return cityEnum;
+  }
+  public void setCityEnum(List<CityExt> cityEnum)
+  {
+    this.cityEnum = cityEnum;
+  }
+
+  public List<RecomposExt> getRecomposEnum()
+  {
+    return recomposEnum;
+  }
+  public void setRecomposEnum(List<RecomposExt> recomposEnum)
+  {
+    this.recomposEnum = recomposEnum;
+  }
+
+  public List<LanguageExt> getLanguageEnum()
+  {
+    return languageEnum;
+  }
+  public void setLanguageEnum(List<LanguageExt> languageEnum)
+  {
+    this.languageEnum = languageEnum;
+  }
+
+  public List<FieldExt> getFieldEnum()
+  {
+    return fieldEnum;
+  }
+  public void setFieldEnum(List<FieldExt> fieldEnum)
+  {
+    this.fieldEnum = fieldEnum;
+  }
+
+  public List<TranstypeExt> getTranstypeEnum()
+  {
+    return transtypeEnum;
+  }
+  public void setTranstypeEnum(List<TranstypeExt> transtypeEnum)
+  {
+    this.transtypeEnum = transtypeEnum;
+  }
+
+  public List<DoctypeExt> getDoctypeEnum()
+  {
+    return doctypeEnum;
+  }
+  public void setDoctypeEnum(List<DoctypeExt> doctypeEnum)
+  {
+    this.doctypeEnum = doctypeEnum;
+  }
+
+  public String getFileType()
+  {
+    return fileType;
+  }
+
+  public void setFileType(String fileType)
+  {
+    this.fileType = fileType;
+  }
+
+  public int getSkip()
+  {
+    return skip;
+  }
+
+  public void setSkip(int skip)
+  {
+    this.skip = skip;
+  }
 }

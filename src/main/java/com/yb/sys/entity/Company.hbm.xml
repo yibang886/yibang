@@ -5,10 +5,12 @@
     <class name="com.yb.sys.entity.CompanyExt" table="company">
         <id name="id" type="java.lang.Long">
             <column name="ID" />
-            <generator class="native" />
+            <!-- company has one-to-one relationship with user, thus it will use the same 'id' as the related user -->
+            <generator class="assigned" />  
         </id>
+        <one-to-one name="user" class="com.yb.sys.entity.UserExt" cascade="save-update" outer-join="false" /> 
 		<property name="name" column="name" type="java.lang.String" />
-		<property name="city_id" column="city_id" type="java.lang.Long" />
+        <many-to-one name="city" class="com.yb.sys.entity.CityExt" column="city_id" cascade="none" />
 		<property name="address" column="address" type="java.lang.String" />
 		<property name="website" column="website" type="java.lang.String" />
 		<property name="inroduct" column="inroduct" type="java.lang.String" />
@@ -16,6 +18,23 @@
 		<property name="authfile_suffix" column="authfile_suffix" type="java.lang.String" />
 		<property name="auth_pass" column="auth_pass" type="java.lang.Long" />
 		<property name="valid_pass" column="valid_pass" type="java.lang.Long" />
-		<property name="recompos_id" column="recompos_id" type="java.lang.Long" />
+        <many-to-one name="recompos" class="com.yb.sys.entity.RecomposExt" column="recompos_id" cascade="none" />
+
+        <set name="languages" table="company_lang">
+          <key column="comp_id" />
+          <many-to-many column="lang_id" class="com.yb.sys.entity.LanguageExt" />
+        </set>
+        <set name="transtypes" table="company_transtype">
+          <key column="comp_id" />
+          <many-to-many column="transtype_id" class="com.yb.sys.entity.TranstypeExt" />
+        </set>
+        <set name="fields" table="company_field">
+          <key column="comp_id" />
+          <many-to-many column="field_id" class="com.yb.sys.entity.FieldExt" />
+        </set>
+        <set name="doctypes" table="company_doctype">
+          <key column="comp_id" />
+          <many-to-many column="doctype_id" class="com.yb.sys.entity.DoctypeExt" />
+        </set>
     </class>
 </hibernate-mapping>

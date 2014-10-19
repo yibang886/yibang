@@ -1,6 +1,16 @@
 package com.yb.sys.entity;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 import java.io.Serializable;
+import com.yb.sys.entity.CityExt;
+import com.yb.sys.entity.RecomposExt;
+
+import com.yb.sys.entity.LanguageExt;
+import com.yb.sys.entity.TranstypeExt;
+import com.yb.sys.entity.FieldExt;
+import com.yb.sys.entity.DoctypeExt;
 
 public class Company implements Serializable
 {
@@ -17,6 +27,16 @@ public class Company implements Serializable
   {
     this.id = id;
   }
+
+  private UserExt user; 
+	
+	public UserExt getUser(){
+		return user;
+	}
+	
+	public void setUser(UserExt user){
+		this.user = user;
+	}
   
   private String name;
   
@@ -29,17 +49,17 @@ public class Company implements Serializable
   {
     this.name = name;
   }
-  private Long city_id;
-  
-  public Long getCity_id()
+
+  private CityExt city;
+  public CityExt getCity()
   {
-    return city_id;
+    return city;
   }
-  
-  public void setCity_id(Long city_id)
+  public void setCity(CityExt city)
   {
-    this.city_id = city_id;
+    this.city =city;
   }
+
   private String address;
   
   public String getAddress()
@@ -117,16 +137,71 @@ public class Company implements Serializable
   {
     this.valid_pass = valid_pass;
   }
-  private Long recompos_id;
-  
-  public Long getRecompos_id()
+
+  private RecomposExt recompos;
+  public RecomposExt getRecompos()
   {
-    return recompos_id;
+    return recompos;
   }
-  
-  public void setRecompos_id(Long recompos_id)
+  public void setRecompos(RecomposExt recompos)
   {
-    this.recompos_id = recompos_id;
+    this.recompos = recompos;
+  }
+
+  private Set<LanguageExt> languages = new TreeSet<LanguageExt>();
+  public void addlanguage (LanguageExt language)
+  {
+    this.languages.add(language);
+  }
+  public Set<LanguageExt> getLanguages()
+  {
+    return this.languages;
+  }
+  public void setLanguages (Set<LanguageExt> languages)
+  {
+    this.languages = languages;
+  }
+
+  private Set<TranstypeExt> transtypes = new TreeSet<TranstypeExt>();
+  public void addtranstype (TranstypeExt transtype)
+  {
+    this.transtypes.add(transtype);
+  }
+  public Set<TranstypeExt> getTranstypes()
+  {
+    return this.transtypes;
+  }
+  public void setTranstypes (Set<TranstypeExt> transtypes)
+  {
+    this.transtypes = transtypes;
+  }
+
+  private Set<FieldExt> fields = new TreeSet<FieldExt>();
+  public void addfield (FieldExt field)
+  {
+    this.fields.add(field);
+  }
+  public Set<FieldExt> getFields()
+  {
+    return this.fields;
+  }
+  public void setFields (Set<FieldExt> fields)
+  {
+    this.fields = fields;
+  }
+
+  private Set<DoctypeExt> doctypes = new TreeSet<DoctypeExt>();
+  public void adddoctype (DoctypeExt doctype)
+  {
+    this.doctypes.add(doctype);
+  }
+  public Set<DoctypeExt> getDoctypes()
+  {
+    return this.doctypes;
+  }
+  public void setDoctypes (Set<DoctypeExt> doctypes)
+  {
+    this.doctypes = doctypes;
   }
 
   public boolean equals(Object object)

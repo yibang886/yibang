@@ -115,18 +115,6 @@ public class Individual implements Serializable{
 		this.birth_year = birth_year;
 	}
 
-  /*
-	private Long city_id;
-	
-	public Long getcity_id(){
-		return city_id;
-	}
-	
-	public void setcity_id(Long city_id){
-		this.city_id = city_id;
-	}
-  */
-
   private CityExt city;
   public CityExt getcity()
   {
@@ -256,18 +244,6 @@ public class Individual implements Serializable{
     this.valid_pass = valid_pass;
   }
   
-  /*
-	private Long recompos_id;
-	
-	public Long getrecompos_id(){
-		return recompos_id;
-	}
-	
-	public void setrecompos_id(Long recompos_id){
-		this.recompos_id = recompos_id;
-	}
-  */
-
   private RecomposExt recompos;
   public RecomposExt getrecompos()
   {

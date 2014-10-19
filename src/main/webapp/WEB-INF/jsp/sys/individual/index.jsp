@@ -57,8 +57,8 @@
 
     <table border="0" cellpadding="0" cellspacing="0" class="table_list">
       <tr>
-        <th width="11%">个人译员信息列表</th>
-        <th width="89%">
+        <th width="10%">个人译员信息列表</th>
+        <th width="90%">
           <div>
           </div>
         </th>
@@ -130,12 +130,6 @@
     $("input[name='currentPage']").val(pageNum);
     $("#form").submit();
   }
-    
-    function doDelete(){
-        var form = document.getElementById("form");
-        form.action = "<%=request.getContextPath()%>/individual/doDelete.action";
-        form.submit();
-    }
     
     function doQuery(){
         var form = document.getElementById("form");
