@@ -327,7 +327,7 @@ function checkboxSelect(name, all_none)
               <c:if test="${ entityModel.operationType eq 'edit' }">
                 <option value="0" <c:if test="${entityModel.companyExt.valid_pass==0}"><c:out value="selected"/></c:if> >待审核</option>
                 <option value="1" <c:if test="${entityModel.companyExt.valid_pass==1}"><c:out value="selected"/></c:if> >审核通过</option>
-                <option value="1" <c:if test="${entityModel.companyExt.valid_pass==2}"><c:out value="selected"/></c:if> >审核未通过</option>
+                <option value="2" <c:if test="${entityModel.companyExt.valid_pass==2}"><c:out value="selected"/></c:if> >审核未通过</option>
               </c:if>
               <c:if test="${ entityModel.operationType eq 'publish' }">
                 <option value="0" selected="true" >待审核</option>
@@ -345,7 +345,7 @@ function checkboxSelect(name, all_none)
               <c:if test="${ entityModel.operationType eq 'edit' }">
                 <option value="0" <c:if test="${entityModel.companyExt.auth_pass==0}"><c:out value="selected"/></c:if> >待认证</option>
                 <option value="1" <c:if test="${entityModel.companyExt.auth_pass==1}"><c:out value="selected"/></c:if> >认证通过</option>
-                <option value="1" <c:if test="${entityModel.companyExt.auth_pass==2}"><c:out value="selected"/></c:if> >认证未通过</option>
+                <option value="2" <c:if test="${entityModel.companyExt.auth_pass==2}"><c:out value="selected"/></c:if> >认证未通过</option>
               </c:if>
               <c:if test="${ entityModel.operationType eq 'publish' }">
                 <option value="0" selected="true" >待认证</option>
