@@ -334,17 +334,18 @@ DROP TABLE IF EXISTS company;
 CREATE TABLE IF NOT EXISTS company
 (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  user_id INT UNSIGNED NOT NULL,               /*发布者*/
   name VARCHAR(64) NOT NULL UNIQUE,            /*公司名称*/
   city_id INT UNSIGNED NOT NULL,               /*所在城市*/
-  address VARCHAR(256),                        /*详细地址*/
-  website VARCHAR(128) NOT NULL,               /*公司网站*/
+  address VARCHAR(256) NOT NULL,               /*详细地址*/
+  website VARCHAR(128) NOT NULL UNIQUE,        /*公司网站*/
   inroduct VARCHAR(1024),                      /*公司简介*/ 
-  logo VARCHAR(64),                            /*logo图片路径*/
-  auth_file VARCHAR(64),                       /*认证资料路径*/
-  auth_pass INT UNSIGNED NOT NULL DEFAULT 0,   /*是否通过认证, 0:未通过; 1:通过*/
-  FOREIGN KEY(user_id) REFERENCES user(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  logo_suffix VARCHAR(64),                     /*logo图片文件名后缀*/
+  authfile_suffix VARCHAR(64),                 /*认证资料图片文件名后缀*/
+  auth_pass INT UNSIGNED NOT NULL DEFAULT 0,   /*是否通过认证, 0:待认证; 1:认证通过; 2:认证未通过*/
+  valid_pass INT UNSIGNED NOT NULL DEFAULT 0,  /*是否通过审核, 0:待审核; 1:审核通过; 2:审核未通过*/
+  recompos_id INT UNSIGNED NOT NULL,           /*在主页中的推荐位置*/ 
   FOREIGN KEY(city_id) REFERENCES city(id) ON DELETE RESTRICT ON UPDATE RESTRICT, 
+  FOREIGN KEY(recompos_id) REFERENCES recompos(id) ON DELETE RESTRICT ON UPDATE RESTRICT, 
   PRIMARY KEY (id)
 ) ENGINE InnoDB, DEFAULT CHARACTER SET utf8 AUTO_INCREMENT 1;
 
