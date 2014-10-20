@@ -421,19 +421,18 @@
       <tbody></tbody>
     </table>
 
-    <%-- Yuanguo: for "edit", the existing "id" is kept --%>
     <c:if test="${ entityModel.operationType eq 'edit' }">
+      <%-- Yuanguo: for "edit", the existing "id" is kept --%>
       <input type="hidden" value="${ entityModel.individualExt.id }" name="individualExt.id"/>
+
+      <%-- pass query condions back to controller; --%>
+      <input type="hidden" value="${entityModel.individualQueryCon.auth_pass}" name="individualQueryCon.auth_pass"/>
+      <input type="hidden" value="${entityModel.individualQueryCon.valid_pass}" name="individualQueryCon.valid_pass"/>
+      <c:forEach items="${entityModel.individualQueryCon.languages}" var="var">
+        <input type="checkbox" style="display:none" name="langCheckbox" value="${var.id}" checked="true"/>
+      </c:forEach>
     </c:if>
 
-    <%--
-       pass query condions back to controller;
-    --%>
-    <input type="hidden" value="${entityModel.individualQueryCon.auth_pass}" name="individualQueryCon.auth_pass"/>
-    <input type="hidden" value="${entityModel.individualQueryCon.valid_pass}" name="individualQueryCon.valid_pass"/>
-    <c:forEach items="${entityModel.individualQueryCon.languages}" var="var">
-      <input type="checkbox" style="display:none" name="langCheckbox" value="${var.id}" checked="true"/>
-    </c:forEach>
   </form>
 
   <%-- Yuanguo: make use of "operationType" to decide to doPublish or doEdit; see goPublish in UserController.java and goEdit in IndividualController.java --%>

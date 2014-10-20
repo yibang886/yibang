@@ -99,14 +99,14 @@ function doUploadFile(usecase,fileType,userId,skip)
       </thead>
     </table>
 
-    <%--
-       pass query condions back to controller;
-    --%>
-    <input type="hidden" value="${entityModel.companyQueryCon.auth_pass}" name="companyQueryCon.auth_pass"/>
-    <input type="hidden" value="${entityModel.companyQueryCon.valid_pass}" name="companyQueryCon.valid_pass"/>
-    <c:forEach items="${entityModel.companyQueryCon.languages}" var="var">
-      <input type="checkbox" style="display:none" name="langCheckbox" value="${var.id}" checked="true"/>
-    </c:forEach>
+    <c:if test="${entityModel.operationType eq 'edit'}"> 
+      <%-- pass query condions back to controller; --%>
+      <input type="hidden" value="${entityModel.companyQueryCon.auth_pass}" name="companyQueryCon.auth_pass"/>
+      <input type="hidden" value="${entityModel.companyQueryCon.valid_pass}" name="companyQueryCon.valid_pass"/>
+      <c:forEach items="${entityModel.companyQueryCon.languages}" var="var">
+        <input type="checkbox" style="display:none" name="langCheckbox" value="${var.id}" checked="true"/>
+      </c:forEach>
+    </c:if>
 
   </form>
 

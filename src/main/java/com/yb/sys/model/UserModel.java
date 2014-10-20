@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.yb.sys.entity.UserExt;
 import com.yb.sys.entity.IndividualExt;
+import com.yb.sys.entity.CompanyExt;
 import com.yb.sys.entity.CityExt;
 import com.yb.sys.entity.EducationExt;
 import com.yb.sys.entity.RecomposExt;
@@ -42,6 +43,9 @@ public class UserModel {
   //and pass it to indvidual/edit.jsp to be populated. The individualExt is used to pass the instance. See function 
   //goPublish() in UserController.java;
   private IndividualExt individualExt;
+
+  //like individualExt;
+  private CompanyExt companyExt;
 
   //Added by Yuanguo; when user upload files (see upload.jsp), the controller needs to tell upload.jsp which file (photo, 
   //language certificate and etc) to upload, and upload.jsp needs to tell controller which file it is uploading. The fileType 
@@ -159,6 +163,14 @@ public class UserModel {
 
 	public void setIndividualExt(IndividualExt individualExt) {
 		this.individualExt = individualExt;
+	}
+
+	public CompanyExt getCompanyExt() {
+		return companyExt;
+	}
+
+	public void setCompanyExt(CompanyExt companyExt) {
+		this.companyExt = companyExt;
 	}
 
   public String getFileType()

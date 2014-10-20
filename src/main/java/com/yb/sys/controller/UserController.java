@@ -27,6 +27,8 @@ import com.common.upload.ReceivedData;
 
 import com.yb.sys.entity.IndividualExt;
 import com.yb.sys.service.IIndividualServiceExt;
+import com.yb.sys.entity.CompanyExt;
+import com.yb.sys.service.ICompanyServiceExt;
 
 import com.yb.sys.entity.EducationExt;
 import com.yb.sys.model.EducationModel;
@@ -70,6 +72,9 @@ public class UserController {
 
 	@Resource(name = "individualService")
 	private IIndividualServiceExt individualService;
+
+	@Resource(name = "companyService")
+	private ICompanyServiceExt companyService;
 
   //Added by Yuanguo: when go to edit page, user should be alloed to select living city, education, school and etc. 
   //These service beans are used to load the enumerations.
@@ -184,16 +189,14 @@ public class UserController {
 		return "forward:/user/query";
 	}
 
-  //Yuanguo: individual/edit.jsp has two usecases: 
+  //Yuanguo: individual/edit.jsp or company/edit.jsp has two usecases: 
   //   1. user entity publishes (creates) an individual enity; 
-  //   2. individual entity modification operation; 
-  //in individual/edit.jsp (or company/edit.jsp), we don't bother to differentiate between "userModel" 
-  //and "indvidualModel", so we use "entityModel" generally.  
+  //   2. individual/company entity modification operation; 
 	@RequestMapping(value = "/user/goPublish")
 	public String goPublish(@ModelAttribute UserModel entityModel, ModelMap model){
 
     //For usecase 1, edit.jsp should return to /user/goPublish; and for usecase 2, edit.jsp should return 
-    //to /individual/doEdit. The edit.jsp knows which usecase by "operationType";
+    //to /individual/doEdit (or /company/doEdit). The edit.jsp knows which usecase by "operationType";
 		entityModel.setOperationType("publish");
 
     //program gets here from index.jsp (see line: user/goPublish.action?dataId=${ var.id }), so
@@ -243,20 +246,30 @@ public class UserController {
       //         model.addAttribute(entityModel);  
       //although model.addAttribute(userModel) worked fine (when parameter "entityModel" was named userModel before). Is 
       //this because of @ModelAttribute in the function signature?
+      //The answer: model.addAttribute(obj) equals to model.addAttribute("objClassNameLowerCaseFirstChar", obj);
   	  model.addAttribute("entityModel",entityModel);
 
 		  return "/sys/individual/edit";
     }
     else if(userExt.getuser_type()==1) //翻译公司
     {
+      CompanyExt comp = companyService.load(userId, true); //company has the same Id as user;
+      if(comp != null)
+      {
+        logger.info("User has already published translation service");
+        return "/invalid";
+      }
+
+      //create a new intance of CompanyExt; it will be passed to company/edit.jsp and it will be populated there.
+      entityModel.setCompanyExt(new CompanyExt());
+  	  model.addAttribute("entityModel",entityModel);
+		  return "/sys/company/edit";
     }
     else
     {
       logger.error("Cannot publish translation service because user_type ("+userExt.getuser_type()+") is invalid");
       return "/invalid";
     }
-
-    return "/invalid";
 	}
 
 	@RequestMapping(value = "/user/doPublish")
@@ -265,18 +278,14 @@ public class UserController {
 
     entityModel.setOperationType("publish");
 
-    if(userExt.getuser_type()==0) //自由译员
+    Set<LanguageExt> languages = new TreeSet<LanguageExt>();
+    Set<FieldExt> fields = new TreeSet<FieldExt>();
+    Set<TranstypeExt> transtypes = new TreeSet<TranstypeExt>();
+    Set<DoctypeExt> doctypes = new TreeSet<DoctypeExt>();
+    if(userExt.getuser_type()==0 || userExt.getuser_type()==1) //user type is valid
     {
-      //get the IndividualExt instance created in goPublish() and populated with value in individual/edit.jsp;
-      IndividualExt individualExt = entityModel.getIndividualExt();
-       
-      //individual has a one-to-one relationship with user, thus set the same 'id' with the related user; see
-      //Individual.hbm.xml;
-      individualExt.setId(userExt.getId());
-
       //get languages selected by language checkbox
       String[] lang_ids = request.getParameterValues("langCheckbox");
-      Set<LanguageExt> languages = new TreeSet<LanguageExt>();
       if(lang_ids != null)
       {
         for(String lang_id:lang_ids)
@@ -286,11 +295,9 @@ public class UserController {
           languages.add(lang);
         }
       }
-      individualExt.setlanguages(languages);
 
       //get fields selected by field checkbox
       String[] field_ids = request.getParameterValues("fieldCheckbox");
-      Set<FieldExt> fields = new TreeSet<FieldExt>();
       if(field_ids != null)
       {
         for(String field_id:field_ids)
@@ -300,11 +307,9 @@ public class UserController {
           fields.add(field);
         }
       }
-      individualExt.setfields(fields);
 
       //get transtypes slected by transtype checkbox
       String[] transtype_ids = request.getParameterValues("transtypeCheckbox");
-      Set<TranstypeExt> transtypes = new TreeSet<TranstypeExt>();
       if(transtype_ids != null)
       {
         for(String transtype_id:transtype_ids)
@@ -314,11 +319,9 @@ public class UserController {
           transtypes.add(transtype);
         }
       }
-      individualExt.settranstypes(transtypes);
 
       //get doctypes selected by doctype checkbox
       String[] doctype_ids = request.getParameterValues("doctypeCheckbox");
-      Set<DoctypeExt> doctypes = new TreeSet<DoctypeExt>();
       if(doctype_ids != null)
       {
         for(String doctype_id:doctype_ids)
@@ -328,22 +331,61 @@ public class UserController {
           doctypes.add(doctype);
         }
       }
-      individualExt.setdoctypes(doctypes);
 
-      //save the IndividualExt instance created in goPublish() and populated with value in individual/edit.jsp;
-      individualService.create(individualExt);
+      if(userExt.getuser_type()==0) //自由译员
+      {
+        //get the IndividualExt instance created in goPublish() and populated with value in individual/edit.jsp;
+        IndividualExt individualExt = entityModel.getIndividualExt();
+         
+        //individual has a one-to-one relationship with user, thus set the same 'id' with the related user; see
+        //Individual.hbm.xml;
+        individualExt.setId(userExt.getId());
+  
+        individualExt.setlanguages(languages);
+        individualExt.setfields(fields);
+        individualExt.settranstypes(transtypes);
+        individualExt.setdoctypes(doctypes);
+  
+        //save the IndividualExt instance created in goPublish() and populated with value in individual/edit.jsp;
+        individualService.create(individualExt);
+  
+        //pass userId to upload.jsp and then pass to doUploadFile();
+        entityModel.setDataId(userExt.getId()); 
+  
+        entityModel.setFileType("photo"); //upload photo next;
+  
+    	  model.addAttribute("entityModel",entityModel);
+  
+  		  return "/sys/individual/upload";
+      }
+      else if(userExt.getuser_type()==1) //翻译公司
+      {
+        //get the CompanyExt instance created in goPublish() and populated with value in company/edit.jsp;
+        CompanyExt companyExt = entityModel.getCompanyExt();
+         
+        //company has a one-to-one relationship with user, thus set the same 'id' with the related user; see
+        //Company.hbm.xml;
+        companyExt.setId(userExt.getId());
+  
+        companyExt.setLanguages(languages);
+        companyExt.setFields(fields);
+        companyExt.setTranstypes(transtypes);
+        companyExt.setDoctypes(doctypes);
 
-      //pass userId to upload.jsp and then pass to doUploadFile();
-      entityModel.setDataId(userExt.getId()); 
-
-      entityModel.setFileType("photo"); //upload photo next;
-
-  	  model.addAttribute("entityModel",entityModel);
-
-		  return "/sys/individual/upload";
-    }
-    else if(userExt.getuser_type()==1) //翻译公司
-    {
+        logger.info("create company with id: "+companyExt.getId());
+  
+        //save the CompanyExt instance created in goPublish() and populated with value in company/edit.jsp;
+        companyService.create(companyExt);
+  
+        //pass userId to upload.jsp and then pass to doUploadFile();
+        entityModel.setDataId(userExt.getId()); 
+  
+        entityModel.setFileType("logo"); //upload logo next;
+  
+    	  model.addAttribute("entityModel",entityModel);
+  
+  		  return "/sys/company/upload";
+      }
     }
     else
     {
@@ -511,13 +553,97 @@ public class UserController {
     }
     else if(userExt.getuser_type()==1) //翻译公司
     {
+      String view;
+      if(fileType.equals("logo"))
+      {
+        entityModel.setFileType("authentication_file"); //upload authentication_file next;
+        view = "/sys/company/upload";
+      }
+      else if(fileType.equals("authentication_file"))
+      {
+        view = "forward:/user/query";
+      }
+      else
+      {
+        logger.error("fileType("+fileType+") is invalid, will skip upload the file");
+        skip = 1;
+        view = "/invalid";
+      }
+
+      if(skip == 0)
+      {
+        logger.info("Receiving " + fileType);
+
+        String filePath = "/var/www/ybfiles/company/"+userId+"/"+fileType;
+
+        //Yuanguo: add a number to the suffix of image file;
+        ReceivedData receivedData = UploadUtil.receive(request, true, false, filePath, ".0");
+        List<ReceivedFile> files = receivedData.getFileList(); 
+
+        if(files == null || files.size() == 0)
+        {
+          logger.error("error occurred when receiving " + fileType);
+        }
+        else
+        {
+          if(files.size() > 1)
+          {
+            logger.warn("more than 1 images are uploaded, we only care about the first one");
+          }
+
+          File rawFile = files.get(0).getFile();
+          String suffix = files.get(0).getSuffix();
+
+          CompanyExt company = companyService.load(userId, true);
+
+          if(fileType.equals("logo"))
+          {
+            //generate a large logo and a small logo
+            ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 50, 1f);
+            ImageUtil.resize(rawFile, new File(filePath+"/large"+suffix), 300, 1f);
+
+            company.setLogo_suffix(suffix);
+          }
+          else if(fileType.equals("authentication_file"))
+          {
+            ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
+            company.setAuthfile_suffix(suffix);
+          }
+             
+          companyService.save(company);
+
+          //delete original files if ther is any;
+          File folder = new File(filePath);
+          if(folder.isDirectory())
+          {
+            String[] fileList = folder.list();
+            for(int i=0;i<fileList.length;i++)
+            {
+              if(!fileList[i].endsWith(suffix))
+              {
+                File beDeleted = new File(filePath, fileList[i]);
+                beDeleted.delete();
+              }
+            }
+          }
+          else
+          {
+            logger.warn("Something is wrong, "+filePath+" is not a folder");
+          }
+        }
+      }
+      else
+      {
+        logger.info("Skip uploading " + fileType);
+      }
+
+      request.setAttribute("entityModel",entityModel); //this is the same as model.addAttribute("entityModel",entityModel);
+      return view;
     }
     else
     {
       logger.error("Fail to upload file because user_type ("+userExt.getuser_type()+") is invalid");
       return "/invalid";
     }
-
-    return "/invalid";
   }
 }

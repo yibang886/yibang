@@ -9,11 +9,11 @@
 <%@ include file="/core/includecss.jsp"%>
 
 <script type="text/javascript">
-function doCreate()
+function doPublish(userId)
 {
-  var form = document.getElementById("form");
-  form.action = "<%=request.getContextPath()%>/company/doCreate.action";
-  form.submit();
+    var form = document.getElementById("form");
+    form.action = "<%=request.getContextPath()%>/user/doPublish.action?dataId="+userId;
+    form.submit();
 }
 
 function doEdit()
@@ -23,11 +23,19 @@ function doEdit()
   form.submit();
 }
 
-function cancelIt()
+function cancelIt(operationType)
 {
   var form = document.getElementById("form");
-  form.action = "<%=request.getContextPath()%>/company/query.action";
-  form.submit();
+  if(operationType == "publish")
+  {
+    form.action = "<%=request.getContextPath()%>/user/query.action";
+    form.submit();
+  }
+  else if (operationType == "edit")
+  {
+    form.action = "<%=request.getContextPath()%>/company/query.action";
+    form.submit();
+  }
 }
 
 function checkboxSelect(name, all_none)
@@ -382,42 +390,41 @@ function checkboxSelect(name, all_none)
       <tbody></tbody>
     </table>
 
-    <%-- for "edit", the existing "id" is kept --%>
     <c:if test="${entityModel.operationType eq 'edit'}">
+      <%-- for "edit", the existing "id" is kept --%>
       <input type="hidden" value="${entityModel.companyExt.id}" name="companyExt.id"/>
+
+      <%-- pass query condions back to controller; --%>
+      <%--
+      <input type="hidden" value="${entityModel.companyQueryCon.name}" name="${companyQueryCon.name}"/>
+  
+      <input type="hidden" value="${entityModel.companyQueryCon.city_id}" name="${companyQueryCon.city_id}"/>
+  
+      <input type="hidden" value="${entityModel.companyQueryCon.address}" name="${companyQueryCon.address}"/>
+  
+      <input type="hidden" value="${entityModel.companyQueryCon.website}" name="${companyQueryCon.website}"/>
+  
+      <input type="hidden" value="${entityModel.companyQueryCon.inroduct}" name="${companyQueryCon.inroduct}"/>
+  
+      <input type="hidden" value="${entityModel.companyQueryCon.logo_suffix}" name="${companyQueryCon.logo_suffix}"/>
+  
+      <input type="hidden" value="${entityModel.companyQueryCon.authfile_suffix}" name="${companyQueryCon.authfile_suffix}"/>
+  
+      <input type="hidden" value="${entityModel.companyQueryCon.recompos_id}" name="${companyQueryCon.recompos_id}"/>
+      --%>
+      <input type="hidden" value="${entityModel.companyQueryCon.auth_pass}" name="companyQueryCon.auth_pass"/>
+      <input type="hidden" value="${entityModel.companyQueryCon.valid_pass}" name="companyQueryCon.valid_pass"/>
     </c:if>
-
-    <%-- pass query condions back to controller; --%>
-    <%--
-    <input type="hidden" value="${entityModel.companyQueryCon.name}" name="${companyQueryCon.name}"/>
-
-    <input type="hidden" value="${entityModel.companyQueryCon.city_id}" name="${companyQueryCon.city_id}"/>
-
-    <input type="hidden" value="${entityModel.companyQueryCon.address}" name="${companyQueryCon.address}"/>
-
-    <input type="hidden" value="${entityModel.companyQueryCon.website}" name="${companyQueryCon.website}"/>
-
-    <input type="hidden" value="${entityModel.companyQueryCon.inroduct}" name="${companyQueryCon.inroduct}"/>
-
-    <input type="hidden" value="${entityModel.companyQueryCon.logo_suffix}" name="${companyQueryCon.logo_suffix}"/>
-
-    <input type="hidden" value="${entityModel.companyQueryCon.authfile_suffix}" name="${companyQueryCon.authfile_suffix}"/>
-
-    <input type="hidden" value="${entityModel.companyQueryCon.recompos_id}" name="${companyQueryCon.recompos_id}"/>
-    --%>
-
-    <input type="hidden" value="${entityModel.companyQueryCon.auth_pass}" name="${companyQueryCon.auth_pass}"/>
-    <input type="hidden" value="${entityModel.companyQueryCon.valid_pass}" name="${companyQueryCon.valid_pass}"/>
 
   </form>
 
   <c:if test="${entityModel.operationType eq 'publish'}">
-    <input type="button" value="发布" onclick="doCreate()" />
-    <input type="button" value="取消" onclick="cancelIt()"/>
+    <input type="button" value="发布" onclick="doPublish(${entityModel.dataId})" />
+    <input type="button" value="取消" onclick="cancelIt('publish')"/>
   </c:if>
   <c:if test="${entityModel.operationType eq 'edit'}">
     <input type="button" value="保存" onclick="doEdit()"/>
-    <input type="button" value="取消" onclick="cancelIt()"/>
+    <input type="button" value="取消" onclick="cancelIt('edit')"/>
   </c:if>
 </div>
 
