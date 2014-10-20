@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.common.hibernate.*;
+import com.common.mail.MailUtil;
 
 import com.yb.sys.entity.IndividualExt;
 import com.yb.sys.model.IndividualModel;
@@ -59,13 +60,6 @@ import com.common.upload.ReceivedData;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.mail.Session;
-import java.util.Properties;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.InternetAddress;
-import javax.mail.Message;
-import javax.mail.Transport;
 
 @Controller
 @Scope("request")
@@ -249,6 +243,7 @@ public class IndividualController {
 
 			individualService.save(individualExt);
 
+      //set parameters for upload page;
       entityModel.setDataId(individualExt.getId());
 
       entityModel.setFileType("photo"); //upload photo next;
@@ -553,34 +548,13 @@ public class IndividualController {
               String emailContent = request.getParameter("emailContent");
               logger.debug(emailContent);
 
-              try{
-                String host = "smtp.163.com";
-                String yibangEmail = "yibang886@163.com";
-                String password = "yibang887";
+              String from = "yibang886@163.com";
+              String passwd = "yibang887";
+              String to = individual.getuser().getemail();
+              String title = "译邦网"+operationCN+"结果";
 
-                Properties props = System.getProperties();
-                props.put("mail.smtp.host", host);
-                props.put("mail.smtp.auth", "true");
-
-                Session mailsession = Session.getDefaultInstance(props); 
-                mailsession.setDebug(false);  
-                MimeMessage message = new MimeMessage(mailsession);
-                message.setFrom(new InternetAddress(yibangEmail));
-                message.addRecipient(Message.RecipientType.TO, new InternetAddress(individual.getuser().getemail()));
-                message.addRecipient(Message.RecipientType.CC, new InternetAddress(yibangEmail));
-                message.setSubject("译邦网"+operationCN+"结果");
-                message.setText(emailContent);
-                message.saveChanges();
-                Transport transport = mailsession.getTransport("smtp");  
-                transport.connect(host, yibangEmail, password); 
-                transport.sendMessage(message, message.getAllRecipients());  
-                transport.close();
-              }
-              catch(Exception e)
-              {
-                logger.error("Exception occurred when sending email");
-                e.printStackTrace();
-              }
+              if(MailUtil.sendMail(from, passwd, to, title, emailContent)==false)
+              logger.error("failed to send email to "+to);
             }
           }
           else

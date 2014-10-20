@@ -22,6 +22,77 @@ function showHideImg(id)
   }
 }
 
+function clickRadio(operationType, username)
+{
+  var checkedRadioId;
+  var radios = document.getElementsByName("passFailUnknown");
+  for(var i=0; i< radios.length; i++)
+  {
+    var radio = radios[i];
+    if(radio.checked == true)
+    {
+      checkedRadioId = radio.id;
+      break;
+    }
+  }
+
+  var op;
+  if(operationType == "authenticate")
+  {
+    op = "认证";
+  }
+  else if(operationType == "validate")
+  {
+    op = "审核";
+  }
+
+  if(checkedRadioId == "pass")
+  {
+    var txtArea = document.getElementById("emailContent");
+    txtArea.value = username+"您好！\n" + 
+                    "恭喜你！你已经通过译邦翻译平台的"+op+"！";
+  }
+  else if(checkedRadioId == "fail")
+  {
+    var txtArea = document.getElementById("emailContent");
+    txtArea.value = username+"您好！\n" +
+                    "很遗憾！您未能通过译邦翻译平台的"+op+"。请重新认真填写您公司的资料！";
+  }
+  else
+  {
+    var txtArea = document.getElementById("emailContent");
+    txtArea.value = "";
+  }
+}
+
+function submitOrCancel(subOrCan, operationType, compId)
+{
+  var form = document.getElementById("form");
+
+  if(subOrCan == "submit")
+  {
+    var checkedRadioId;
+    var radios = document.getElementsByName("passFailUnknown");
+    for(var i=0; i< radios.length; i++)
+    {
+      var radio = radios[i];
+      if(radio.checked == true)
+      {
+        checkedRadioId = radio.id;
+        break;
+      }
+    }
+
+    form.action = "<%=request.getContextPath()%>/company/doValidateAuthenticate.action?submitOrCancel=submit&operationType="+operationType+"&compId="+compId+"&result="+checkedRadioId;
+    form.submit();
+  }
+  else
+  {
+    form.action = "<%=request.getContextPath()%>/company/doValidateAuthenticate.action?submitOrCancel=cancel&operationType="+operationType;
+    form.submit();
+  }
+}
+
 function goBack()
 {
   var form = document.getElementById("form");
@@ -44,7 +115,7 @@ function goBack()
       <td>
         <div>
           <c:if test="${!empty entityModel.companyExt.logo_suffix}">
-            <img src="/ybfiles/individual/${entityModel.companyExt.id}/logo/large${entityModel.companyExt.logo_suffix}" />
+            <img src="/ybfiles/company/${entityModel.companyExt.id}/logo/large${entityModel.companyExt.logo_suffix}" />
           </c:if>
         </div>
       </td>
@@ -285,6 +356,56 @@ function goBack()
   </table>
 
   <form id="form" name="companyForm" method="post">
+
+    <c:if test="${ entityModel.operationType eq 'validate' || entityModel.operationType eq 'authenticate' }">
+      <table border="0" cellpadding="0" cellspacing="0" class="table_date" id="valid_auth">
+  
+        <tr>
+          <th width="15%">
+            <div>
+              <c:if test="${ entityModel.operationType eq 'validate' }">请审核此公司</c:if>
+              <c:if test="${ entityModel.operationType eq 'authenticate' }">请认证此公司</c:if>
+            </div>
+          </th>
+          <th width="85%"><div></div></th>
+        </tr>
+  
+        <tr>
+          <td>
+            <div>
+              <c:if test="${ entityModel.operationType eq 'validate' }">审核结果</c:if>
+              <c:if test="${ entityModel.operationType eq 'authenticate' }">认证结果</c:if>
+            </div>
+          </td>
+          <td>
+            <div>
+              <input type="radio" name="passFailUnknown" id="pass" onclick="clickRadio('${entityModel.operationType}','${entityModel.companyExt.name}')"/>通过
+              <input type="radio" name="passFailUnknown" id="fail" onclick="clickRadio('${entityModel.operationType}','${entityModel.companyExt.name}')"/>未通过
+              <input type="radio" name="passFailUnknown" id="unknown" onclick="clickRadio('${entityModel.operationType}','${entityModel.companyExt.name}')"/>
+                <c:if test="${ entityModel.operationType eq 'validate' }">暂不审核</c:if>
+                <c:if test="${ entityModel.operationType eq 'authenticate' }">暂不认证</c:if>
+            </div>
+          </td>
+        </tr>
+  
+        <tr>
+          <td>
+            <div>邮件内容</div>
+          </td>
+          <td>
+            <div><textarea name="emailContent" rows="5" cols="80" id="emailContent"></textarea></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input type="button" id="valid_auth_button" onclick="submitOrCancel('submit','${entityModel.operationType}', ${entityModel.companyExt.id})" value="提交"/>
+            <input type="button" id="valid_auth_button" onclick="submitOrCancel('cancel','${entityModel.operationType}', ${entityModel.companyExt.id})" value="取消"/>
+          </td>
+        </tr>
+      </table>
+    </c:if>
+
+
     <c:if test="${entityModel.operationType eq 'view'}">
       <input type="button" value="返回" onclick="goBack()"/>
     </c:if>
