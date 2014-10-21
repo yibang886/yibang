@@ -58,6 +58,8 @@ import com.common.upload.UploadUtil;
 import com.common.upload.ReceivedFile;
 import com.common.upload.ReceivedData;
 
+import com.common.config.ConfigService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,6 +98,9 @@ public class IndividualController {
 	@Resource(name = "doctypeService")
 	private IDoctypeServiceExt doctypeService;
 
+	@Resource(name = "configService")
+	private ConfigService configService;
+
 
 
 	@RequestMapping(value = "/individual/index")
@@ -109,6 +114,8 @@ public class IndividualController {
 	public String query(@ModelAttribute IndividualModel individualModel, ModelMap model){
 		IndividualExt individualQueryCon = individualModel.getIndividualQueryCon();
     logger.debug("individualQueryCon is null? "+ (individualQueryCon==null));
+
+    logger.error("Yuanguo: config, url="+configService.getProperty("url"));
 
 		List<ICondition> conditions = new ArrayList<ICondition>();
 

@@ -222,4 +222,12 @@
     <bean id="recomposService" class="com.yb.sys.service.RecomposServiceExt">
       <property name="recomposDao" ref="recomposDao" />
     </bean>
+
+    <bean id="configService" class="com.common.config.ConfigService">
+      <property name="properties">
+        <props>
+            <prop key="url">http://www.google.com.yuanguo</prop>
+        </props>  
+      </property>  
+    </bean>
 </beans>
