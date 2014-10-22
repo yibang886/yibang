@@ -108,7 +108,7 @@ function doUploadFile(usecase,fileType,userId,skip)
           </c:if>
           <c:if test="${ entityModel.fileType eq 'profession_cert' }">
             <td>
-              <b>上传翻译证书</b>
+              <b>上传专业证书</b>
             </td>
           </c:if>
           <c:if test="${ entityModel.fileType eq 'authentication_file' }">
