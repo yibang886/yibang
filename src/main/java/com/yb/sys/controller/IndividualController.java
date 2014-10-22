@@ -115,8 +115,6 @@ public class IndividualController {
 		IndividualExt individualQueryCon = individualModel.getIndividualQueryCon();
     logger.debug("individualQueryCon is null? "+ (individualQueryCon==null));
 
-    logger.error("Yuanguo: config, url="+configService.getProperty("url"));
-
 		List<ICondition> conditions = new ArrayList<ICondition>();
 
 		if(individualQueryCon != null){
@@ -329,7 +327,7 @@ public class IndividualController {
     {
       logger.info("Receiving " + fileType);
 
-      String filePath = "/var/www/ybfiles/individual/"+indivId+"/"+fileType;
+      String filePath = configService.getProperty("docBase")+"/ybstore/individual/"+indivId+"/"+fileType;
 
       //add time stamp to the file suffix so that "src" in <img src="..."/> will change when the image 
       //is updated. As a result, browser will re-load the image instead of using the cached one;
@@ -356,29 +354,29 @@ public class IndividualController {
         if(fileType.equals("photo"))
         {
           //generate a large photo and a small photo
-          ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 50, 1f);
-          ImageUtil.resize(rawFile, new File(filePath+"/large"+suffix), 200, 1f);
+          ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), Integer.parseInt(configService.getProperty("photo.small.width")), 1f);
+          ImageUtil.resize(rawFile, new File(filePath+"/large"+suffix), Integer.parseInt(configService.getProperty("photo.large.width")), 1f);
 
           individual.setphoto_suffix(suffix);
         }
         else if(fileType.equals("language_cert"))
         {
-          ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
+          //ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
           individual.setlangcert_suffix(suffix);
         }
         else if(fileType.equals("translation_cert"))
         {
-          ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
+          //ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
           individual.settranscert_suffix(suffix);
         }
         else if(fileType.equals("profession_cert"))
         {
-          ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
+          //ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
           individual.setprofcert_suffix(suffix);
         }
         else if(fileType.equals("authentication_file"))
         {
-          ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
+          //ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
           individual.setauthfile_suffix(suffix);
         }
            

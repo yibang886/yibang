@@ -55,6 +55,8 @@ import com.yb.sys.entity.DoctypeExt;
 import com.yb.sys.model.DoctypeModel;
 import com.yb.sys.service.IDoctypeServiceExt;
 
+import com.common.config.ConfigService;
+
 @Controller
 @Scope("request")
 public class CompanyController 
@@ -84,6 +86,8 @@ public class CompanyController
 	@Resource(name = "doctypeService")
 	private IDoctypeServiceExt doctypeService;
 
+	@Resource(name = "configService")
+	private ConfigService configService;
 
   
   @RequestMapping(value = "/company/index")
@@ -316,7 +320,7 @@ public class CompanyController
     {
       logger.info("Receiving " + fileType);
 
-      String filePath = "/var/www/ybfiles/company/"+compId+"/"+fileType;
+      String filePath = configService.getProperty("docBase")+"/ybstore/company/"+compId+"/"+fileType;
 
       //add time stamp to the file suffix so that "src" in <img src="..."/> will change when the image 
       //is updated. As a result, browser will re-load the image instead of using the cached one;
@@ -343,14 +347,14 @@ public class CompanyController
         if(fileType.equals("logo"))
         {
           //generate a large logo and a small logo 
-          ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 50, 1f);
-          ImageUtil.resize(rawFile, new File(filePath+"/large"+suffix), 300, 1f);
+          ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), Integer.parseInt(configService.getProperty("logo.small.width")), 1f);
+          ImageUtil.resize(rawFile, new File(filePath+"/large"+suffix), Integer.parseInt(configService.getProperty("logo.large.width")), 1f);
 
           company.setLogo_suffix(suffix);
         }
         else if(fileType.equals("authentication_file"))
         {
-          ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
+          //ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
           company.setAuthfile_suffix(suffix);
         }
            

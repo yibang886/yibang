@@ -226,7 +226,11 @@
     <bean id="configService" class="com.common.config.ConfigService">
       <property name="properties">
         <props>
-            <prop key="url">http://www.google.com.yuanguo</prop>
+          <prop key="docBase">/home/www</prop>
+          <prop key="photo.small.width">50</prop>
+          <prop key="photo.large.width">150</prop>
+          <prop key="logo.small.width">50</prop>
+          <prop key="logo.large.width">250</prop>
         </props>  
       </property>  
     </bean>

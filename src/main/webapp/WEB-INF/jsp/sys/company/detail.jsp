@@ -115,7 +115,7 @@ function goBack()
       <td>
         <div>
           <c:if test="${!empty entityModel.companyExt.logo_suffix}">
-            <img src="/ybfiles/company/${entityModel.companyExt.id}/logo/large${entityModel.companyExt.logo_suffix}" />
+            <img src="/ybstore/company/${entityModel.companyExt.id}/logo/large${entityModel.companyExt.logo_suffix}" />
           </c:if>
         </div>
       </td>
@@ -236,7 +236,7 @@ function goBack()
         <div>
           <c:if test="${!empty entityModel.companyExt.authfile_suffix}">
             <a onclick="showHideImg('authfile')" style="color:red;">[点击显示与隐藏图片]</a>
-            <img src="/ybfiles/company/${entityModel.companyExt.id}/authentication_file/raw${entityModel.companyExt.authfile_suffix}"style='display:none' id='authfile'/>
+            <img src="/ybstore/company/${entityModel.companyExt.id}/authentication_file/raw${entityModel.companyExt.authfile_suffix}"style='display:none' id='authfile'/>
           </c:if>
         </div>
       </td>

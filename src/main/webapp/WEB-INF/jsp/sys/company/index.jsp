@@ -132,7 +132,7 @@ function doQuery()
 
             <c:forEach var="var" items="${entityModel.items}">
               <tr onmouseover="this.className='over'" onmouseout="this.className='out'">
-                <td><div><img src="/ybfiles/company/${var.id}/logo/small${var.logo_suffix}"/></div></td>
+                <td><div><img src="/ybstore/company/${var.id}/logo/small${var.logo_suffix}"/></div></td>
                 <td><div><c:out value="${var.name}" escapeXml="true"/></div></td>
                 <td><div><c:out value="${var.city.city}" escapeXml="true"/></div></td>
                 <td><div>

@@ -117,7 +117,7 @@
       <td>
         <div>
           <c:if test="${!empty individualModel.individualExt.photo_suffix}">
-            <img src="/ybfiles/individual/${individualModel.individualExt.id}/photo/large${individualModel.individualExt.photo_suffix}" />
+            <img src="/ybstore/individual/${individualModel.individualExt.id}/photo/large${individualModel.individualExt.photo_suffix}" />
           </c:if>            
         </div>
       </td>
@@ -264,7 +264,7 @@
         <div>
           <c:if test="${!empty individualModel.individualExt.langcert_suffix}">
             <a onclick="showHideImg('langcert')" style="color:red;">[点击显示与隐藏图片]</a> 
-            <img src="/ybfiles/individual/${individualModel.individualExt.id}/language_cert/raw${individualModel.individualExt.langcert_suffix}" style='display:none' id='langcert'/>
+            <img src="/ybstore/individual/${individualModel.individualExt.id}/language_cert/raw${individualModel.individualExt.langcert_suffix}" style='display:none' id='langcert'/>
           </c:if>            
         </div>
       </td>
@@ -276,7 +276,7 @@
         <div>
           <c:if test="${!empty individualModel.individualExt.transcert_suffix}">
             <a onclick="showHideImg('transcert')" style="color:red;">[点击显示与隐藏图片]</a> 
-            <img src="/ybfiles/individual/${individualModel.individualExt.id}/translation_cert/raw${individualModel.individualExt.transcert_suffix}" style='display:none' id='transcert'/>
+            <img src="/ybstore/individual/${individualModel.individualExt.id}/translation_cert/raw${individualModel.individualExt.transcert_suffix}" style='display:none' id='transcert'/>
           </c:if>            
         </div>
       </td>
@@ -288,7 +288,7 @@
         <div>
           <c:if test="${!empty individualModel.individualExt.profcert_suffix}">
             <a onclick="showHideImg('profcert')" style="color:red;">[点击显示与隐藏图片]</a> 
-            <img src="/ybfiles/individual/${individualModel.individualExt.id}/profession_cert/raw${individualModel.individualExt.profcert_suffix}" style='display:none' id='profcert'/>
+            <img src="/ybstore/individual/${individualModel.individualExt.id}/profession_cert/raw${individualModel.individualExt.profcert_suffix}" style='display:none' id='profcert'/>
           </c:if>            
         </div>
       </td>
@@ -357,7 +357,7 @@
         <div>
           <c:if test="${!empty individualModel.individualExt.authfile_suffix}">
             <a onclick="showHideImg('authfile')" style="color:red;">[点击显示与隐藏图片]</a>
-            <img src="/ybfiles/individual/${individualModel.individualExt.id}/authentication_file/raw${individualModel.individualExt.authfile_suffix}"style='display:none' id='authfile'/>
+            <img src="/ybstore/individual/${individualModel.individualExt.id}/authentication_file/raw${individualModel.individualExt.authfile_suffix}"style='display:none' id='authfile'/>
           </c:if>
         </div>
       </td>
