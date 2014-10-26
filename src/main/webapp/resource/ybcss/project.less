@@ -65,6 +65,7 @@ a:hover{
 			width:650px;
 			height:38px;
 			border:1px solid #dddddd; 
+			vertical-align: middle;
 		}
 		.search-btn{
 			font-size: 16px;
@@ -73,6 +74,7 @@ a:hover{
 			width:104px;
 			height:40px;
 			border:0;
+			vertical-align: middle;
 		}
 	}
 }
@@ -112,6 +114,7 @@ a:hover{
 		height:265px;		
 		background: #fff;
 		margin-right:35px;
+		overflow: hidden;
 		img{
 			width:250px;
 			height:265px;
@@ -159,6 +162,7 @@ a:hover{
 	position: relative;
 	margin-top: -1px;
 	overflow: hidden;
+	*zoom:1;
 	.authen-flag{
 		position: absolute;
 		right:0;
@@ -171,7 +175,8 @@ a:hover{
 		float: left;	
 		width:250px;
 		height:180px;
-		margin-right:35px;		
+		margin-right:35px;
+		overflow: hidden;		
 		img{
 			width:250px;
 			height:180px;
@@ -237,6 +242,7 @@ a:hover{
 		text-align: center;
 		width:90px;
 		height:100px;
+		overflow: hidden;
 		img{
 			display: inline-block;
 			vertical-align: middle;
@@ -262,6 +268,7 @@ a:hover{
 }
 
 .company-lst-1,.company-lst-2,.company-lst-3{
+	*zoom:1;
 	margin-top: 25px;
 }
 .r-link{
@@ -373,9 +380,8 @@ a:hover{
 		text-align: center;
 		ul{
 			*zoom:1;
-			display: table-cell;
 		}
-		li{display: inline-block;margin-left:10px;}
+		li{display: inline-block;margin-left:10px;*display: inline;}
 	}
 
 }
