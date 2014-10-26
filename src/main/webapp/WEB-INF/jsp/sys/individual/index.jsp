@@ -1,4 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@ page import="com.yb.sys.entity.UserExt" %>
 <%@ include file="/core/include.jsp"%>
 <!DOCTYPE html>
 <html>
@@ -8,11 +9,52 @@
 <link href="<%=request.getContextPath()%>/resource/js/pager/Pager.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<%=request.getContextPath()%>/resource/js/jquery.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resource/js/pager/jquery.pager.js"></script>
+
+<link href="<%=request.getContextPath()%>/resource/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<%=request.getContextPath()%>/resource/js/bootstrap.min.js"></script>
 </head>
+
 <body>
+
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">译邦网-个人译员</a>
+    </div>
+  
+    <%! UserExt baseUserExt = null; %>
+    <% baseUserExt = (UserExt)request.getSession().getAttribute("user"); %>
+
+    <c:if test="<%= baseUserExt!=null %>">
+      <div>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <%= baseUserExt.getemail() %>
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="divider"></li>
+              <li><a href="<%=request.getContextPath()%>/user/logout.action">退出</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </c:if>
+    <c:if test="<%= baseUserExt==null %>">
+      <div>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="active"><a href="<%=request.getContextPath()%>/login.jsp">登录</a></li>
+        </ul>
+      </div>
+    </c:if>
+
+  </nav>
+
+<%--
   <div class="weizhi">
     <div class="weizhi_bj">个人译员信息</div>
   </div>
+--%>
 
 
   <form id="form" method="post">

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.common.hibernate.*;
 
@@ -59,6 +60,7 @@ import com.yb.sys.service.IDoctypeServiceExt;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,11 +108,59 @@ public class UserController {
 
 	@Resource(name = "configService")
 	private ConfigService configService;
+
+  
+
+  @RequestMapping(value = "/user/login")
+  public String login(@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session, HttpServletRequest request, ModelMap map)
+  {
+    if(email!=null&&!email.isEmpty())
+    {
+      List<ICondition> conditions = new ArrayList<ICondition>();
+      conditions.add(new EqCondition("email",email));
+      List<UserExt> userList = userService.criteriaQuery(conditions);
+      if(userList.size()==1 && userList.get(0).getpassword()!=null)
+      {
+        UserExt userExt = userList.get(0);
+        if(userExt.getpassword().equals(password))
+        {
+          session.setAttribute("user", userExt);
+          return "../../../login";
+        }
+        else
+        {
+          map.addAttribute("error", "用户名不存在或者密码错误");
+        }
+      }
+      else
+      {
+        map.addAttribute("error", "用户名不存在或者密码错误");
+      }
+    }
+    else
+    {
+      map.addAttribute("error", "用户名不存在或者密码错误");
+    }
+    return "../../../login";
+  }
+
+  @RequestMapping(value = "/user/logout")
+  public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+  {
+    session.setAttribute("user", null);
+    return "../../../sessionout";
+  }
 	
 	@RequestMapping(value = "/user/index")
 	public String index(@ModelAttribute UserModel userModel, ModelMap model){
-		model.addAttribute(userModel);
+
+    //even for index page, we don't show admin account;
+		List<ICondition> conditions = new ArrayList<ICondition>();
+    conditions.add(new NeCondition("user_type",new Long(2L)));
+    conditions.add(new NeCondition("user_type",new Long(3L)));
 		
+		userModel.setItems(userService.criteriaQuery(conditions));
+		model.addAttribute(userModel);
 		return "/sys/user/index";
 	}
 	
@@ -118,8 +168,7 @@ public class UserController {
 	public String query(@ModelAttribute UserModel userModel, ModelMap model){
 		UserExt userQueryCon = userModel.getUserQueryCon();
 		List<ICondition> conditions = new ArrayList<ICondition>();
-		if(userQueryCon != null){
-		}
+    generateConditions(conditions, userQueryCon);
 		userModel.setItems(userService.criteriaQuery(conditions));
 		model.addAttribute(userModel);
 		return "/sys/user/index";
@@ -647,6 +696,15 @@ public class UserController {
     {
       logger.error("Fail to upload file because user_type ("+userExt.getuser_type()+") is invalid");
       return "/invalid";
+    }
+  }
+
+  private static void generateConditions(List<ICondition> condList, UserExt queryCon)
+  {
+    condList.add(new NeCondition("user_type",new Long(2L)));
+    condList.add(new NeCondition("user_type",new Long(3L)));
+    if(queryCon!=null)
+    {
     }
   }
 }

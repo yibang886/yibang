@@ -248,10 +248,10 @@ CREATE TABLE IF NOT EXISTS user
   fax VARCHAR(16),                             /*传真*/
   qq VARCHAR(16),                              /*QQ号*/
   weixin VARCHAR(32),                          /*微信*/
-  user_type INT UNSIGNED NOT NULL,             /*用户类型，0:个人译员； 1:翻译公司; 关联individual或company后不能修改*/
+  user_type INT UNSIGNED NOT NULL,             /*用户类型，0:个人译员; 1:翻译公司; 2:管理员; 3:超级管理员   关联individual或company后不能修改*/
   coin INT UNSIGNED,                           /*金币数，一定数量则允许用户选择推荐位; 目前版本中金币可通过推荐用户得到*/
   PRIMARY KEY (id)
-) ENGINE InnoDB, DEFAULT CHARACTER SET utf8 AUTO_INCREMENT 1;
+) ENGINE InnoDB, DEFAULT CHARACTER SET utf8 AUTO_INCREMENT 1000;
 
 -- create table 'individual'
 DROP TABLE IF EXISTS individual;
@@ -396,30 +396,34 @@ CREATE TABLE IF NOT EXISTS company_doctype
   PRIMARY KEY(comp_id, doctype_id)
 ) ENGINE InnoDB, DEFAULT CHARACTER SET utf8;
 
+
+-- 管理员
+INSERT INTO user(id,email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES (1,'yibang886@163.com','yibang887','','','','','',2,0);
+
 -- Sample Data: 个人译员 
 INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('watermelon-wxr@163.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',0,0);
 
-INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,exp_year,exp_trans,works,introduct,auth_pass,valid_pass,recompos_id) VALUES (1,'James',0,2,5,1985,1,'http://yuanguo.page.com',1,4,15,'C语言入门','认证负责，经验丰富',0,0,3);
+INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,exp_year,exp_trans,works,introduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'James',0,2,5,1985,1,'http://yuanguo.page.com',1,4,15,'C语言入门','认证负责，经验丰富',0,0,3);
 
-INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(1,1);
-INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(1,3);
-INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(1,5);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),3);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),5);
 
-INSERT INTO individual_lang(indiv_id,lang_id) VALUES(1,62);
-INSERT INTO individual_lang(indiv_id,lang_id) VALUES(1,69);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),62);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),69);
 
-INSERT INTO individual_field(indiv_id,field_id) VALUES(1,5);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),5);
 
-INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(1,2);
-INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(1,4);
-INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(1,6);
-INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(1,8);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),4);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),6);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),8);
 
 
 
 -- Sample Data: 北京设美译达翻译有限公司
 INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('yuanguo.h_001@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',1,1000);
-INSERT INTO company(id,name,city_id,address,website,inroduct,auth_pass,valid_pass,recompos_id) VALUES (2,'北京设美译达翻译有限公司',1,'北京市朝阳区花园路9号','www.baidu.com','公司规模大，正规，信誉良好，快速准确',0,0,1);
+INSERT INTO company(id,name,city_id,address,website,inroduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'北京设美译达翻译有限公司',1,'北京市朝阳区花园路9号','www.baidu.com','公司规模大，正规，信誉良好，快速准确',0,0,1);
 
 INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持笔译
 INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),2);  -- 此公司支持口译
