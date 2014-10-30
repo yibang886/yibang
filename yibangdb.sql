@@ -230,11 +230,11 @@ CREATE TABLE IF NOT EXISTS recompos
   PRIMARY KEY (id)
 ) ENGINE InnoDB, DEFAULT CHARACTER SET utf8 AUTO_INCREMENT 1;
 
-INSERT INTO recompos(recompos) VALUES ('NO');
 INSERT INTO recompos(recompos) VALUES ('A1');
 INSERT INTO recompos(recompos) VALUES ('A2');
 INSERT INTO recompos(recompos) VALUES ('A3');
 INSERT INTO recompos(recompos) VALUES ('A4');
+INSERT INTO recompos(recompos) VALUES ('NO');
 
 -- create table 'user'
 DROP TABLE IF EXISTS user;

@@ -377,7 +377,7 @@ function checkboxSelect(name, all_none)
               </c:if>
               <c:if test="${ entityModel.operationType eq 'publish' }">
                 <c:forEach items="${entityModel.recomposEnum}" var="var">
-                  <option value="${var.id}">
+                  <option value="${var.id}" selected="true"> <%-- if all set selected, the last one will take effect --%>
                     ${var.recompos}
                   </option>
                 </c:forEach>
