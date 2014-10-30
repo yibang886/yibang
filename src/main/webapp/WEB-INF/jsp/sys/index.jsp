@@ -1,4 +1,6 @@
-﻿<!DOCTYPE HTML>
+﻿<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@ include file="/core/include.jsp"%>
+<!DOCTYPE HTML>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -39,34 +41,62 @@
             <div class="layout-left">
 
                 <div class="company-lst-1">
-                    <div class="company-card-1 clearfix">
-                        <div class="authen-flag"></div>
-                        <div class="pic-block">
-                            <img src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt="">                       
+
+                    <c:if test="${companyA1 != null}">
+                        <div class="company-card-1 clearfix">
+                            <c:if test="${companyA1.auth_pass==1}">
+                                <div class="authen-flag"></div>
+                            </c:if>
+                            <div class="pic-block">
+                                <img src="/ybstore/company/${companyA1.id}/logo/large${companyA1.logo_suffix}" alt=""/>
+                            </div>
+                            <h2>${companyA1.name}</h2>
+                            <ul class="lst-c1">
+                                <li>
+                                    <span class="num">1</span><b>支持语种：</b>
+                                    <c:forEach var="lang" items="${companyA1.languages}">
+                                        ${lang.language}
+                                    </c:forEach>
+                                </li>
+                                <li>
+                                    <span class="num">2</span><b>支持领域：</b>
+                                    <c:forEach var="field" items="${companyA1.fields}">
+                                        ${field.field}
+                                    </c:forEach>
+                                </li>
+                                <li>
+                                    <span class="num">3</span><b>翻译类型：</b>
+                                    <c:forEach var="transtype" items="${companyA1.transtypes}">
+                                        ${transtype.transtype}
+                                    </c:forEach>
+                                </li>
+                                <li>
+                                    <span class="num">4</span><b>文档类型：</b>
+                                    <c:forEach var="doctype" items="${companyA1.doctypes}">
+                                        ${doctype.doctype}
+                                    </c:forEach>
+                                </li>
+                            </ul>
+                            <p class="other-info">
+                                <c:if test="${!empty companyA1.user.tel}">
+                                    <span class="info-item">电话：${companyA1.user.tel}</span>
+                                </c:if>
+                                <c:if test="${!empty companyA1.user.mobile}">
+                                    <span class="info-item">手机：${companyA1.user.mobile}</span>
+                                </c:if>
+                                <c:if test="${!empty companyA1.user.qq}">
+                                    <span class="info-item">QQ：${companyA1.user.qq}</span>
+                                </c:if>
+                                <c:if test="${!empty companyA1.user.weixin}">
+                                    <span class="info-item">微信：${companyA1.user.weixin}</span>
+                                </c:if>
+                                <c:if test="${!empty companyA1.user.email}">
+                                    <span class="info-item">邮箱：${companyA1.user.email}</span>
+                                </c:if>
+                            </p>
                         </div>
-                        <h2>标题标题标题标题标题</h2>
-                        <ul class="lst-c1">
-                            <li>
-                                <span class="num">1</span> 北京专业翻译公司
-                            </li>
-                            <li>
-                                <span class="num">2</span> 北京专业翻译公司
-                            </li>
-                            <li>
-                                <span class="num">3</span> 北京专业翻译公司
-                            </li>
-                            <li>
-                                <span class="num">4</span> 北京专业翻译公司
-                            </li>
-                        </ul>
-                        <p class="other-info">
-                            <span class="info-item">电话：1234566777</span>
-                            <span class="info-item">电话：1234566777</span>
-                            <span class="info-item">电话：1234566777</span>
-                            <span class="info-item">电话：1234566777</span>
-                            <span class="info-item">电话：1234566777</span>
-                        </p>
-                    </div>                    
+                    </c:if>
+
                 </div>
 
                 <div class="company-lst-2">
