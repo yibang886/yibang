@@ -400,10 +400,11 @@ CREATE TABLE IF NOT EXISTS company_doctype
 -- 管理员
 INSERT INTO user(id,email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES (1,'yibang886@163.com','yibang887','','','','','',2,0);
 
--- Sample Data: 个人译员 
-INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('watermelon-wxr@163.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',0,0);
 
-INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,exp_year,exp_trans,works,introduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'James',0,2,5,1985,1,'http://yuanguo.page.com',1,4,15,'C语言入门','认证负责，经验丰富',0,0,3);
+-- Sample Data: 个人译员 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('james@163.com','password123!','82158278','18612802724','82158278','281574876','281574876@vchat',0,200);
+
+INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,exp_year,exp_trans,works,introduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'LeBron, James',0,2,5,1985,1,'http://lebron.james.page.com',1,4,15,'How to play basketball','认证负责，经验丰富',0,0,3);
 
 INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),1);
 INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),3);
@@ -420,10 +421,213 @@ INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),6);
 INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),8);
 
 
+-- Sample Data: 个人译员 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('bryant@163.com','password123!','82158278','18612802724','82158278','281574876','281574876@vchat',0,0);
+
+INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,exp_year,exp_trans,works,introduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'Kobe, Bryant',0,2,5,1985,1,'http://kobe.page.com',1,4,15,'Introduction of C++','认证负责，经验丰富',0,0,1);
+
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),4);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),5);
+
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),3);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),9);
+
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),5);
+
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),3);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),4);
+
+
+-- Sample Data: 个人译员 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('kirilenko@gmail.com','password123!','82158278','18612802724','82158278','281574876','281574876@vchat',0,400);
+
+INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,exp_year,exp_trans,works,introduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'Kirilenko',0,2,5,1985,1,'http://kirilenko.page.com',1,4,15,'Begin with basketball','profound and hardworking',0,0,2);
+
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),3);
+
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),3);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),8);
+
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),10);
+
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),4);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),6);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),8);
+
+
+
+-- Sample Data: 个人译员 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('andersen@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@vchat',0,1000);
+
+INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,exp_year,exp_trans,works,introduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'Andersen',0,2,5,1985,1,'http://andersen.page.com',1,4,15,'Begin with basketball','profound and hardworking',0,0,5);
+
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),3);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),6);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),5);
+
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),4);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),7);
+
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),10);
+
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),5);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),8);
+
+
+-- Sample Data: 个人译员 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('arsik@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@vchat',0,300);
+
+INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,exp_year,exp_trans,works,introduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'Arsik',0,2,5,1985,1,'http://arsik.page.com',1,4,15,'Programming Beginner','famous professor',0,0,2);
+
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),4);
+
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),4);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),9);
+
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),3);
+
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),3);
+
+
+-- Sample Data: 个人译员 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('ariza@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@vchat',0,200);
+
+INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,exp_year,exp_trans,works,introduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'Ariza',0,2,5,1985,1,'http://ariza.page.com',1,4,15,'C Language Beginner','have 10 years of experience',0,0,1);
+
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),3);
+
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),4);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),9);
+
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),3);
+
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),3);
+
+
+-- Sample Data: 个人译员 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('durant@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@vchat',0,100);
+
+INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,exp_year,exp_trans,works,introduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'Durant, Kevin',0,2,5,1985,1,'http://durant.page.com',1,4,15,'C Language Beginner','have 10 years of experience',0,0,2);
+
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),3);
+
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),4);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),9);
+
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),3);
+
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),3);
+
+
+-- Sample Data: 个人译员 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('duncan@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@vchat',0,100);
+
+INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,exp_year,exp_trans,works,introduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'Duncan, Tim',0,2,5,1985,1,'http://duncan.page.com',1,4,15,'C Language Beginner','have 10 years of experience',0,0,3);
+
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),3);
+
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),4);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),9);
+
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),3);
+
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),3);
+
+
+
+-- Sample Data: 个人译员 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('ginobili@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@vchat',0,100);
+
+INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,exp_year,exp_trans,works,introduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'Ginobili, Manu',0,2,5,1985,1,'http://ginobili.page.com',1,4,15,'C Language Beginner','have 10 years of experience',0,0,2);
+
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),3);
+
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),4);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),9);
+
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),3);
+
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),3);
+
+
+
+-- Sample Data: 个人译员 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('griffin@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@vchat',0,100);
+
+INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,exp_year,exp_trans,works,introduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'Griffin, Blak',0,2,5,1985,1,'http://griffin.page.com',1,4,15,'C Language Beginner','have 10 years of experience',0,0,2);
+
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),3);
+
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),4);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),9);
+
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),3);
+
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),3);
+
+
+
 
 -- Sample Data: 北京设美译达翻译有限公司
-INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('yuanguo.h_001@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',1,1000);
-INSERT INTO company(id,name,city_id,address,website,inroduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'北京设美译达翻译有限公司',1,'北京市朝阳区花园路9号','www.baidu.com','公司规模大，正规，信誉良好，快速准确',0,0,1);
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('shemeiyida@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',1,20);
+INSERT INTO company(id,name,city_id,address,website,inroduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'北京设美译达翻译有限公司',1,'北京市朝阳区花园路9号','www.baidu.com','公司规模大，正规，信誉良好，快速准确',0,0,5);
 
 INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持笔译
 INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),2);  -- 此公司支持口译
@@ -447,32 +651,288 @@ INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),8);  -- 
 INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),9);  -- 此公司支持标书翻译
  
 
--- Sample Data: 365翻译公司
--- INSERT INTO company(name,logo,descrip,tel,mobile,email,address) VALUES ('365翻译公司','logo/365.jpeg','全国快速网上报价，行业No1；10年行业经验，80种语言互译，60个专业领域','021-12341234','86+15810535719','365@gmail.com','上海松江路31号');
--- 
--- INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),3);  -- 此公司支持笔译
--- INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),4);  -- 此公司支持口译
--- INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),5);  -- 此公司支持同声传译
--- INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),7);  -- 此公司支持速记
--- 
--- INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),5);  -- 此公司支持英语翻译
--- INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),11); -- 此公司支持日语翻译
--- INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),3);  -- 此公司支持简体中文的翻译
--- INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),6);  -- 此公司支持法语的翻译
--- INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),9);  -- 此公司支持葡萄牙语的翻译
--- INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),15);  -- 此公司支持蒙古语的翻译
--- 
--- INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),3);  -- 此公司支持医学领域的翻译
--- INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),6);  -- 此公司支持外贸领域的翻译
--- INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),12); -- 此公司支持建筑领域的翻译
--- INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),13); -- 此公司支持航空领域的翻译
--- INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),14); -- 此公司支持化工领域的翻译
--- INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),20); -- 此公司支持造纸领域的翻译
--- INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),21); -- 此公司支持印刷领域的翻译
--- 
--- INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),6);   -- 此公司支持图书翻译
--- INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),8);   -- 此公司支持合同翻译
--- INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),9);   -- 此公司支持协议翻译
--- INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),11);  -- 此公司支持标书翻译
--- INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),23);  -- 此公司支持审计翻译
--- INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),24);  -- 此公司支持广告翻译
+-- Sample Data: 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('huiyida@gmail.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',1,30);
+INSERT INTO company(id,name,city_id,address,website,inroduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'汇译达翻译有限公司',2,'上海中山路2号','http://www.baidu.com','公司规模大，信誉良好，快速准确',0,0,2);
+
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持笔译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),2);  -- 此公司支持口译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),3);  -- 此公司支持同声传译
+ 
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),62);  -- 此公司支持英语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),49);  -- 此公司支持日语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),69);  -- 此公司支持简体中文的翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),20);  -- 此公司支持法语的翻译
+ 
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持医学领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),4);  -- 此公司支持外贸领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),7);  -- 此公司支持工程领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),10); -- 此公司支持建筑领域的翻译
+ 
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),4);   -- 此公司支持图书翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),5);   -- 此公司支持文献翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),6);   -- 此公司支持合同翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),7);   -- 此公司支持协议翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),8);  -- 此公司支持专利翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),9);  -- 此公司支持标书翻译
+
+
+
+-- Sample Data: 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('365@gmail.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',1,50);
+INSERT INTO company(id,name,city_id,address,website,inroduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'北京365翻译公司',1,'北京海淀区学院路2号','http://www.sina.com','汇集各语种专家，为您服务',0,0,2);
+
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),2);  -- 此公司支持口译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),3);  -- 此公司支持同声传译
+ 
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),62);  -- 此公司支持英语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),49);  -- 此公司支持日语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),69);  -- 此公司支持简体中文的翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),20);  -- 此公司支持法语的翻译
+ 
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持医学领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),4);  -- 此公司支持外贸领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),7);  -- 此公司支持工程领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),10); -- 此公司支持建筑领域的翻译
+ 
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),4);   -- 此公司支持图书翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),6);   -- 此公司支持合同翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),7);   -- 此公司支持协议翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),8);  -- 此公司支持专利翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),9);  -- 此公司支持标书翻译
+
+
+
+-- Sample Data: 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('tianyitimes@163.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',1,100);
+INSERT INTO company(id,name,city_id,address,website,inroduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'天译时代翻译公司',3,'天津市清平路路2号','http://www.tianyitimes.com','人力资源丰富，专业领域广',0,0,1);
+
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持笔译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),2);  -- 此公司支持口译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),3);  -- 此公司支持同声传译
+ 
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),62);  -- 此公司支持英语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),49);  -- 此公司支持日语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),69);  -- 此公司支持简体中文的翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),20);  -- 此公司支持法语的翻译
+ 
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持医学领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),7);  -- 此公司支持工程领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),10); -- 此公司支持建筑领域的翻译
+ 
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),4);   -- 此公司支持图书翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),5);   -- 此公司支持文献翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),8);  -- 此公司支持专利翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),9);  -- 此公司支持标书翻译
+
+
+
+-- Sample Data: 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('ocean@163.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',1,100);
+INSERT INTO company(id,name,city_id,address,website,inroduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'浩海翻译公司',3,'天津市清平路路2号','http://www.ocean.com','人力资源丰富，专业领域广',0,0,1);
+
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持笔译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),2);  -- 此公司支持口译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),3);  -- 此公司支持同声传译
+ 
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),62);  -- 此公司支持英语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),49);  -- 此公司支持日语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),69);  -- 此公司支持简体中文的翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),20);  -- 此公司支持法语的翻译
+ 
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持医学领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),7);  -- 此公司支持工程领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),10); -- 此公司支持建筑领域的翻译
+ 
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),4);   -- 此公司支持图书翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),5);   -- 此公司支持文献翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),8);  -- 此公司支持专利翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),9);  -- 此公司支持标书翻译
+
+
+
+-- Sample Data: 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('shangcai@gmail.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',1,200);
+INSERT INTO company(id,name,city_id,address,website,inroduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'尚才翻译公司',4,'南京江口路2号','http://www.shangcai.com','人力资源丰富，专业领域广',0,0,2);
+
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持笔译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),2);  -- 此公司支持口译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),3);  -- 此公司支持同声传译
+ 
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),62);  -- 此公司支持英语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),49);  -- 此公司支持日语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),69);  -- 此公司支持简体中文的翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),20);  -- 此公司支持法语的翻译
+ 
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持医学领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),7);  -- 此公司支持工程领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),10); -- 此公司支持建筑领域的翻译
+ 
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),4);   -- 此公司支持图书翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),5);   -- 此公司支持文献翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),8);  -- 此公司支持专利翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),9);  -- 此公司支持标书翻译
+
+
+
+-- Sample Data: 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('oudebao@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',1,300);
+INSERT INTO company(id,name,city_id,address,website,inroduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'欧得宝翻译公司',3,'天津市顺丰路1号','http://www.nvvxe.com/bj/','人力资源丰富，专业领域广',0,0,2);
+
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持笔译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),2);  -- 此公司支持口译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),3);  -- 此公司支持同声传译
+ 
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),62);  -- 此公司支持英语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),49);  -- 此公司支持日语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),69);  -- 此公司支持简体中文的翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),20);  -- 此公司支持法语的翻译
+ 
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持医学领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),7);  -- 此公司支持工程领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),10); -- 此公司支持建筑领域的翻译
+ 
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),4);   -- 此公司支持图书翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),5);   -- 此公司支持文献翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),8);  -- 此公司支持专利翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),9);  -- 此公司支持标书翻译
+
+
+
+-- Sample Data: 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('guanyu@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',1,100);
+INSERT INTO company(id,name,city_id,address,website,inroduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'冠宇翻译公司',2,'上海市顺丰路2号','http://www.muyingguo.com/a/','人力资源丰富，专业领域广',0,0,3);
+
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持笔译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),2);  -- 此公司支持口译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),3);  -- 此公司支持同声传译
+ 
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),62);  -- 此公司支持英语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),49);  -- 此公司支持日语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),69);  -- 此公司支持简体中文的翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),20);  -- 此公司支持法语的翻译
+ 
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持医学领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),7);  -- 此公司支持工程领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),10); -- 此公司支持建筑领域的翻译
+ 
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),4);   -- 此公司支持图书翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),5);   -- 此公司支持文献翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),8);  -- 此公司支持专利翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),9);  -- 此公司支持标书翻译
+
+
+
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('xinya@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',1,100);
+INSERT INTO company(id,name,city_id,address,website,inroduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'新亚翻译网',2,'上海路1号','http://fy88.qiyeztc.com/','人力资源丰富，专业领域广',0,0,3);
+
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持笔译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),2);  -- 此公司支持口译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),3);  -- 此公司支持同声传译
+ 
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),62);  -- 此公司支持英语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),49);  -- 此公司支持日语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),69);  -- 此公司支持简体中文的翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),20);  -- 此公司支持法语的翻译
+ 
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持医学领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),7);  -- 此公司支持工程领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),10); -- 此公司支持建筑领域的翻译
+ 
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),4);   -- 此公司支持图书翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),5);   -- 此公司支持文献翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),8);  -- 此公司支持专利翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),9);  -- 此公司支持标书翻译
+
+
+
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('zhutaren@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',1,300);
+INSERT INTO company(id,name,city_id,address,website,inroduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'筑塔人翻译公司',1,'北京丰台区','http://zhutaren.com/','人力资源丰富，专业领域广',0,0,5);
+
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持笔译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),2);  -- 此公司支持口译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),3);  -- 此公司支持同声传译
+ 
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),62);  -- 此公司支持英语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),49);  -- 此公司支持日语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),69);  -- 此公司支持简体中文的翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),20);  -- 此公司支持法语的翻译
+ 
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持医学领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),7);  -- 此公司支持工程领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),10); -- 此公司支持建筑领域的翻译
+ 
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),4);   -- 此公司支持图书翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),5);   -- 此公司支持文献翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),8);  -- 此公司支持专利翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),9);  -- 此公司支持标书翻译
+
+
+
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('xinyitong@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',1,100);
+INSERT INTO company(id,name,city_id,address,website,inroduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'新译通翻译公司',2,'上海五角场','http://yinyitong.com/','人力资源丰富，专业领域广',0,0,5);
+
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持笔译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),2);  -- 此公司支持口译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),3);  -- 此公司支持同声传译
+ 
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),62);  -- 此公司支持英语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),49);  -- 此公司支持日语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),69);  -- 此公司支持简体中文的翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),20);  -- 此公司支持法语的翻译
+ 
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持医学领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),7);  -- 此公司支持工程领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),10); -- 此公司支持建筑领域的翻译
+ 
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),4);   -- 此公司支持图书翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),5);   -- 此公司支持文献翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),8);  -- 此公司支持专利翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),9);  -- 此公司支持标书翻译
+
+
+
+
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('angel@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',1,100);
+INSERT INTO company(id,name,city_id,address,website,inroduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'天使翻译公司',2,'上海五角场','http://angel.translation.com/','人力资源丰富，专业领域广',0,0,5);
+
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持笔译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),2);  -- 此公司支持口译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),3);  -- 此公司支持同声传译
+ 
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),62);  -- 此公司支持英语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),49);  -- 此公司支持日语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),69);  -- 此公司支持简体中文的翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),20);  -- 此公司支持法语的翻译
+ 
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持医学领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),7);  -- 此公司支持工程领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),10); -- 此公司支持建筑领域的翻译
+ 
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),4);   -- 此公司支持图书翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),5);   -- 此公司支持文献翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),8);  -- 此公司支持专利翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),9);  -- 此公司支持标书翻译
+
+
+
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('ruike@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@weixin',1,200);
+INSERT INTO company(id,name,city_id,address,website,inroduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'瑞科翻译公司',2,'上海五角场','http://ruike.com/','人力资源丰富，专业领域广',0,0,4);
+
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持笔译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),2);  -- 此公司支持口译
+INSERT INTO company_transtype(comp_id,transtype_id) VALUES (LAST_INSERT_ID(),3);  -- 此公司支持同声传译
+ 
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),62);  -- 此公司支持英语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),49);  -- 此公司支持日语翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),69);  -- 此公司支持简体中文的翻译
+INSERT INTO company_lang(comp_id,lang_id) VALUES (LAST_INSERT_ID(),20);  -- 此公司支持法语的翻译
+ 
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),1);  -- 此公司支持医学领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),7);  -- 此公司支持工程领域的翻译
+INSERT INTO company_field(comp_id,field_id) VALUES (LAST_INSERT_ID(),10); -- 此公司支持建筑领域的翻译
+ 
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),4);   -- 此公司支持图书翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),5);   -- 此公司支持文献翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),8);  -- 此公司支持专利翻译
+INSERT INTO company_doctype(comp_id,doctype_id) VALUES(LAST_INSERT_ID(),9);  -- 此公司支持标书翻译
