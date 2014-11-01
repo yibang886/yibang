@@ -58,11 +58,11 @@ public class FrontEndController
     // A1         1              0
     // A2         2              1
     // A3         3              2
-    // A4         7              6
+    // A4         7              7
     //
-    // So, we need 1+2+3+7=13 companies and 1+2+6=9 individuals;
+    // So, we need 1+2+3+7=13 companies and 1+2+6=10 individuals;
 
-    List<IndividualExt> indivs = (List<IndividualExt>) getEnities4MainPage1(9, 0); // 0 for individual;
+    List<IndividualExt> indivs = (List<IndividualExt>) getEnities4MainPage1(10, 0); // 0 for individual;
     List<CompanyExt> comps = (List<CompanyExt>)getEnities4MainPage1(13, 1); // 1 for company;
 
     List<IndividualExt> individualsA2 = new ArrayList<IndividualExt>();
