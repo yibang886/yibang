@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 import com.common.hibernate.ICondition;
+import com.common.hibernate.AssocCriteria;
 import com.yb.sys.dao.IndividualDao;
 import com.yb.sys.entity.IndividualExt;
 
@@ -65,6 +66,16 @@ public class IndividualService implements IIndividualService{
 	{
 		return individualDao.criteriaQuery(conditions, orders, currpage, pagesize);
 	}
+
+	public List<IndividualExt> criteriaQuery(
+      final Collection<ICondition> conditions, 
+      final Collection<Order> orders, 
+      final List<AssocCriteria> assocCriterias,
+      final int currpage, 
+      final int pagesize)
+  {
+    return individualDao.criteriaQuery(conditions, orders, assocCriterias, currpage, pagesize);
+  }
 
 	public int criteriaQueryCount(final Collection<ICondition> conditions)
 	{

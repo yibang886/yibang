@@ -42,35 +42,35 @@
 
                 <div class="company-lst-1">
 
-                    <c:if test="${companyA1 != null}">
+                    <c:forEach var="companyA1" items="${companiesA1}">
                         <div class="company-card-1 clearfix">
                             <c:if test="${companyA1.auth_pass==1}">
                                 <div class="authen-flag"></div>
                             </c:if>
                             <div class="pic-block">
-                                <img src="/ybstore/company/${companyA1.id}/logo/large${companyA1.logo_suffix}" alt=""/>
+                                <img src="/ybstore/company/${companyA1.id}/logo/raw${companyA1.logo_suffix}" alt=""/>
                             </div>
                             <h2>${companyA1.name}</h2>
                             <ul class="lst-c1">
-                                <li>
+                                <li style="overflow:hidden;white-space:nowrap;">
                                     <span class="num">1</span><b>支持语种：</b>
                                     <c:forEach var="lang" items="${companyA1.languages}">
                                         ${lang.language}
                                     </c:forEach>
                                 </li>
-                                <li>
+                                <li style="overflow:hidden;white-space:nowrap;">
                                     <span class="num">2</span><b>支持领域：</b>
                                     <c:forEach var="field" items="${companyA1.fields}">
                                         ${field.field}
                                     </c:forEach>
                                 </li>
-                                <li>
+                                <li style="overflow:hidden;white-space:nowrap;">
                                     <span class="num">3</span><b>翻译类型：</b>
                                     <c:forEach var="transtype" items="${companyA1.transtypes}">
                                         ${transtype.transtype}
                                     </c:forEach>
                                 </li>
-                                <li>
+                                <li style="overflow:hidden;white-space:nowrap;">
                                     <span class="num">4</span><b>文档类型：</b>
                                     <c:forEach var="doctype" items="${companyA1.doctypes}">
                                         ${doctype.doctype}
@@ -87,6 +87,7 @@
                                 <c:if test="${!empty companyA1.user.qq}">
                                     <span class="info-item">QQ：${companyA1.user.qq}</span>
                                 </c:if>
+                                <br>
                                 <c:if test="${!empty companyA1.user.weixin}">
                                     <span class="info-item">微信：${companyA1.user.weixin}</span>
                                 </c:if>
@@ -95,123 +96,216 @@
                                 </c:if>
                             </p>
                         </div>
-                    </c:if>
-
+                    </c:forEach>
                 </div>
 
                 <div class="company-lst-2">
-                    <div class="company-card-2 clearfix">
-                        <div class="authen-flag"></div>
-                        <div class="pic-block">
-                            <img src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt=""> 
-                        </div>
-                        <h2>标题标题标题标题标题</h2>
-                        <ul class="lst-c2">
-                            <li>北京专业翻译公司</li>
-                            <li>北京专业翻译公司</li>
-                            <li>北京专业翻译公司</li>
-                        </ul>
-                        <p class="other-info">
-                            <span class="info-item">电话：1234566777</span>
-                            <span class="info-item">电话：1234566777</span>
-                            <span class="info-item">电话：1234566777</span>
-                            <span class="info-item">电话：1234566777</span>
-                            <span class="info-item">电话：1234566777</span>
-                        </p>
-                    </div>                     
-                    <div class="company-card-2">
-                        <div class="authen-flag"></div>
-                        <div class="pic-block">
-                            <img src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt=""> 
-                        </div>
-                        <h2>标题标题标题标题标题</h2>
-                        <ul class="lst-c2">
-                            <li>北京专业翻译公司</li>
-                            <li>北京专业翻译公司</li>
-                            <li>北京专业翻译公司</li>
-                        </ul>
-                        <p class="other-info">
-                            <span class="info-item">电话：1234566777</span>
-                            <span class="info-item">电话：1234566777</span>
-                            <span class="info-item">电话：1234566777</span>
-                            <span class="info-item">电话：1234566777</span>
-                            <span class="info-item">电话：1234566777</span>
-                        </p>
-                    </div> 
-                    <div class="company-card-2">
-                        <div class="authen-flag"></div>
-                        <div class="pic-block">
-                            <img src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt=""> 
-                        </div>
-                        <h2>标题标题标题标题标题</h2>
-                        <ul class="lst-c2">
-                            <li>北京专业翻译公司</li>
-                            <li>北京专业翻译公司</li>
-                            <li>北京专业翻译公司</li>
-                        </ul>
-                        <p class="other-info">
-                            <span class="info-item">电话：1234566777</span>
-                            <span class="info-item">电话：1234566777</span>
-                            <span class="info-item">电话：1234566777</span>
-                            <span class="info-item">电话：1234566777</span>
-                            <span class="info-item">电话：1234566777</span>
-                        </p>
-                    </div> 
+                    <c:forEach var="companyA2" items="${companiesA2}">
+                        <div class="company-card-2 clearfix">
+                            <c:if test="${companyA2.auth_pass==1}">
+                                <div class="authen-flag"></div>
+                            </c:if>
+                            <div class="pic-block">
+                                <img src="/ybstore/company/${companyA2.id}/logo/raw${companyA2.logo_suffix}" alt=""> 
+                            </div>
+                            <h2>${companyA2.name}</h2>
+                            <ul class="lst-c2">
+                                <li style="overflow:hidden;white-space:nowrap;">
+                                    <b>支持语种：</b>
+                                    <c:forEach var="lang" items="${companyA2.languages}">
+                                        ${lang.language}
+                                    </c:forEach>
+                                </li>
+                                <li style="overflow:hidden;white-space:nowrap;">
+                                    <b>支持领域：</b>
+                                    <c:forEach var="field" items="${companyA2.fields}">
+                                        ${field.field}
+                                    </c:forEach>
+                                </li>
+                                <li style="overflow:hidden;white-space:nowrap;">
+                                    <b>翻译类型：</b>
+                                    <c:forEach var="transtype" items="${companyA2.transtypes}">
+                                        ${transtype.transtype}
+                                    </c:forEach>
+                                </li>
+                            </ul>
+                            <p class="other-info">
+                                <c:if test="${!empty companyA2.user.tel}">
+                                    <span class="info-item">电话：${companyA2.user.tel}</span>
+                                </c:if>
+                                <c:if test="${!empty companyA2.user.mobile}">
+                                    <span class="info-item">手机：${companyA2.user.mobile}</span>
+                                </c:if>
+                                <c:if test="${!empty companyA2.user.qq}">
+                                    <span class="info-item">QQ：${companyA2.user.qq}</span>
+                                </c:if>
+                                <br>
+                                <c:if test="${!empty companyA2.user.weixin}">
+                                    <span class="info-item">微信：${companyA2.user.weixin}</span>
+                                </c:if>
+                                <c:if test="${!empty companyA2.user.email}">
+                                    <span class="info-item">邮箱：${companyA2.user.email}</span>
+                                </c:if>
+                            </p>
+                        </div>                     
+                    </c:forEach>
+
+                    <c:forEach var="individualA2" items="${individualsA2}">
+                        <div class="company-card-2 clearfix">
+                            <c:if test="${individualA2.auth_pass==1}">
+                                <div class="authen-flag"></div>
+                            </c:if>
+                            <div class="pic-block">
+                                <img src="/ybstore/individual/${individualA2.id}/photo/raw${individualA2.photo_suffix}" alt=""> 
+                            </div>
+                            <h2>${individualA2.name}</h2>
+                            <ul class="lst-c2">
+                                <li style="overflow:hidden;white-space:nowrap;">
+                                    <b>支持语种：</b>
+                                    <c:forEach var="lang" items="${individualA2.languages}">
+                                        ${lang.language}
+                                    </c:forEach>
+                                </li>
+                                <li style="overflow:hidden;white-space:nowrap;">
+                                    <b>支持领域：</b>
+                                    <c:forEach var="field" items="${individualA2.fields}">
+                                        ${field.field}
+                                    </c:forEach>
+                                </li>
+                                <li style="overflow:hidden;white-space:nowrap;">
+                                    <b>翻译类型：</b>
+                                    <c:forEach var="transtype" items="${individualA2.transtypes}">
+                                        ${transtype.transtype}
+                                    </c:forEach>
+                                </li>
+                            </ul>
+                            <p class="other-info">
+                                <c:if test="${!empty individualA2.user.tel}">
+                                    <span class="info-item">电话：${individualA2.user.tel}</span>
+                                </c:if>
+                                <c:if test="${!empty individualA2.user.mobile}">
+                                    <span class="info-item">手机：${individualA2.user.mobile}</span>
+                                </c:if>
+                                <c:if test="${!empty individualA2.user.qq}">
+                                    <span class="info-item">QQ：${individualA2.user.qq}</span>
+                                </c:if>
+                                <br>
+                                <c:if test="${!empty individualA2.user.weixin}">
+                                    <span class="info-item">微信：${individualA2.user.weixin}</span>
+                                </c:if>
+                                <c:if test="${!empty individualA2.user.email}">
+                                    <span class="info-item">邮箱：${individualA2.user.email}</span>
+                                </c:if>
+                            </p>
+                        </div>                     
+                    </c:forEach>
                 </div>
 
                 <div class="company-lst-3">
-                    <div class="company-card-3 clearfix">                        
-                        <div class="pic-block">
-                            <img src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt=""><i></i>                       
-                        </div>
-                        <h2>标题标题标题标题标题<div class="authen-s-flag1"></div></h2>
-                        <p class="other-info">
-                           电话：1234566777 <br>
-                           电话：1234566777
-                        </p>
-                    </div> 
-                    <div class="company-card-3 clearfix">                        
-                        <div class="pic-block">
-                            <img src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt=""><i></i>                       
-                        </div>
-                        <h2>标题标题标题标题标题<div class="authen-s-flag1"></div></h2>
-                        <p class="other-info">
-                           电话：1234566777 <br>
-                           电话：1234566777
-                        </p>
-                    </div> 
-                    <div class="company-card-3 clearfix">                        
-                        <div class="pic-block">
-                            <img src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt=""><i></i>                       
-                        </div>
-                        <h2>标题标题标题标题标题</h2>
-                        <p class="other-info">
-                           电话：1234566777 <br>
-                           电话：1234566777
-                        </p>
-                    </div> 
-                    <div class="company-card-3 clearfix">                        
-                        <div class="pic-block">
-                            <img src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt=""><i></i>                       
-                        </div>
-                        <h2>标题标题标题标题标题</h2>
-                        <p class="other-info">
-                           电话：1234566777 <br>
-                           电话：1234566777
-                        </p>
-                    </div>
-                    <div class="company-card-3 clearfix">                        
-                        <div class="pic-block">
-                            <img src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt=""><i></i>                       
-                        </div>
-                        <h2>标题标题标题标题标题</h2>
-                        <p class="other-info">
-                           电话：1234566777 <br>
-                           电话：1234566777
-                        </p>
-                    </div>                                         
-                </div>
+                    <c:forEach var="companyA3" items="${companiesA3}">
+                        <div class="company-card-3 clearfix">                        
+                            <div class="pic-block">
+                                <img src="/ybstore/company/${companyA3.id}/logo/raw${companyA3.logo_suffix}" alt=""><i></i>
+                            </div>
+                            <h2>
+                                <b>${companyA3.name}</b>
+                                <c:if test="${companyA3.auth_pass==1}">
+                                    <div class="authen-s-flag1"></div>
+                                </c:if>
+                            </h2>
+                            <p class="other-info">
+                                <b>支持语种：</b>
+                                <c:forEach var="lang" items="${companyA3.languages}">
+                                    ${lang.language}
+                                </c:forEach>
+                                ----
+                                <b>支持领域：</b>
+                                <c:forEach var="field" items="${companyA3.fields}">
+                                    ${field.field}
+                                </c:forEach>
+                                ----
+                                <b>翻译类型：</b>
+                                <c:forEach var="transtype" items="${companyA3.transtypes}">
+                                    ${transtype.transtype}
+                                </c:forEach>
 
+                                <br>
+
+                                <c:if test="${!empty companyA3.user.tel}">
+                                    <span class="info-item">电话：${companyA3.user.tel}</span>
+                                </c:if>
+                                &nbsp;&nbsp;
+                                <c:if test="${!empty companyA3.user.mobile}">
+                                    <span class="info-item">手机：${companyA3.user.mobile}</span>
+                                </c:if>
+                                &nbsp;&nbsp;
+                                <c:if test="${!empty companyA3.user.qq}">
+                                    <span class="info-item">QQ：${companyA3.user.qq}</span>
+                                </c:if>
+                                &nbsp;&nbsp;
+                                <c:if test="${!empty companyA3.user.weixin}">
+                                    <span class="info-item">微信：${companyA3.user.weixin}</span>
+                                </c:if>
+                                &nbsp;&nbsp;
+                                <c:if test="${!empty companyA3.user.email}">
+                                    <span class="info-item">邮箱：${companyA3.user.email}</span>
+                                </c:if>
+                            </p>
+                        </div> 
+                    </c:forEach>
+
+                    <c:forEach var="individualA3" items="${individualsA3}">
+                        <div class="company-card-3 clearfix">                        
+                            <div class="pic-block">
+                                <img src="/ybstore/individual/${individualA3.id}/photo/raw${individualA3.photo_suffix}" alt=""><i></i>
+                            </div>
+                            <h2>
+                                <b>${individualA3.name}</b>
+                                <c:if test="${individualA3.auth_pass==1}">
+                                    <div class="authen-s-flag1"></div>
+                                </c:if>
+                            </h2>
+                            <p class="other-info">
+                                <b>支持语种：</b>
+                                <c:forEach var="lang" items="${individualA3.languages}">
+                                    ${lang.language}
+                                </c:forEach>
+                                ----
+                                <b>支持领域：</b>
+                                <c:forEach var="field" items="${individualA3.fields}">
+                                    ${field.field}
+                                </c:forEach>
+                                ----
+                                <b>翻译类型：</b>
+                                <c:forEach var="transtype" items="${individualA3.transtypes}">
+                                    ${transtype.transtype}
+                                </c:forEach>
+
+                                <br>
+
+                                <c:if test="${!empty individualA3.user.tel}">
+                                    <span class="info-item">电话：${individualA3.user.tel}</span>
+                                </c:if>
+                                &nbsp;&nbsp;
+                                <c:if test="${!empty individualA3.user.mobile}">
+                                    <span class="info-item">手机：${individualA3.user.mobile}</span>
+                                </c:if>
+                                &nbsp;&nbsp;
+                                <c:if test="${!empty individualA3.user.qq}">
+                                    <span class="info-item">QQ：${individualA3.user.qq}</span>
+                                </c:if>
+                                &nbsp;&nbsp;
+                                <c:if test="${!empty individualA3.user.weixin}">
+                                    <span class="info-item">微信：${individualA3.user.weixin}</span>
+                                </c:if>
+                                &nbsp;&nbsp;
+                                <c:if test="${!empty individualA3.user.email}">
+                                    <span class="info-item">邮箱：${individualA3.user.email}</span>
+                                </c:if>
+                            </p>
+                        </div> 
+                    </c:forEach>
+                </div>
             </div>
             <div class="layout-right">
                 <div class="r-mod r-m1">
@@ -253,48 +347,79 @@
                         <h2>推荐公司</h2>
                     </div>
                     <div class="r-mod-bd">
-
                         <ul class="lst-rc">
-                            <li>
-                                <img class="pic" src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt="">
-                                <h2><a href="">标题标题</a></h2>
-                                <p><span class="authen-s-flag2"></span></p>
-                            </li> 
-                            <li>
-                                <img class="pic" src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt="">
-                                <h2><a href="">标题标题</a></h2>
-                                <p><span class="authen-s-flag1"></span></p>
-                            </li>
-                             <li>
-                                <img class="pic" src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt="">
-                                <h2><a href="">标题标题</a></h2>
-                                <p><span class="authen-s-flag2"></span></p>
-                            </li> 
-                            <li>
-                                <img class="pic" src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt="">
-                                <h2><a href="">标题标题</a></h2>
-                                <p><span class="authen-s-flag1"></span></p>
-                            </li> 
-                             <li>
-                                <img class="pic" src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt="">
-                                <h2><a href="">标题标题</a></h2>
-                                <p><span class="authen-s-flag2"></span></p>
-                            </li> 
-                            <li>
-                                <img class="pic" src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt="">
-                                <h2><a href="">标题标题</a></h2>
-                                <p><span class="authen-s-flag1"></span></p>
-                            </li>  
-                            <li>
-                                <img class="pic" src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt="">
-                                <h2><a href="">标题标题</a></h2>
-                                <p><span class="authen-s-flag2"></span></p>
-                            </li> 
-                            <li>
-                                <img class="pic" src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt="">
-                                <h2><a href="">标题标题</a></h2>
-                                <p><span class="authen-s-flag1"></span></p>
-                            </li>                                                      
+                            <c:forEach var="companyA4" items="${companiesA4}">
+                                <li>
+                                    <img class="pic" src="/ybstore/company/${companyA4.id}/logo/raw${companyA4.logo_suffix}" alt="">
+                                    <h2>
+                                        <a href="">${companyA4.name}</a>
+                                        <c:if test="${companyA4.auth_pass==1}">
+                                            <span class="authen-s-flag1"></span>
+                                        </c:if>
+                                        <c:if test="${companyA4.auth_pass!=1}">
+                                            <span class="authen-s-flag2"></span>
+                                        </c:if>
+                                    </h2>
+                                    <p style="overflow:hidden;white-space:nowrap;"> 
+                                        <c:if test="${!empty companyA4.user.mobile}">
+                                            <span class="info-item">手机：${companyA4.user.mobile}</span>
+                                        </c:if>
+                                        &nbsp;&nbsp;
+                                        <c:if test="${!empty companyA4.user.qq}">
+                                            <span class="info-item">QQ：${companyA4.user.qq}</span>
+                                        </c:if>
+                                        &nbsp;&nbsp;
+                                        <c:if test="${!empty companyA4.user.email}">
+                                            <span class="info-item">邮箱：${companyA4.user.email}</span>
+                                        </c:if>
+                                        &nbsp;&nbsp;
+                                        <c:if test="${!empty companyA4.user.tel}">
+                                            <span class="info-item">电话：${companyA4.user.tel}</span>
+                                        </c:if>
+                                        &nbsp;&nbsp;
+                                        <c:if test="${!empty companyA4.user.weixin}">
+                                            <span class="info-item">微信：${companyA4.user.weixin}</span>
+                                        </c:if>
+                                    </p> 
+                                </li> 
+                            </c:forEach>
+
+
+                            <c:forEach var="individualA4" items="${individualsA4}">
+                                <li>
+                                    <img class="pic" src="/ybstore/individual/${individualA4.id}/photo/raw${individualA4.photo_suffix}" alt="">
+                                    <h2>
+                                      <a href="">${individualA4.name}</a>
+                                        <c:if test="${individualA4.auth_pass==1}">
+                                            <span class="authen-s-flag1"></span>
+                                        </c:if>
+                                        <c:if test="${individualA4.auth_pass!=1}">
+                                            <span class="authen-s-flag2"></span>
+                                        </c:if>
+                                    </h2>
+                                    <p style="overflow:hidden;white-space:nowrap;"> 
+                                        <c:if test="${!empty individualA4.user.mobile}">
+                                            <span class="info-item">手机：${individualA4.user.mobile}</span>
+                                        </c:if>
+                                        &nbsp;&nbsp;
+                                        <c:if test="${!empty individualA4.user.qq}">
+                                            <span class="info-item">QQ：${individualA4.user.qq}</span>
+                                        </c:if>
+                                        &nbsp;&nbsp;
+                                        <c:if test="${!empty individualA4.user.email}">
+                                            <span class="info-item">邮箱：${individualA4.user.email}</span>
+                                        </c:if>
+                                        &nbsp;&nbsp;
+                                        <c:if test="${!empty individualA4.user.tel}">
+                                            <span class="info-item">电话：${individualA4.user.tel}</span>
+                                        </c:if>
+                                        &nbsp;&nbsp;
+                                        <c:if test="${!empty individualA4.user.weixin}">
+                                            <span class="info-item">微信：${individualA4.user.weixin}</span>
+                                        </c:if>
+                                    </p> 
+                                </li> 
+                            </c:forEach>
                         </ul>
                     </div>
                 </div>                                

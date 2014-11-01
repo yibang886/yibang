@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 import com.common.hibernate.ICondition;
+import com.common.hibernate.AssocCriteria;
 import com.yb.sys.dao.CompanyDao;
 import com.yb.sys.entity.CompanyExt;
 
@@ -65,6 +66,16 @@ public class CompanyService implements ICompanyService{
 	{
 		return companyDao.criteriaQuery(conditions, orders, currpage, pagesize);
 	}
+
+	public List<CompanyExt> criteriaQuery(
+      final Collection<ICondition> conditions, 
+      final Collection<Order> orders, 
+      final List<AssocCriteria> assocCriterias,
+      final int currpage, 
+      final int pagesize)
+  {
+    return companyDao.criteriaQuery(conditions, orders, assocCriterias, currpage, pagesize);
+  }
 
 	public int criteriaQueryCount(final Collection<ICondition> conditions)
 	{

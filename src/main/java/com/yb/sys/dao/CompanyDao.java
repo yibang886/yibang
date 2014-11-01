@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.common.hibernate.ExpressionUtil;
 import com.common.hibernate.ICondition;
+import com.common.hibernate.AssocCriteria;
 import com.yb.sys.entity.CompanyExt;
 
 public class CompanyDao extends HibernateDaoSupport implements ICompanyDao{
@@ -123,6 +124,58 @@ public class CompanyDao extends HibernateDaoSupport implements ICompanyDao{
 
 		return getHibernateTemplate().execute(callback);
 	}
+
+
+	public List<CompanyExt> criteriaQuery(
+      final Collection<ICondition> conditions, 
+      final Collection<Order> orders, 
+      final List<AssocCriteria> assocCriterias,
+      final int currpage, 
+      final int pagesize) 
+  {
+    org.springframework.orm.hibernate3.HibernateCallback<List<CompanyExt>> callback = new org.springframework.orm.hibernate3.HibernateCallback<List<CompanyExt>>()
+    {
+      public List<CompanyExt> doInHibernate(org.hibernate.Session session) throws org.hibernate.HibernateException
+      {
+        session.setCacheMode(CacheMode.NORMAL);
+        org.hibernate.Criteria criteria = session.createCriteria(CompanyExt.class);
+
+				if (conditions != null) 
+        {
+					ExpressionUtil.generateQueryExpression(conditions, criteria);
+				}
+
+				if (orders != null) 
+        {
+					ExpressionUtil.generateOrderExpression(orders, criteria);
+				}
+
+        //add assoc criterias;
+        for(AssocCriteria assocCriteria : assocCriterias)
+        {
+          org.hibernate.Criteria c = criteria.createCriteria(assocCriteria.getPropName());
+          if(assocCriteria.getConditions() != null)
+          {
+            ExpressionUtil.generateQueryExpression(assocCriteria.getConditions(), c);
+          }
+
+          if(assocCriteria.getOrders() != null)
+          {
+            ExpressionUtil.generateOrderExpression(assocCriteria.getOrders(), c);
+          }
+        }
+
+				if ((pagesize > 0) && (currpage > 0)) {
+					criteria.setFirstResult(pagesize * (currpage - 1));
+					criteria.setMaxResults(pagesize);
+				}
+
+				return criteria.list();
+      }
+    };
+
+		return getHibernateTemplate().execute(callback);
+  }
 	
 	public int criteriaQueryCount(final Collection<ICondition> conditions) { 
        	this.getHibernateTemplate().setCacheQueries(true);

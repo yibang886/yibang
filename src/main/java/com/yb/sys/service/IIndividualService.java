@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 import com.common.hibernate.ICondition;
+import com.common.hibernate.AssocCriteria;
 import com.yb.sys.entity.IndividualExt;
 
 public interface IIndividualService {
@@ -27,6 +28,12 @@ public interface IIndividualService {
 	public List<IndividualExt> criteriaQuery(final Collection<ICondition> conditions, final Collection<Order> orders);
 
 	public List<IndividualExt> criteriaQuery(final Collection<ICondition> conditions, final Collection<Order> orders, final int currpage, final int pagesize);
+	public List<IndividualExt> criteriaQuery(
+      final Collection<ICondition> conditions, 
+      final Collection<Order> orders, 
+      final List<AssocCriteria> assocCriterias,
+      final int currpage, 
+      final int pagesize);
 
 	public int criteriaQueryCount(final Collection<ICondition> conditions);
 }
