@@ -623,6 +623,52 @@ INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),2);
 INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),3);
 
 
+-- Sample Data: 个人译员 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('nowitzki@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@vchat',0,100);
+
+INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,exp_year,exp_trans,works,introduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'Dirk, Nowitzki',0,2,5,1985,1,'http://nowitzki.page.com',1,4,15,'C Language Beginner','have 10 years of experience',0,0,2);
+
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),3);
+
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),4);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),9);
+
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),3);
+
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),3);
+
+
+
+-- Sample Data: 个人译员 
+INSERT INTO user(email,password,tel,mobile,fax,qq,weixin,user_type,coin) VALUES ('paul@yahoo.com','password123!','82158278','18612802724','82158278','281574876','281574876@vchat',0,100);
+
+INSERT INTO individual(id,name,gender,edu_id,sch_id,birth_year,city_id,mainpage,workstyle,exp_year,exp_trans,works,introduct,auth_pass,valid_pass,recompos_id) VALUES (LAST_INSERT_ID(),'Chris, Paul',0,2,5,1985,1,'http://paul.chris.com',1,4,15,'C Language Beginner','have 10 years of experience',0,0,2);
+
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_transtype(indiv_id,transtype_id) VALUES(LAST_INSERT_ID(),3);
+
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),4);
+INSERT INTO individual_lang(indiv_id,lang_id) VALUES(LAST_INSERT_ID(),9);
+
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_field(indiv_id,field_id) VALUES(LAST_INSERT_ID(),3);
+
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),1);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),2);
+INSERT INTO individual_doctype(indiv_id,doctype_id) VALUES(LAST_INSERT_ID(),3);
+
+
+
 
 
 -- Sample Data: 北京设美译达翻译有限公司
