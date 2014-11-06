@@ -62,8 +62,13 @@ public class FrontEndController
     //
     // So, we need 1+2+3+7=13 companies and 1+2+6=10 individuals;
 
-    List<IndividualExt> indivs = (List<IndividualExt>) getEnities4MainPage1(10, 0); // 0 for individual;
-    List<CompanyExt> comps = (List<CompanyExt>)getEnities4MainPage1(13, 1); // 1 for company;
+    Long beginTime = System.currentTimeMillis();
+
+    List<IndividualExt> indivs = (List<IndividualExt>) getEnities4MainPage2(10, 0); // 0 for individual;
+    List<CompanyExt> comps = (List<CompanyExt>)getEnities4MainPage2(13, 1); // 1 for company;
+
+    Long timeCost = System.currentTimeMillis() - beginTime;
+    logger.info("Yuanguo, getEnities4MainPage2 time spent: " + timeCost);
 
     List<IndividualExt> individualsA2 = new ArrayList<IndividualExt>();
     List<IndividualExt> individualsA3 = new ArrayList<IndividualExt>();
@@ -190,12 +195,97 @@ public class FrontEndController
       return companyService.criteriaQuery(null, null, assocCriterias, 1, num);
   }
 
+
   //see comments of getEnities4MainPage1 function;
   private List getEnities4MainPage2(int num, int indivOrComp) //indivOrComp, 0: individual; 1: company;
   {
+    List<AssocCriteria> assocCriterias = new ArrayList<AssocCriteria>();
+
+    List<Order> coinOrders = new ArrayList<Order>();
+    coinOrders.add(Order.desc("coin"));
+    AssocCriteria coinCrit = new AssocCriteria("user", null, coinOrders);
+
+    assocCriterias.add(coinCrit);
+
+
+    List<List<ICondition>> conditionsList = new ArrayList<List<ICondition>>();
+
+    List<ICondition> conditionsA1 = new ArrayList<ICondition>();
+    conditionsA1.add(new EqCondition("recompos.id", 1L));  // A1
+    conditionsList.add(conditionsA1);
+
+    List<ICondition> conditionsA2 = new ArrayList<ICondition>();
+    conditionsA2.add(new EqCondition("recompos.id", 2L));  // A2
+    conditionsList.add(conditionsA2);
+
+    List<ICondition> conditionsA3 = new ArrayList<ICondition>();
+    conditionsA3.add(new EqCondition("recompos.id", 3L));  // A3
+    conditionsList.add(conditionsA3);
+
+    List<ICondition> conditionsA4 = new ArrayList<ICondition>();
+    conditionsA4.add(new EqCondition("recompos.id", 4L));  // A4
+    conditionsList.add(conditionsA4);
+
+    List<ICondition> conditionsNO = new ArrayList<ICondition>();
+    conditionsNO.add(new EqCondition("recompos.id", 5L));  // NO
+    conditionsList.add(conditionsNO);
+
+
+    if(indivOrComp == 0) //individual
+    {
+
+      List<IndividualExt> result = new ArrayList<IndividualExt>();
+
+      //search for A1 individuals, then A2 individuals ... until enough instances got or run out of all instances.
+      for(List<ICondition> condList : conditionsList) 
+      {
+        List<IndividualExt> indivs = individualService.criteriaQuery(condList, null, assocCriterias, 1, num);
+        int numGot = indivs.size();
+
+        for(IndividualExt indiv : indivs)
+        {
+          result.add(indiv);
+        }
+
+        num -= numGot;
+
+        if(num==0)
+        {
+          break; //enough;
+        }
+      }
+
+      return result;
+    }
+    else if (indivOrComp == 1) //company
+    {
+      List<CompanyExt> result = new ArrayList<CompanyExt>();
+
+      //search for A1 companies, then A2 companies ... until enough instances got or run out of all instances.
+      for(List<ICondition> condList : conditionsList)
+      {
+        List<CompanyExt> comps = companyService.criteriaQuery(condList, null, assocCriterias, 1, num);
+        int numGot = comps.size();
+
+        for(CompanyExt comp: comps)
+        {
+          result.add(comp);
+        }
+
+        num -= numGot;
+
+        if(num==0)
+        {
+          break;
+        }
+      }
+      return result;
+    }
+
     return null;
   }
 
+  /*
   private static <T> Set<T> topN(Set<T> all, int n)
   {
     if(all.size()<=n)
@@ -216,4 +306,5 @@ public class FrontEndController
 
     return topN;
   }
+  */
 }
