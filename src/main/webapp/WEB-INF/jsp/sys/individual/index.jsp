@@ -121,7 +121,7 @@
 
             <c:forEach var="var" items="${individualModel.items}">
               <tr onmouseover="this.className='over'" onmouseout="this.className='out'">
-                    <td><div><img src="${var.photo}" style="width:70px;hight:56px;"/></div></td>
+                    <td><div><img src="${var.photo}" style="width:70px;height:56px;"/></div></td>
                     <td><div><c:out value="${var.name}" escapeXml="true"/></div></td>
                     <td><div><c:out value="${var.user.email}" escapeXml="true"/></div></td>
                     <td><div>
