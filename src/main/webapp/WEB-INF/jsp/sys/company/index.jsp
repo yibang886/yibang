@@ -68,7 +68,7 @@ function doQuery()
 
   <nav class="navbar navbar-default" role="navigation">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">译邦网-用户信息</a>
+      <a class="navbar-brand" href="#">译邦网-翻译公司</a>
     </div>
   
     <%! UserExt baseUserExt = null; %>
