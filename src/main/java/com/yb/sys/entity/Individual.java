@@ -143,32 +143,32 @@ public class Individual implements Serializable{
 	public void setworkstyle(Long workstyle){
 		this.workstyle = workstyle;
 	}
-	private String langcert_suffix;
+	private String langcert;
 	
-	public String getlangcert_suffix(){
-		return langcert_suffix;
+	public String getlangcert(){
+		return langcert;
 	}
 	
-	public void setlangcert_suffix(String langcert_suffix){
-		this.langcert_suffix = langcert_suffix;
+	public void setlangcert(String langcert){
+		this.langcert = langcert;
 	}
-	private String transcert_suffix;
+	private String transcert;
 	
-	public String gettranscert_suffix(){
-		return transcert_suffix;
-	}
-	
-	public void settranscert_suffix(String transcert_suffix){
-		this.transcert_suffix = transcert_suffix;
-	}
-	private String profcert_suffix;
-	
-	public String getprofcert_suffix(){
-		return profcert_suffix;
+	public String gettranscert(){
+		return transcert;
 	}
 	
-	public void setprofcert_suffix(String profcert_suffix){
-		this.profcert_suffix = profcert_suffix;
+	public void settranscert(String transcert){
+		this.transcert = transcert;
+	}
+	private String profcert;
+	
+	public String getprofcert(){
+		return profcert;
+	}
+	
+	public void setprofcert(String profcert){
+		this.profcert = profcert;
 	}
 	private Long exp_year;
 	
@@ -206,23 +206,23 @@ public class Individual implements Serializable{
 	public void setintroduct(String introduct){
 		this.introduct = introduct;
 	}
-	private String photo_suffix;
+	private String photo;
 	
-	public String getphoto_suffix(){
-		return photo_suffix;
+	public String getphoto(){
+		return photo;
 	}
 	
-	public void setphoto_suffix(String photo_suffix){
-		this.photo_suffix = photo_suffix;
+	public void setphoto(String photo){
+		this.photo = photo;
 	}
-	private String authfile_suffix;
+	private String authfile;
 	
-	public String getauthfile_suffix(){
-		return authfile_suffix;
+	public String getauthfile(){
+		return authfile;
 	}
 	
-	public void setauthfile_suffix(String authfile_suffix){
-		this.authfile_suffix = authfile_suffix;
+	public void setauthfile(String authfile){
+		this.authfile = authfile;
 	}
 	private Long auth_pass;
 	

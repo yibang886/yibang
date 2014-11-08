@@ -161,8 +161,8 @@ function doQuery()
         <td colspan="2">
           <table border="0" cellpadding="0" cellspacing="0" class="table_date" id="dataTable">
             <tr>
-              <th width="20%"><div>公司logo</div></th>
-              <th width="15%"><div>公司名称</div></th>
+              <th width="15%"><div>公司logo</div></th>
+              <th width="20%"><div>公司名称</div></th>
               <th width="15%"><div>所在城市</div></th>
               <th width="15%"><div>审核状态</div></th>
               <th width="15%"><div>认证状态</div></th>
@@ -171,7 +171,7 @@ function doQuery()
 
             <c:forEach var="var" items="${entityModel.items}">
               <tr onmouseover="this.className='over'" onmouseout="this.className='out'">
-                <td><div><img src="/ybstore/company/${var.id}/logo/small${var.logo_suffix}"/></div></td>
+                <td><div><img src="${var.logo}" style="width:70px;height:56px;" /></div></td>
                 <td><div><c:out value="${var.name}" escapeXml="true"/></div></td>
                 <td><div><c:out value="${var.city.city}" escapeXml="true"/></div></td>
                 <td><div>

@@ -516,7 +516,8 @@ public class UserController {
       {
         logger.info("Receiving " + fileType);
 
-        String filePath = configService.getProperty("docBase")+"/ybstore/individual/"+userId+"/"+fileType;
+        String localPath = "/ybstore/individual/"+userId+"/"+fileType;
+        String filePath = configService.getProperty("docBase")+localPath;
 
         //Yuanguo: add a number to the suffix of image file; the number will be updated with system time in 
         //milli seconds every time a new image is uploaded; why?
@@ -547,30 +548,30 @@ public class UserController {
           if(fileType.equals("photo"))
           {
             //generate a large photo and a small photo
-            ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), Integer.parseInt(configService.getProperty("photo.small.width")), 1f);
-            ImageUtil.resize(rawFile, new File(filePath+"/large"+suffix), Integer.parseInt(configService.getProperty("photo.large.width")), 1f);
+            //ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), Integer.parseInt(configService.getProperty("photo.small.width")), 1f);
+            //ImageUtil.resize(rawFile, new File(filePath+"/large"+suffix), Integer.parseInt(configService.getProperty("photo.large.width")), 1f);
 
-            individual.setphoto_suffix(suffix);
+            individual.setphoto(localPath+"/raw"+suffix);
           }
           else if(fileType.equals("language_cert"))
           {
             //ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
-            individual.setlangcert_suffix(suffix);
+            individual.setlangcert(localPath+"/raw"+suffix);
           }
           else if(fileType.equals("translation_cert"))
           {
             //ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
-            individual.settranscert_suffix(suffix);
+            individual.settranscert(localPath+"/raw"+suffix);
           }
           else if(fileType.equals("profession_cert"))
           {
             //ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
-            individual.setprofcert_suffix(suffix);
+            individual.setprofcert(localPath+"/raw"+suffix);
           }
           else if(fileType.equals("authentication_file"))
           {
             //ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
-            individual.setauthfile_suffix(suffix);
+            individual.setauthfile(localPath+"/raw"+suffix);
           }
              
           individualService.save(individual);
@@ -626,7 +627,8 @@ public class UserController {
       {
         logger.info("Receiving " + fileType);
 
-        String filePath = configService.getProperty("docBase")+"/ybstore/company/"+userId+"/"+fileType;
+        String localPath = "/ybstore/company/"+userId+"/"+fileType;
+        String filePath = configService.getProperty("docBase")+localPath;
 
         //Yuanguo: add a number to the suffix of image file;
         ReceivedData receivedData = UploadUtil.receive(request, true, false, filePath, ".0");
@@ -651,15 +653,15 @@ public class UserController {
           if(fileType.equals("logo"))
           {
             //generate a large logo and a small logo
-            ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), Integer.parseInt(configService.getProperty("logo.small.width")), 1f);
-            ImageUtil.resize(rawFile, new File(filePath+"/large"+suffix), Integer.parseInt(configService.getProperty("logo.large.width")), 1f);
+            //ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), Integer.parseInt(configService.getProperty("logo.small.width")), 1f);
+            //ImageUtil.resize(rawFile, new File(filePath+"/large"+suffix), Integer.parseInt(configService.getProperty("logo.large.width")), 1f);
 
-            company.setLogo_suffix(suffix);
+            company.setLogo(localPath+"/raw"+suffix);
           }
           else if(fileType.equals("authentication_file"))
           {
             //ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
-            company.setAuthfile_suffix(suffix);
+            company.setAuthfile(localPath+"/raw"+suffix);
           }
              
           companyService.save(company);

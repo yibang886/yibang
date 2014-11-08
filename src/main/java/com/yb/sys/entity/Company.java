@@ -93,27 +93,27 @@ public class Company implements Serializable
   {
     this.inroduct = inroduct;
   }
-  private String logo_suffix;
+  private String logo;
   
-  public String getLogo_suffix()
+  public String getLogo()
   {
-    return logo_suffix;
+    return logo;
   }
   
-  public void setLogo_suffix(String logo_suffix)
+  public void setLogo(String logo)
   {
-    this.logo_suffix = logo_suffix;
+    this.logo = logo;
   }
-  private String authfile_suffix;
+  private String authfile;
   
-  public String getAuthfile_suffix()
+  public String getAuthfile()
   {
-    return authfile_suffix;
+    return authfile;
   }
   
-  public void setAuthfile_suffix(String authfile_suffix)
+  public void setAuthfile(String authfile)
   {
-    this.authfile_suffix = authfile_suffix;
+    this.authfile = authfile;
   }
   private Long auth_pass;
   

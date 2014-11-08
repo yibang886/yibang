@@ -14,8 +14,8 @@
 		<property name="address" column="address" type="java.lang.String" />
 		<property name="website" column="website" type="java.lang.String" />
 		<property name="inroduct" column="inroduct" type="java.lang.String" />
-		<property name="logo_suffix" column="logo_suffix" type="java.lang.String" />
-		<property name="authfile_suffix" column="authfile_suffix" type="java.lang.String" />
+		<property name="logo" column="logo" type="java.lang.String" />
+		<property name="authfile" column="authfile" type="java.lang.String" />
 		<property name="auth_pass" column="auth_pass" type="java.lang.Long" />
 		<property name="valid_pass" column="valid_pass" type="java.lang.Long" />
         <many-to-one name="recompos" class="com.yb.sys.entity.RecomposExt" column="recompos_id" cascade="none" />

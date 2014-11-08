@@ -114,8 +114,8 @@ function goBack()
       <td><div>公司logo：</div></td>
       <td>
         <div>
-          <c:if test="${!empty entityModel.companyExt.logo_suffix}">
-            <img src="/ybstore/company/${entityModel.companyExt.id}/logo/large${entityModel.companyExt.logo_suffix}" />
+          <c:if test="${!empty entityModel.companyExt.logo}">
+            <img src="${entityModel.companyExt.logo}" />
           </c:if>
         </div>
       </td>
@@ -234,9 +234,9 @@ function goBack()
       <td><div>认证资料：</div></td>
       <td>
         <div>
-          <c:if test="${!empty entityModel.companyExt.authfile_suffix}">
+          <c:if test="${!empty entityModel.companyExt.authfile}">
             <a onclick="showHideImg('authfile')" style="color:red;">[点击显示与隐藏图片]</a>
-            <img src="/ybstore/company/${entityModel.companyExt.id}/authentication_file/raw${entityModel.companyExt.authfile_suffix}"style='display:none' id='authfile'/>
+            <img src="${entityModel.companyExt.authfile}" style='display:none' id='authfile'/>
           </c:if>
         </div>
       </td>
@@ -422,9 +422,9 @@ function goBack()
 
     <input type="hidden" value="${entityModel.companyQueryCon.inroduct}" name="companyQueryCon.inroduct"/>
 
-    <input type="hidden" value="${entityModel.companyQueryCon.logo_suffix}" name="companyQueryCon.logo_suffix"/>
+    <input type="hidden" value="${entityModel.companyQueryCon.logo}" name="companyQueryCon.logo"/>
 
-    <input type="hidden" value="${entityModel.companyQueryCon.authfile_suffix}" name="companyQueryCon.authfile_suffix"/>
+    <input type="hidden" value="${entityModel.companyQueryCon.authfile}" name="companyQueryCon.authfile"/>
 
     <input type="hidden" value="${entityModel.companyQueryCon.recompos_id}" name="companyQueryCon.recompos_id"/>
     --%>

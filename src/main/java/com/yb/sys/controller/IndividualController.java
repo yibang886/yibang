@@ -240,11 +240,11 @@ public class IndividualController {
 			IndividualExt individualExtPer = individualService.load(entityModel.getIndividualExt().getId(), true);
 
       //We don't set these fields in edit.jsp, so we need to keep the existing values, or they will become null;
-      individualExt.setphoto_suffix(individualExtPer.getphoto_suffix());
-      individualExt.settranscert_suffix(individualExtPer.gettranscert_suffix());
-      individualExt.setlangcert_suffix(individualExtPer.getlangcert_suffix());
-      individualExt.setprofcert_suffix(individualExtPer.getprofcert_suffix());
-      individualExt.setauthfile_suffix(individualExtPer.getauthfile_suffix());
+      individualExt.setphoto(individualExtPer.getphoto());
+      individualExt.settranscert(individualExtPer.gettranscert());
+      individualExt.setlangcert(individualExtPer.getlangcert());
+      individualExt.setprofcert(individualExtPer.getprofcert());
+      individualExt.setauthfile(individualExtPer.getauthfile());
 
 			individualService.save(individualExt);
 
@@ -327,7 +327,8 @@ public class IndividualController {
     {
       logger.info("Receiving " + fileType);
 
-      String filePath = configService.getProperty("docBase")+"/ybstore/individual/"+indivId+"/"+fileType;
+      String localPath = "/ybstore/individual/"+indivId+"/"+fileType;
+      String filePath = configService.getProperty("docBase")+localPath;
 
       //add time stamp to the file suffix so that "src" in <img src="..."/> will change when the image 
       //is updated. As a result, browser will re-load the image instead of using the cached one;
@@ -354,30 +355,30 @@ public class IndividualController {
         if(fileType.equals("photo"))
         {
           //generate a large photo and a small photo
-          ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), Integer.parseInt(configService.getProperty("photo.small.width")), 1f);
-          ImageUtil.resize(rawFile, new File(filePath+"/large"+suffix), Integer.parseInt(configService.getProperty("photo.large.width")), 1f);
+          //ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), Integer.parseInt(configService.getProperty("photo.small.width")), 1f);
+          //ImageUtil.resize(rawFile, new File(filePath+"/large"+suffix), Integer.parseInt(configService.getProperty("photo.large.width")), 1f);
 
-          individual.setphoto_suffix(suffix);
+          individual.setphoto(localPath+"/raw"+suffix);
         }
         else if(fileType.equals("language_cert"))
         {
           //ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
-          individual.setlangcert_suffix(suffix);
+          individual.setlangcert(localPath+"/raw"+suffix);
         }
         else if(fileType.equals("translation_cert"))
         {
           //ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
-          individual.settranscert_suffix(suffix);
+          individual.settranscert(localPath+"/raw"+suffix);
         }
         else if(fileType.equals("profession_cert"))
         {
           //ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
-          individual.setprofcert_suffix(suffix);
+          individual.setprofcert(localPath+"/raw"+suffix);
         }
         else if(fileType.equals("authentication_file"))
         {
           //ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
-          individual.setauthfile_suffix(suffix);
+          individual.setauthfile(localPath+"/raw"+suffix);
         }
            
         individualService.save(individual);

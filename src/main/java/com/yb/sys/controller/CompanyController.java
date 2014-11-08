@@ -255,8 +255,8 @@ public class CompanyController
       CompanyExt companyExtPer = companyService.load(entityModel.getCompanyExt().getId(), true);
 
       //We don't set these fields in edit.jsp, so we need to keep the existing values, or they will become null;
-      companyExt.setLogo_suffix(companyExtPer.getLogo_suffix());
-      companyExt.setAuthfile_suffix(companyExtPer.getAuthfile_suffix());
+      companyExt.setLogo(companyExtPer.getLogo());
+      companyExt.setAuthfile(companyExtPer.getAuthfile());
 
       companyService.save(companyExt);
 
@@ -320,7 +320,8 @@ public class CompanyController
     {
       logger.info("Receiving " + fileType);
 
-      String filePath = configService.getProperty("docBase")+"/ybstore/company/"+compId+"/"+fileType;
+      String localPath = "/ybstore/company/"+compId+"/"+fileType;
+      String filePath = configService.getProperty("docBase")+localPath;
 
       //add time stamp to the file suffix so that "src" in <img src="..."/> will change when the image 
       //is updated. As a result, browser will re-load the image instead of using the cached one;
@@ -347,15 +348,15 @@ public class CompanyController
         if(fileType.equals("logo"))
         {
           //generate a large logo and a small logo 
-          ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), Integer.parseInt(configService.getProperty("logo.small.width")), 1f);
-          ImageUtil.resize(rawFile, new File(filePath+"/large"+suffix), Integer.parseInt(configService.getProperty("logo.large.width")), 1f);
+          //ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), Integer.parseInt(configService.getProperty("logo.small.width")), 1f);
+          //ImageUtil.resize(rawFile, new File(filePath+"/large"+suffix), Integer.parseInt(configService.getProperty("logo.large.width")), 1f);
 
-          company.setLogo_suffix(suffix);
+          company.setLogo(localPath+"/raw"+suffix);
         }
         else if(fileType.equals("authentication_file"))
         {
           //ImageUtil.resize(rawFile, new File(filePath+"/small"+suffix), 200, 1f);
-          company.setAuthfile_suffix(suffix);
+          company.setAuthfile(localPath+"/raw"+suffix);
         }
            
         companyService.save(company);

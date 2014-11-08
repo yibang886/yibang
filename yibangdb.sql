@@ -270,11 +270,11 @@ CREATE TABLE IF NOT EXISTS individual
   exp_trans INT UNSIGNED NOT NULL DEFAULT 0,   /*翻译经验，单位：万字，例如15表示15万字*/
   works VARCHAR(64),                           /*翻译作品*/
   introduct VARCHAR(1024) NOT NULL,            /*个人简介*/
-  photo_suffix VARCHAR(64),                    /*照片图片文件名后缀*/
-  langcert_suffix VARCHAR(64),                 /*语言等级证书图片文件名后缀*/
-  transcert_suffix VARCHAR(64),                /*翻译证书图片文件名后缀*/
-  profcert_suffix VARCHAR(64),                 /*专业证书图片文件名后缀*/
-  authfile_suffix VARCHAR(64),                 /*认证资料图片文件名后缀*/
+  photo VARCHAR(256),                    /*照片图片文件名后缀*/
+  langcert VARCHAR(256),                 /*语言等级证书图片文件名后缀*/
+  transcert VARCHAR(256),                /*翻译证书图片文件名后缀*/
+  profcert VARCHAR(256),                 /*专业证书图片文件名后缀*/
+  authfile VARCHAR(256),                 /*认证资料图片文件名后缀*/
   auth_pass INT UNSIGNED NOT NULL DEFAULT 0,   /*是否通过认证, 0:待认证; 1:认证通过; 2:认证未通过*/    
   valid_pass INT UNSIGNED NOT NULL DEFAULT 0,  /*是否通过审核, 0:待审核; 1:审核通过; 2:审核未通过*/
   recompos_id INT UNSIGNED NOT NULL,           /*在主页中的推荐位置*/ 
@@ -339,8 +339,8 @@ CREATE TABLE IF NOT EXISTS company
   address VARCHAR(256) NOT NULL,               /*详细地址*/
   website VARCHAR(128) NOT NULL UNIQUE,        /*公司网站*/
   inroduct VARCHAR(1024),                      /*公司简介*/ 
-  logo_suffix VARCHAR(64),                     /*logo图片文件名后缀*/
-  authfile_suffix VARCHAR(64),                 /*认证资料图片文件名后缀*/
+  logo VARCHAR(256),                     /*logo图片文件名后缀*/
+  authfile VARCHAR(256),                 /*认证资料图片文件名后缀*/
   auth_pass INT UNSIGNED NOT NULL DEFAULT 0,   /*是否通过认证, 0:待认证; 1:认证通过; 2:认证未通过*/
   valid_pass INT UNSIGNED NOT NULL DEFAULT 0,  /*是否通过审核, 0:待审核; 1:审核通过; 2:审核未通过*/
   recompos_id INT UNSIGNED NOT NULL,           /*在主页中的推荐位置*/ 

@@ -307,10 +307,10 @@ function checkboxSelect(name, all_none)
           <td>公司logo：</td>
           <td>
             <c:if test="${entityModel.operationType eq 'edit'}">
-              <input type="text" name="companyExt.logo_suffix" value="<c:out value="${entityModel.companyExt.logo_suffix}" escapeXml="true"/>" style="width:700px;"/>
+              <input type="text" name="companyExt.logo" value="<c:out value="${entityModel.companyExt.logo}" escapeXml="true"/>" style="width:700px;"/>
             </c:if>
             <c:if test="${entityModel.operationType eq 'publish'}">
-              <input type="text" name="companyExt.logo_suffix" value="<c:out value="请如实填写" escapeXml="true" />" style="width:700px;"/>
+              <input type="text" name="companyExt.logo" value="<c:out value="请如实填写" escapeXml="true" />" style="width:700px;"/>
             </c:if>
           </td>
         </tr>
@@ -319,10 +319,10 @@ function checkboxSelect(name, all_none)
           <td>认证资料：</td>
           <td>
             <c:if test="${entityModel.operationType eq 'edit'}">
-              <input type="text" name="companyExt.authfile_suffix" value="<c:out value="${entityModel.companyExt.authfile_suffix}" escapeXml="true"/>" style="width:700px;"/>
+              <input type="text" name="companyExt.authfile" value="<c:out value="${entityModel.companyExt.authfile}" escapeXml="true"/>" style="width:700px;"/>
             </c:if>
             <c:if test="${entityModel.operationType eq 'publish'}">
-              <input type="text" name="companyExt.authfile_suffix" value="<c:out value="请如实填写" escapeXml="true" />" style="width:700px;"/>
+              <input type="text" name="companyExt.authfile" value="<c:out value="请如实填写" escapeXml="true" />" style="width:700px;"/>
             </c:if>
           </td>
         </tr>
@@ -406,9 +406,9 @@ function checkboxSelect(name, all_none)
   
       <input type="hidden" value="${entityModel.companyQueryCon.inroduct}" name="${companyQueryCon.inroduct}"/>
   
-      <input type="hidden" value="${entityModel.companyQueryCon.logo_suffix}" name="${companyQueryCon.logo_suffix}"/>
+      <input type="hidden" value="${entityModel.companyQueryCon.logo}" name="${companyQueryCon.logo}"/>
   
-      <input type="hidden" value="${entityModel.companyQueryCon.authfile_suffix}" name="${companyQueryCon.authfile_suffix}"/>
+      <input type="hidden" value="${entityModel.companyQueryCon.authfile}" name="${companyQueryCon.authfile}"/>
   
       <input type="hidden" value="${entityModel.companyQueryCon.recompos_id}" name="${companyQueryCon.recompos_id}"/>
       --%>

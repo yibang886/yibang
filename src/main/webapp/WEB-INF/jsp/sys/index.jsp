@@ -48,7 +48,7 @@
                                 <div class="authen-flag"></div>
                             </c:if>
                             <div class="pic-block">
-                                <img src="/ybstore/company/${companyA1.id}/logo/raw${companyA1.logo_suffix}" alt=""/>
+                                <img src="${companyA1.logo}" alt=""/>
                             </div>
                             <h2>${companyA1.name}</h2>
                             <ul class="lst-c1">
@@ -106,7 +106,7 @@
                                 <div class="authen-flag"></div>
                             </c:if>
                             <div class="pic-block">
-                                <img src="/ybstore/company/${companyA2.id}/logo/raw${companyA2.logo_suffix}" alt=""> 
+                                <img src="${companyA2.logo}" alt=""> 
                             </div>
                             <h2>${companyA2.name}</h2>
                             <ul class="lst-c2">
@@ -156,7 +156,7 @@
                                 <div class="authen-flag"></div>
                             </c:if>
                             <div class="pic-block">
-                                <img src="/ybstore/individual/${individualA2.id}/photo/raw${individualA2.photo_suffix}" alt=""> 
+                                <img src="${individualA2.photo}" alt=""> 
                             </div>
                             <h2>${individualA2.name}</h2>
                             <ul class="lst-c2">
@@ -205,7 +205,7 @@
                     <c:forEach var="companyA3" items="${companiesA3}">
                         <div class="company-card-3 clearfix">                        
                             <div class="pic-block">
-                                <img src="/ybstore/company/${companyA3.id}/logo/raw${companyA3.logo_suffix}" alt=""><i></i>
+                                <img src="${companyA3.logo}" alt=""><i></i>
                             </div>
                             <h2>
                                 <b>${companyA3.name}</b>
@@ -257,7 +257,7 @@
                     <c:forEach var="individualA3" items="${individualsA3}">
                         <div class="company-card-3 clearfix">                        
                             <div class="pic-block">
-                                <img src="/ybstore/individual/${individualA3.id}/photo/raw${individualA3.photo_suffix}" alt=""><i></i>
+                                <img src="${individualA3.photo}" alt=""><i></i>
                             </div>
                             <h2>
                                 <b>${individualA3.name}</b>
@@ -350,7 +350,7 @@
                         <ul class="lst-rc">
                             <c:forEach var="companyA4" items="${companiesA4}">
                                 <li>
-                                    <img class="pic" src="/ybstore/company/${companyA4.id}/logo/raw${companyA4.logo_suffix}" alt="">
+                                    <img class="pic" src="${companyA4.logo}" alt="">
                                     <h2>
                                         <a href="">${companyA4.name}</a>
                                         <c:if test="${companyA4.auth_pass==1}">
@@ -387,7 +387,7 @@
 
                             <c:forEach var="individualA4" items="${individualsA4}">
                                 <li>
-                                    <img class="pic" src="/ybstore/individual/${individualA4.id}/photo/raw${individualA4.photo_suffix}" alt="">
+                                    <img class="pic" src="${individualA4.photo}" alt="">
                                     <h2>
                                       <a href="">${individualA4.name}</a>
                                         <c:if test="${individualA4.auth_pass==1}">
