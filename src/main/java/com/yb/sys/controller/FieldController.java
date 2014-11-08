@@ -37,7 +37,12 @@ public class FieldController {
 		List<ICondition> conditions = new ArrayList<ICondition>();
 		if(fieldQueryCon != null){
 		}
-		fieldModel.setItems(fieldService.criteriaQuery(conditions));
+
+    float allNum = fieldService.criteriaQueryCount(conditions);
+    fieldModel.setPageCount((int)Math.ceil(allNum/fieldModel.getPageSize()));
+
+		fieldModel.setItems(fieldService.criteriaQuery(conditions, null, fieldModel.getCurrentPage(), fieldModel.getPageSize()));
+
 		model.addAttribute(fieldModel);
 		return "/sys/field/index";
 	}

@@ -15,8 +15,6 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/resource/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
-$(".pager").pager({ pagenumber: ${entityModel.currentPage}, pagecount: ${entityModel.pageCount}, buttonClickCallback: pageClick });
-
 function pageClick(pageNum)
 {
   $("input[name='currentPage']").val(pageNum);
@@ -105,7 +103,7 @@ function doQuery()
   </div>
   --%>
 
-  <form id="form" name="companyForm" method="post">
+  <form id="form" method="post">
 
     <table border="0" cellpadding="0" cellspacing="0" class="table_list">
       <tr>
@@ -212,6 +210,10 @@ function doQuery()
     <input type="hidden" name="currentPage" value="${entityModel.currentPage}"/>
 
   </form>
+
+  <script type="text/javascript">
+    $(".pager").pager({ pagenumber: ${entityModel.currentPage}, pagecount: ${entityModel.pageCount}, buttonClickCallback: pageClick });
+  </script>
 
 </body>
 </html>

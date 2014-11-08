@@ -37,7 +37,12 @@ public class CityController {
 		List<ICondition> conditions = new ArrayList<ICondition>();
 		if(cityQueryCon != null){
 		}
-		cityModel.setItems(cityService.criteriaQuery(conditions));
+
+    float allNum = cityService.criteriaQueryCount(conditions);
+    cityModel.setPageCount((int)Math.ceil(allNum/cityModel.getPageSize()));
+
+		cityModel.setItems(cityService.criteriaQuery(conditions, null, cityModel.getCurrentPage(), cityModel.getPageSize()));
+
 		model.addAttribute(cityModel);
 		return "/sys/city/index";
 	}

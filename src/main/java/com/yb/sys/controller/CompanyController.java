@@ -112,7 +112,12 @@ public class CompanyController
     {
       generateConditions(conditions, queryCon);
     }
-    entityModel.setItems(companyService.criteriaQuery(conditions));
+
+    float allNum = companyService.criteriaQueryCount(conditions);
+    entityModel.setPageCount((int)Math.ceil(allNum/entityModel.getPageSize()));
+
+		entityModel.setItems(companyService.criteriaQuery(conditions, null, entityModel.getCurrentPage(), entityModel.getPageSize()));
+
     modelMap.addAttribute("entityModel", entityModel);
     return "/sys/company/index";
   }

@@ -121,7 +121,11 @@ public class IndividualController {
       generateConditions(conditions, individualQueryCon);
 		}
 
-		individualModel.setItems(individualService.criteriaQuery(conditions));
+    float allNum = individualService.criteriaQueryCount(conditions);
+    individualModel.setPageCount((int)Math.ceil(allNum/individualModel.getPageSize()));
+
+		individualModel.setItems(individualService.criteriaQuery(conditions, null, individualModel.getCurrentPage(), individualModel.getPageSize()));
+
 		model.addAttribute(individualModel);
 		return "/sys/individual/index";
 	}

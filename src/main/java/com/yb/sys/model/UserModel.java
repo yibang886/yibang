@@ -23,7 +23,7 @@ public class UserModel {
 	
 	private int currentPage = 1;
 	
-	private int pageSize = 20;
+	private int pageSize = 10;
 	
 	private int totalCount;
 	

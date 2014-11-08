@@ -169,7 +169,12 @@ public class UserController {
 		UserExt userQueryCon = userModel.getUserQueryCon();
 		List<ICondition> conditions = new ArrayList<ICondition>();
     generateConditions(conditions, userQueryCon);
-		userModel.setItems(userService.criteriaQuery(conditions));
+
+    float allNum = userService.criteriaQueryCount(conditions);
+    userModel.setPageCount((int)Math.ceil(allNum/userModel.getPageSize()));
+
+		userModel.setItems(userService.criteriaQuery(conditions, null, userModel.getCurrentPage(), userModel.getPageSize()));
+
 		model.addAttribute(userModel);
 		return "/sys/user/index";
 	}
