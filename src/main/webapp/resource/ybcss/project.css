@@ -358,6 +358,17 @@ a:hover {
 .lst-rc h2 {
   color: #5d5d5d;
   font-size: 14px;
+  line-height: 20px;
+}
+.lst-rc h2 a {
+  vertical-align: middle;
+  display: inline-block;
+  width: 140px;
+  height: 20px;
+  overflow: hidden;
+}
+.lst-rc h2 .authen-s-flag2 {
+  vertical-align: middle;
 }
 .pfoot {
   margin-top: 40px;
