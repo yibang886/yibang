@@ -31,6 +31,10 @@ a:hover{
 	width:1175px;
 	margin:0 auto;
 }
+.parea-wrap{
+	width: 1025px;
+	overflow: hidden;	
+}
 .phead{
 	height:42px;
 	line-height: 42px;
@@ -62,7 +66,7 @@ a:hover{
 		width:780px;
 		margin-top: 10px;
 		.search-input{
-			width:650px;
+			width:660px;
 			height:38px;
 			line-height: 38px;
 			border:1px solid #dddddd; 
@@ -243,6 +247,7 @@ a:hover{
 		text-align: center;
 		width:90px;
 		height:100px;
+		margin-right: 10px;
 		overflow: hidden;
 		img{
 			display: inline-block;
@@ -265,6 +270,9 @@ a:hover{
 	.other-info{
 		line-height: 22px;
 		color:#5d5d5d;
+		.info-item{
+			margin-right: 40px;
+		}
 	}
 }
 
@@ -397,3 +405,82 @@ a:hover{
 	}
 
 }
+.breadcrumb{
+	font-size: 14px;
+	line-height: 16px;
+	margin:40px 0 10px;
+	.crumb{float: left;}
+	.back-index{
+		float: right;
+	}
+}
+.search-options{
+	background: #fbfbfb;
+	border: 1px solid #dddddd;
+	padding:10px 20px;
+}
+.search-option-item{
+	line-height: 26px;
+	font-size: 14px;
+	margin-bottom: 5px;
+	dt{
+		width: 95px;
+		float: left;
+	}
+	dd{
+		width: 870px;
+		float: right;
+	}
+	.s-p-more{
+		font-weight: bold;
+	}
+	.search-param{
+		float: left;
+		width:90px;
+		margin-bottom: 10px;
+		&.s-p-active{
+			a{
+				background: #2dabe2;
+				color:#fff;
+			}
+		}
+		&.s-p-hiden{
+			display: none;
+		}
+		a{
+			display: inline-block;
+			color:#5d5d5d;
+			padding: 0 10px;
+		}
+	}
+}
+.green-mod{
+	border-top: 4px solid #9fc939;
+}
+
+.search-result {
+	overflow: hidden;
+}
+.pages-lst{
+	margin-top: 80px;
+	text-align: center;
+	font-size: 0;
+	.page{
+		font-size: 12px;
+		display: inline-block;
+		height: 21px;
+		line-height: 21px;
+		overflow: hidden;
+		min-width: 11px;
+		padding: 0 5px;
+		border: 1px solid #dee3e7;
+		margin-left: 4px;
+		font-family: Arial;
+	}
+	.active{
+		color:#fff;
+		background: #2dabe2;
+		border-color: #2dabe2;
+	}
+}
+
