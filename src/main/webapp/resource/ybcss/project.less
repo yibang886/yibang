@@ -483,4 +483,116 @@ a:hover{
 		border-color: #2dabe2;
 	}
 }
+//公司及个人空间
+.common-info{
+	border-top:4px solid #9fc939;
+	padding-top: 50px;
+	font-size: 14px;
+	.c-info-sidebar{
+		float: left;
+		width:170px;
+	}
+	.side-nav-lst{
+		border:1px solid #ddd;
+		li{
+			height: 48px;
+			line-height: 48px;
+			.nav-info,.nav-info-modify,.nav-publish{
+				display: block;
+				margin-left: 22px;
+				padding-left: 32px;
+				background: url(../ybimg/side-ico.png) no-repeat 0 -121px;
+			}
+			.nav-info-modify{
+				background-position: 0 -170px;
+			}
+			.nav-publish{
+				background-position: 0 -214px;
+			}
+			&.current{
+				background: #eff0f0;
+				color:#79a217;
+				a{
+					color: #79a217;
+				}
+				.nav-info{
+					background-position: 0 13px;
+				}
+				.nav-info-modify{
+					background-position: 0 -32px;
+				}
+				.nav-publish{
+					background-position: 0 -79px;
+				}								
+			}
+
+		}
+	}
+	.c-info-mcnt{
+		float: right;
+		width:830px;
+	}
+}
+.common-info-mod{
+	border:1px solid #efebeb;
+	.cinfo-hd{
+		padding:0 80px; 
+		height: 42px;
+		line-height: 42px;
+		font-size: 20px;
+		color:#7b7b7b;
+		background: #efebeb;
+	}
+	.cinfo-bd{
+		padding: 25px 80px;
+	}
+	.c-info-cnt{
+		position: relative;
+		.c-info-img{
+			position: absolute;
+			right: 0;
+			top:0;
+		}
+	}
+}
+.info-show-lst{
+	margin-top: -12px;
+	overflow: hidden;
+	*zoom:1;
+	li{line-height: 26px;margin-top: 12px;}
+	li.clear{
+		clear:both;
+		overflow: hidden;
+		height: 0;
+	}
+	.short-info-show{
+		width:32%;
+		float: left;
+	}
+	.short-info-show-2{
+		width: 50%;
+		float: left;
+	}
+	.label{
+		float: left;
+		color: #79a217;
+	}
+	.pic-info-li{
+		.label{
+			display: block;
+			float: none;
+			margin-bottom: 12px;
+		}
+	}
+	.clear-left{
+		clear:left;
+	}
+	p{
+		overflow: hidden;
+		*zoom:1;
+		a{
+			color:#1e48a9;
+		}
+	}
+}
 
