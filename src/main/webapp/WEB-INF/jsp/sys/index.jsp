@@ -313,7 +313,7 @@
                         <h2>查找翻译服务</h2>
                     </div>
                     <div class="r-mod-bd">
-                        <a href="" class="r-link">查找翻译服务 &gt;</a>
+                        <a href="search.action" target="_self" class="r-link">查找翻译服务 &gt;</a>
                     </div>
                 </div>
                 <div class="r-mod r-m2">
