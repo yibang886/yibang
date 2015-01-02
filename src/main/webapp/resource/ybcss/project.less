@@ -1,4 +1,5 @@
 @import url(normalize.css);
+@import url(ui-dialog.css);
 /* clear float */
 .clearfix{*zoom:1;}
 .clearfix:after{display:block; overflow:hidden; clear:both; height:0; visibility:hidden; content:".";}
@@ -593,6 +594,325 @@ a:hover{
 		a{
 			color:#1e48a9;
 		}
+	}
+}
+//个人信息页form样式
+.c-info-wrap{
+	padding:24px 26px 40px 40px;
+	border: 1px solid #ddd;
+}
+.common-info-mod2{
+	.cinfo-hd{
+		height: 45px;
+		border-bottom: 1px solid #ddd;
+		h2{
+			position: relative;
+			top: 1px;
+			font-size: 18px;
+			float: left;
+			line-height: 40px;
+			border-bottom: 5px solid #9fc939;
+		}
+	}
+}
+//表单统一样式
+.c-info-form{
+	.form-group{
+		margin-top: 18px;
+		.form-label{
+			float: left;
+			width: 105px;
+			line-height: 30px;
+			color:#666666;
+		}
+		input,select{
+			height: 30px;
+			line-height: 30px;
+			border:1px solid #ddd;
+		}
+	}
+	.form-control{
+		overflow: hidden;
+		*zoom:1;
+	}
+	.form-btns{
+		margin-top: 40px;
+		text-align: center;
+	}
+	.form-submit{
+		height: 40px;
+		line-height: 40px;
+		color: #fff;
+		font-size: 18px;
+		text-align: center;
+		background: #1ca8dd;
+	}
+	.form-submit-b{
+		width:240px;
+	}
+	.form-submit-s{
+		width: 126px;
+	}
+	label.error{
+		margin-left: 10px;
+		color:red;
+	}
+	label.valid{
+		vertical-align: middle;
+		display: inline-block;
+		width: 17px;
+		height: 17px;
+		background: url(../ybimg/valid.png) no-repeat 0 0;
+	}
+}
+.blue-btn{
+	width: 126px;
+	height: 40px;
+	line-height: 40px;
+	color: #fff;
+	font-size: 16px;
+	text-align: center;
+	background: #1ca8dd;
+}
+.gray-btn,.form-cancel{
+	display: inline-block;
+	width: 126px;
+	height: 40px;
+	line-height: 40px;
+	font-size: 16px;
+	text-align: center;
+	background: #ebebeb;
+}
+//login页面
+.login-page{
+	background: url(../ybimg/login-page-bg.png) no-repeat center 43px;	
+}
+.login-area{
+	overflow: hidden;
+	height: 650px;
+	.login-cnt{
+		margin:125px auto 0;
+		width:935px;
+		height: 440px;
+		background: url(../ybimg/login-bg.png) no-repeat center center;
+	}
+	.login-form{
+		margin:112px 105px 0 0;
+		float: right;
+		width: 270px;
+	}
+	.submit-btn{
+		text-align: center;
+		height: 46px;
+		width: 100%;
+		line-height: 46px;
+		font-size: 16px;
+		color:#fff;
+		background: #9fc939;
+		margin:30px 0;
+	}
+	.login-form-item{
+		height: 46px;
+		border: 1px solid #b0e7ed;
+		background: #ffffff;
+		margin-bottom:15px;
+		label{
+			display: inline-block;
+			vertical-align: middle;
+			padding-left:12px; 
+			line-height: 46px;
+			color:#999999;
+		}
+		input{
+			display: inline-block;
+			vertical-align: middle;
+			padding: 0 5px;
+			border: 0;
+			height: 32px;
+			line-height: 32px;
+			width: 160px;
+		}
+	}
+	.login-bottom{
+		color:#bfc3c2;
+		.checkbox{
+			float: left;
+			input{margin-right: 5px;}
+		} 
+		.forget-pw{
+			color:#bfc3c2;
+			float: right;
+		}
+	}
+}
+//register页面
+.register-mod{
+	background: #fbfbfb;
+	border: 1px solid #ddd;
+	border-top: 4px solid #9fc939;
+	font-size: 14px;
+	padding: 50px 150px;
+	margin-top: 20px;
+	.common-info-mod2{
+		.cinfo-hd{
+			h2{
+				padding: 0 15px;
+				color:#3dafdb;
+				border-color: #3dafdb;
+			}
+		}
+	}
+}
+//modify页面
+.modify-info-form{
+	display: block;
+	width: 600px;
+	margin: 40px auto 0 auto;
+	input{
+		width: 315px;
+	}
+}
+//upload_img页面
+.publish-flow{
+	margin: 65px 0 75px -20px;
+	li{
+		width: 125px;
+		float: left;
+		text-align: center; 
+		position: relative;
+		opacity: 0.3;
+		filter: alpha(opacity=30);
+		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+		span{
+			width: 60px;
+			height: 60px;
+			display: inline-block;
+			*zoom:1;
+			border-radius: 30px;
+			background: #79a217;
+			font-size: 24px;
+			font-family: Impact;
+			color:#fff;
+			text-align: center;
+			line-height: 60px;
+		}
+		p{
+			font-size: 14px;
+			color:#79a217;
+			margin-top: 20px;
+		}
+		i{
+			right: -4px;
+			top: 24px;
+			position: absolute;
+			width: 10px;
+			height: 16px;
+			background: url(../ybimg/flow-triangle.png) 0 0;
+		}
+		&.pass{
+			opacity: 1;
+			filter: alpha(opacity=100);
+			-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+		}
+		&.current{
+			opacity: 1;
+			filter: alpha(opacity=100);
+			-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+			i{
+				opacity: 0.3;
+				filter: alpha(opacity=30);
+				-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+			}
+		}		
+	}
+}
+.c-publish-flow{
+	margin-left: 20px;
+	li{
+		width: 220px;
+	}
+}
+.img-upload{
+	.img-preview{
+		float: left;
+		margin-right: 45px;
+		width: 310px;
+		height: 310px;
+		background: url(../ybimg/upload.png) no-repeat 0 0;
+	}	
+	.img-upload-form{
+		.upload-input{
+			margin:20px 0 10px;
+		}
+		p{
+			font-size: 12px;
+			color:#ababab;
+		}
+		.form-btns{
+			margin-top: 120px;
+		}
+	}
+}
+.bimg-layer{
+	position: relative;
+	.layer-cnt{
+		padding:35px;
+		background: #f4f4f4;
+	}
+	.layer-close{
+		position: absolute;
+		right: -58px;
+		top: 0;
+		width: 58px;
+		height: 58px;
+		background: url(../ybimg/close.png) no-repeat 0 0;
+	}
+}
+//translate页面
+.translate-form{
+	.clear{ clear:both; width:0px; height:0px; overflow:hidden; line-height:0px;}
+	input{
+		width:430px;
+	}
+	select{
+		width:115px;
+	}
+	.form-item2{
+		float: left;
+		height: 32px;
+		width: 50%;
+		input,select{
+			width: 115px;
+		}
+		.unit{
+			margin-left: 5px;
+			line-height: 32px;
+		}
+	}
+	.checkbox{
+		display: inline-block;
+		width: 128px;
+		height: 40px;
+		line-height:20px;
+		input{
+			width: auto;
+			margin-right: 10px;
+			vertical-align: middle;
+		}
+	}
+	.more-check{
+		display: inline-block;
+		line-height:20px;
+		height: 40px;	
+		color:#79a217;	
+	}
+	.hide-check{
+		display: none;
+	}
+	textarea{
+		width: 560px;
+		line-height: 30px;
+		border: 1px solid #ddd;
 	}
 }
 
