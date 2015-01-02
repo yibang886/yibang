@@ -22,7 +22,22 @@ import com.yb.sys.service.IIndividualServiceExt;
 import com.yb.sys.entity.CompanyExt;
 import com.yb.sys.model.CompanyModel;
 import com.yb.sys.service.ICompanyServiceExt;
+
+import com.yb.sys.entity.CityExt;
+import com.yb.sys.model.CityModel;
+import com.yb.sys.service.ICityServiceExt;
 import com.yb.sys.entity.LanguageExt;
+import com.yb.sys.model.LanguageModel;
+import com.yb.sys.service.ILanguageServiceExt;
+import com.yb.sys.entity.FieldExt;
+import com.yb.sys.model.FieldModel;
+import com.yb.sys.service.IFieldServiceExt;
+import com.yb.sys.entity.TranstypeExt;
+import com.yb.sys.model.TranstypeModel;
+import com.yb.sys.service.ITranstypeServiceExt;
+import com.yb.sys.entity.DoctypeExt;
+import com.yb.sys.model.DoctypeModel;
+import com.yb.sys.service.IDoctypeServiceExt;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,6 +60,20 @@ public class FrontEndController
   @Resource(name = "companyService")
   private ICompanyServiceExt companyService;
 
+	@Resource(name = "cityService")
+	private ICityServiceExt cityService;
+
+	@Resource(name = "languageService")
+	private ILanguageServiceExt languageService;
+  
+	@Resource(name = "fieldService")
+	private IFieldServiceExt fieldService;
+
+	@Resource(name = "transtypeService")
+	private ITranstypeServiceExt transtypeService;
+	
+	@Resource(name = "doctypeService")
+	private IDoctypeServiceExt doctypeService;
 
 
 
@@ -307,4 +336,34 @@ public class FrontEndController
     return topN;
   }
   */
+
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public String search(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response)
+  {
+    //pass enumerations like cities, educations, schools and etc to company/edit.jsp
+    List<ICondition> conditions = new ArrayList<ICondition>();
+    modelMap.addAttribute("languages", languageService.criteriaQuery(conditions));
+    modelMap.addAttribute("fields", fieldService.criteriaQuery(conditions));
+    modelMap.addAttribute("transtypes", transtypeService.criteriaQuery(conditions));
+    modelMap.addAttribute("doctypes", doctypeService.criteriaQuery(conditions));
+    modelMap.addAttribute("cities", cityService.criteriaQuery(conditions));
+
+    return "/sys/search";
+  }
+
+	@RequestMapping(value = "/query", method = RequestMethod.GET)
+	public String query(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response)
+  {
+    String sp = request.getParameter("sp");
+    String vf = request.getParameter("vf");
+    String au = request.getParameter("au");
+    String lg = request.getParameter("lg");
+
+    logger.debug("Yuanguo: sp="+sp);
+    logger.debug("Yuanguo: vf="+vf);
+    logger.debug("Yuanguo: au="+au);
+    logger.debug("Yuanguo: lg="+lg);
+
+    return "/sys/query";
+  }
 }
