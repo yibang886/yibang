@@ -38,6 +38,9 @@ import com.yb.sys.service.ITranstypeServiceExt;
 import com.yb.sys.entity.DoctypeExt;
 import com.yb.sys.model.DoctypeModel;
 import com.yb.sys.service.IDoctypeServiceExt;
+import com.yb.sys.entity.EducationExt;
+import com.yb.sys.model.EducationModel;
+import com.yb.sys.service.IEducationServiceExt;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -75,6 +78,8 @@ public class FrontEndController
 	@Resource(name = "doctypeService")
 	private IDoctypeServiceExt doctypeService;
 
+	@Resource(name = "educationService")
+	private IEducationServiceExt educationService;
 
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
@@ -347,6 +352,7 @@ public class FrontEndController
     modelMap.addAttribute("transtypes", transtypeService.criteriaQuery(conditions));
     modelMap.addAttribute("doctypes", doctypeService.criteriaQuery(conditions));
     modelMap.addAttribute("cities", cityService.criteriaQuery(conditions));
+    modelMap.addAttribute("educations", educationService.criteriaQuery(conditions));
 
     return "/sys/search";
   }
@@ -358,11 +364,27 @@ public class FrontEndController
     String vf = request.getParameter("vf");
     String au = request.getParameter("au");
     String lg = request.getParameter("lg");
+    String tt = request.getParameter("tt");
+    String dt = request.getParameter("dt");
+    String fd = request.getParameter("fd");
+    String ct = request.getParameter("ct");
+    String ws = request.getParameter("ws");
+    String ed = request.getParameter("ed");
+    
 
     logger.debug("Yuanguo: sp="+sp);
     logger.debug("Yuanguo: vf="+vf);
     logger.debug("Yuanguo: au="+au);
     logger.debug("Yuanguo: lg="+lg);
+    logger.debug("Yuanguo: tt="+tt);
+    logger.debug("Yuanguo: dt="+dt);
+    logger.debug("Yuanguo: fd="+fd);
+    logger.debug("Yuanguo: ct="+ct);
+    logger.debug("Yuanguo: ws="+ws);
+    logger.debug("Yuanguo: ed="+ed);
+
+
+
 
     return "/sys/query";
   }

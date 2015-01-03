@@ -6,6 +6,7 @@
 <%@ page import="com.yb.sys.entity.DoctypeExt" %>
 <%@ page import="com.yb.sys.entity.CityExt" %>
 <%@ page import="com.yb.sys.entity.FieldExt" %>
+<%@ page import="com.yb.sys.entity.EducationExt" %>
 <%@ include file="/core/include.jsp"%>
 <!DOCTYPE html>
 <html>
@@ -21,13 +22,17 @@
         function QueryParamObj()
         {
             this["sp"]=0; //service provider: 0:all; 1:individual; 2:company
-            this["vf"]=0; //verify status:    0:all; 1:passed;     2; not passed
-            this["au"]=0; //auth status:      0:all; 1:passed;     2; not passed
+            this["vf"]=0; //verify status:    0:all; 1:passed;     2: not passed
+            this["au"]=0; //auth status:      0:all; 1:passed;     2: not passed
             this["lg"]=0; //language:         0:all; other:lang-id
             this["tt"]=0; //translate type:   0:all; other:translate typd id;
             this["dt"]=0; //doc type:         0:all; other: doc type id;
             this["fd"]=0; //field:            0:all; other: field id;
             this["ct"]=0; //city:             0:all; other:city-id
+
+            //individual specific params
+            this["ws"]=0;  //work style:      0:all; 1:full-time;  2: part-time
+            this["ed"]=0;  //education:       0:all; other: education id;
         }
         function HiddenSettingsObj()
         {
@@ -39,6 +44,10 @@
             this["dt"]=1; //doc type:         controlled by user and hidden initially;
             this["fd"]=1; //field:            controlled by user and hidden initially;
             this["ct"]=1; //city:             controlled by user and hidden initially;
+            
+            //individual specific params
+            this["ws"]=0; //work style:       never hidden if queryParamObj["sp"]=1 (individual selected);
+            this["ed"]=0; //education:        never hidden if queryParamObj["sp"]=1 (individual selected);
         }
 
         //global variables;
@@ -93,6 +102,11 @@
             }
           }
 
+          if(cond=="sp") //if we are changing service provider;
+          {
+            process_indiv_specific(id);
+          }
+
           var first=1;
           for(var attr in queryParamObj)
           {
@@ -121,6 +135,61 @@
               xmlHttp.onreadystatechange = change;
               xmlHttp.open("GET",url,true);
               xmlHttp.send(null);
+          }
+        }
+
+        function process_indiv_specific(selected)
+        {
+          if(selected!=1) //not individual selected
+          {
+            queryParamObj["ws"]=0; //clear condition workstyle
+            queryParamObj["ed"]=0; //clear condition workstyle
+          }
+
+          for(var i=0; i<3; i++)
+          {
+            var elmt = document.getElementById("ws"+i);
+            if(elmt != null)
+            {
+              if(selected==1) //individual selected
+              {
+                if(queryParamObj["ws"]==i)
+                {
+                  elmt.className = "search-param s-p-active";
+                }
+                else
+                {
+                  elmt.className = "search-param";
+                }
+              }
+              else
+              {
+                elmt.className = "search-param s-p-hiden";
+              }
+            }
+          }
+
+          for(var i=0; i<7; i++) //hard-code number of educations
+          {
+            var elmt = document.getElementById("ed"+i);
+            if(elmt != null)
+            {
+              if(selected==1) //individual selected
+              {
+                if(queryParamObj["ed"]==i)
+                {
+                  elmt.className = "search-param s-p-active";
+                }
+                else
+                {
+                  elmt.className = "search-param";
+                }
+              }
+              else
+              {
+                elmt.className = "search-param s-p-hiden";
+              }
+            }
           }
         }
 
@@ -166,7 +235,14 @@
             }
 
             //set to expanded
-            more_hide_elemt.innerText = "隐藏<<";
+            if(isIE())
+            {
+              more_hide_elemt.innerText = "隐藏<<";
+            }
+            else
+            {
+              more_hide_elemt.textContent = "隐藏<<";
+            }
             hiddenSettingsObj[cond] = 0; 
           }
           else //expanded currently, so hide
@@ -195,10 +271,26 @@
             }
 
             //set to hidden
-            more_hide_elemt.innerText = "更多>>";
+            if(isIE())
+            {
+              more_hide_elemt.innerText = "更多>>";
+            }
+            else
+            {
+              more_hide_elemt.textContent = "更多>>";
+            }
             hiddenSettingsObj[cond] = 1; 
           }
         }
+
+        function isIE()
+        {  
+          if (window.navigator.userAgent.toLowerCase().indexOf("msie")>=1) 
+            return true; 
+          else 
+            return false; 
+        } 
+
     </script>
 </head>
 
@@ -241,12 +333,35 @@
 
                     <div class="search-options green-mod">
   
-                        <dl class="search-option-item clearfix">
+                        <dl class="search-option-item no-border clearfix">
                             <dt>服务主体：</dt>
                             <dd class="clearfix">
                                 <span id="sp0" class="search-param s-p-active"><a onclick="queryWithNewCond('sp',0,3)">全部</a></span>
                                 <span id="sp1" class="search-param"><a onclick="queryWithNewCond('sp',1,3)">个人译员</a></span> 
                                 <span id="sp2" class="search-param"><a onclick="queryWithNewCond('sp',2,3)">翻译公司</a></span>
+                            </dd>
+                        </dl>
+
+                        <dl class="search-option-item no-border clearfix">
+                          <!--<dt>工作方式：</dt>-->
+                            <dd class="clearfix">
+                                <span id="ws0" class="search-param s-p-hiden"><a onclick="queryWithNewCond('ws',0,3)">全部</a></span>
+                                <span id="ws1" class="search-param s-p-hiden"><a onclick="queryWithNewCond('ws',1,3)">全职</a></span> 
+                                <span id="ws2" class="search-param s-p-hiden"><a onclick="queryWithNewCond('ws',2,3)">兼职</a></span>
+                            </dd>
+                        </dl>
+
+                        <dl class="search-option-item no-border clearfix">
+                          <!--<dt>译员学历：</dt>-->
+                            <dd class="clearfix">
+                                <%
+                                    List<EducationExt> eds = (List<EducationExt>) request.getAttribute("educations");
+                                    Integer size_ed = eds.size()+1;  //plus 1 for '全部'
+                                %>
+                                <span id="ed0" class="search-param s-p-hiden"><a onclick="queryWithNewCond('ed',0,<%=size_ed%>)">全部</a></span>
+                                <c:forEach items="${educations}" var="var">
+                                    <span id="ed${var.id}" class="search-param s-p-hiden"><a onclick="queryWithNewCond('ed',${var.id},<%=size_ed%>)">${var.education}</a></span>
+                                </c:forEach>
                             </dd>
                         </dl>
 
