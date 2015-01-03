@@ -206,11 +206,6 @@
 
                     str=str.substr(start,end-start);
 
-                    if (str.trim().length==0)
-                    {
-                      str = "<h2>服务端没有返回任何信息！</h2>";
-                    }
-
                     var resultElmt = document.getElementById("search_result");
                     resultElmt.innerHTML = str;
                 }
