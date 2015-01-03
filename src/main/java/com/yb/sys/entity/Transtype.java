@@ -1,5 +1,7 @@
 package com.yb.sys.entity;
 
+import java.util.Set;
+import java.util.TreeSet;
 import java.io.Serializable;
 import java.lang.Comparable;
 
@@ -29,6 +31,34 @@ public class Transtype implements Serializable, Comparable<Transtype>{
 	public void settranstype(String transtype){
 		this.transtype = transtype;
 	}
+
+  private Set<IndividualExt> individuals = new TreeSet<IndividualExt>();
+  public void addindividual (IndividualExt individual)
+  {
+    this.individuals.add(individual);
+  }
+  public Set<IndividualExt> getindividuals()
+  {
+    return this.individuals;
+  }
+  public void setindividuals(Set<IndividualExt> individuals)
+  {
+    this.individuals = individuals;
+  }
+
+  private Set<CompanyExt> companies = new TreeSet<CompanyExt>();
+  public void addcompany(CompanyExt company)
+  {
+    this.companies.add(company);
+  }
+  public Set<CompanyExt> getcompanies()
+  {
+    return this.companies;
+  }
+  public void setcompanies(Set<CompanyExt> companies)
+  {
+    this.companies = companies;
+  }
 
 	public boolean equals(Object object)
     {

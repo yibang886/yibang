@@ -151,17 +151,20 @@ public class CompanyDao extends HibernateDaoSupport implements ICompanyDao{
 				}
 
         //add assoc criterias;
-        for(AssocCriteria assocCriteria : assocCriterias)
+        if(assocCriterias!=null)
         {
-          org.hibernate.Criteria c = criteria.createCriteria(assocCriteria.getPropName());
-          if(assocCriteria.getConditions() != null)
+          for(AssocCriteria assocCriteria : assocCriterias)
           {
-            ExpressionUtil.generateQueryExpression(assocCriteria.getConditions(), c);
-          }
+            org.hibernate.Criteria c = criteria.createCriteria(assocCriteria.getPropName());
+            if(assocCriteria.getConditions() != null)
+            {
+              ExpressionUtil.generateQueryExpression(assocCriteria.getConditions(), c);
+            }
 
-          if(assocCriteria.getOrders() != null)
-          {
-            ExpressionUtil.generateOrderExpression(assocCriteria.getOrders(), c);
+            if(assocCriteria.getOrders() != null)
+            {
+              ExpressionUtil.generateOrderExpression(assocCriteria.getOrders(), c);
+            }
           }
         }
 

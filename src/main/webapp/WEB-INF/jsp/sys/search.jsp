@@ -206,6 +206,11 @@
 
                     str=str.substr(start,end-start);
 
+                    if (str.trim().length==0)
+                    {
+                      str = "<h2>服务端没有返回任何信息！</h2>";
+                    }
+
                     var resultElmt = document.getElementById("search_result");
                     resultElmt.innerHTML = str;
                 }
@@ -488,48 +493,117 @@
                     </div>
 
                     <div id="search_result" class="search-result company-lst-3 green-mod">
-                        <div class="company-card-3 clearfix">                        
-                            <div class="pic-block">
-                                <img src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt=""><i></i>                       
-                            </div>
-                            <h2>标题标题标题标题标题<div class="authen-s-flag1"></div></h2>
-                            <p class="other-info">
-                                <span class="info-item">合同翻译，说明书翻译，论文翻译，标书图纸+证件盖章</span>
-                                <span class="info-item">正规信誉良好翻译公司快速准确</span>
-                            </p>
-                            <p class="other-info">
-                                <span class="info-item">地址：八里庄东里1号莱锦TOWN</span>
-                                <span class="info-item">电话：12345678</span>                                
-                            </p>                            
-                        </div> 
-                        <div class="company-card-3 clearfix">                        
-                            <div class="pic-block">
-                                <img src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt=""><i></i>                       
-                            </div>
-                            <h2>标题标题标题标题标题<div class="authen-s-flag1"></div></h2>
-                            <p class="other-info">
-                                <span class="info-item">合同翻译，说明书翻译，论文翻译，标书图纸+证件盖章</span>
-                                <span class="info-item">正规信誉良好翻译公司快速准确</span>
-                            </p>
-                            <p class="other-info">
-                                <span class="info-item">地址：八里庄东里1号莱锦TOWN</span>
-                                <span class="info-item">电话：12345678</span>                                
-                            </p>                            
-                        </div> 
-                        <div class="company-card-3 clearfix">                        
-                            <div class="pic-block">
-                                <img src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt=""><i></i>                       
-                            </div>
-                            <h2>标题标题标题标题标题<div class="authen-s-flag1"></div></h2>
-                            <p class="other-info">
-                                <span class="info-item">合同翻译，说明书翻译，论文翻译，标书图纸+证件盖章</span>
-                                <span class="info-item">正规信誉良好翻译公司快速准确</span>
-                            </p>
-                            <p class="other-info">
-                                <span class="info-item">地址：八里庄东里1号莱锦TOWN</span>
-                                <span class="info-item">电话：12345678</span>                                
-                            </p>                            
-                        </div>                                                                                        
+                        <c:if test="${empty companies && empty individuals}">
+                            <h2>没有任何翻译服务提供者！</h2>
+                        </c:if>
+                    
+                        <c:if test="${!empty companies}">
+                            <c:forEach var="comp" items="${companies}">
+                                <div class="company-card-3 clearfix">                        
+                                    <div class="pic-block">
+                                        <img src="${comp.logo}" alt=""><i></i>
+                                    </div>
+                                    <h2>
+                                        <b>${comp.name}</b>
+                                        <c:if test="${comp.auth_pass==1}">
+                                            <div class="authen-s-flag1"></div>
+                                        </c:if>
+                                    </h2>
+                                    <p class="other-info">
+                                        <b>支持语种：</b>
+                                        <c:forEach var="lang" items="${comp.languages}">
+                                            ${lang.language}
+                                        </c:forEach>
+                                        ----
+                                        <b>支持领域：</b>
+                                        <c:forEach var="field" items="${comp.fields}">
+                                            ${field.field}
+                                        </c:forEach>
+                                        ----
+                                        <b>翻译类型：</b>
+                                        <c:forEach var="transtype" items="${comp.transtypes}">
+                                            ${transtype.transtype}
+                                        </c:forEach>
+                        
+                                        <br>
+                        
+                                        <c:if test="${!empty comp.user.tel}">
+                                            <span class="info-item">电话：${comp.user.tel}</span>
+                                        </c:if>
+                                        &nbsp;&nbsp;
+                                        <c:if test="${!empty comp.user.mobile}">
+                                            <span class="info-item">手机：${comp.user.mobile}</span>
+                                        </c:if>
+                                        &nbsp;&nbsp;
+                                        <c:if test="${!empty comp.user.qq}">
+                                            <span class="info-item">QQ：${comp.user.qq}</span>
+                                        </c:if>
+                                        &nbsp;&nbsp;
+                                        <c:if test="${!empty comp.user.weixin}">
+                                            <span class="info-item">微信：${comp.user.weixin}</span>
+                                        </c:if>
+                                        &nbsp;&nbsp;
+                                        <c:if test="${!empty comp.user.email}">
+                                            <span class="info-item">邮箱：${comp.user.email}</span>
+                                        </c:if>
+                                    </p>
+                                </div> 
+                            </c:forEach>
+                        </c:if>
+                    
+                        <c:if test="${!empty individuals}">
+                            <c:forEach var="indiv" items="${individuals}">
+                                <div class="company-card-3 clearfix">                        
+                                    <div class="pic-block">
+                                        <img src="${indiv.photo}" alt=""><i></i>
+                                    </div>
+                                    <h2>
+                                        <b>${indiv.name}</b>
+                                        <c:if test="${indiv.auth_pass==1}">
+                                            <div class="authen-s-flag1"></div>
+                                        </c:if>
+                                    </h2>
+                                    <p class="other-info">
+                                        <b>支持语种：</b>
+                                        <c:forEach var="lang" items="${indiv.languages}">
+                                            ${lang.language}
+                                        </c:forEach>
+                                        ----
+                                        <b>支持领域：</b>
+                                        <c:forEach var="field" items="${indiv.fields}">
+                                            ${field.field}
+                                        </c:forEach>
+                                        ----
+                                        <b>翻译类型：</b>
+                                        <c:forEach var="transtype" items="${indiv.transtypes}">
+                                            ${transtype.transtype}
+                                        </c:forEach>
+                        
+                                        <br>
+                        
+                                        <c:if test="${!empty indiv.user.tel}">
+                                            <span class="info-item">电话：${indiv.user.tel}</span>
+                                        </c:if>
+                                        &nbsp;&nbsp;
+                                        <c:if test="${!empty indiv.user.mobile}">
+                                            <span class="info-item">手机：${indiv.user.mobile}</span>
+                                        </c:if>
+                                        &nbsp;&nbsp;
+                                        <c:if test="${!empty indiv.user.qq}">
+                                            <span class="info-item">QQ：${indiv.user.qq}</span>
+                                        </c:if>
+                                        &nbsp;&nbsp;
+                                        <c:if test="${!empty indiv.user.weixin}">
+                                            <span class="info-item">微信：${indiv.user.weixin}</span>
+                                        </c:if>
+                                        &nbsp;&nbsp;
+                                        <c:if test="${!empty indiv.user.email}">
+                                            <span class="info-item">邮箱：${indiv.user.email}</span>
+                                        </c:if>
+                                    </p>
+                                </div> 
+                            </c:forEach>
+                        </c:if>
                     </div>
 
                     <div class="pages-lst">

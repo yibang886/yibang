@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import javax.annotation.Resource;
 import org.springframework.context.annotation.Scope;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.common.hibernate.*;
+import com.common.LRUCache;
 
 import com.yb.sys.entity.IndividualExt;
 import com.yb.sys.model.IndividualModel;
@@ -57,6 +59,8 @@ public class FrontEndController
 {
   private static final Logger logger = LoggerFactory.getLogger(FrontEndController.class);
 
+  private static final int PAGE_SIZE = 20;
+
 	@Resource(name = "individualService")
 	private IIndividualServiceExt individualService;
 
@@ -82,6 +86,27 @@ public class FrontEndController
 	private IEducationServiceExt educationService;
 
 
+  //map: language-ID(Long) -->  ID of companies which support this language (Long[])
+  public static LRUCache<Long, Long[]> lgCompanyCache = new LRUCache<Long, Long[]>(24);
+  //map: language-ID(Long) -->  ID of individuals which support this language (Long[])
+  public static LRUCache<Long, Long[]> lgIndividualCache = new LRUCache<Long, Long[]>(24);
+
+  //map: transtype-ID(Long) -->  ID of companies which support this transtype (Long[])
+  public static LRUCache<Long, Long[]> ttCompanyCache = new LRUCache<Long, Long[]>(6);
+  //map: transtype-ID(Long) -->  ID of individuals which support this transtype (Long[])
+  public static LRUCache<Long, Long[]> ttIndividualCache = new LRUCache<Long, Long[]>(6);
+
+  //map: doctype-ID(Long) -->  ID of companies which support this doctype (Long[])
+  public static LRUCache<Long, Long[]> dtCompanyCache = new LRUCache<Long, Long[]>(16);
+  //map: doctype-ID(Long) -->  ID of individuals which support this doctype (Long[])
+  public static LRUCache<Long, Long[]> dtIndividualCache = new LRUCache<Long, Long[]>(16);
+
+  //map: field-ID(Long) -->  ID of companies which support this field (Long[])
+  public static LRUCache<Long, Long[]> fdCompanyCache = new LRUCache<Long, Long[]>(16);
+  //map: field-ID(Long) -->  ID of individuals which support this field (Long[])
+  public static LRUCache<Long, Long[]> fdIndividualCache = new LRUCache<Long, Long[]>(16);
+
+
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	//public String index(@ModelAttribute IndividualModel individualModel, @ModelAttribute CompanyModel companyModel, ModelMap modelMap)
 	public String index(ModelMap modelMap)
@@ -102,7 +127,7 @@ public class FrontEndController
     List<CompanyExt> comps = (List<CompanyExt>)getEnities4MainPage2(13, 1); // 1 for company;
 
     Long timeCost = System.currentTimeMillis() - beginTime;
-    logger.info("Yuanguo, getEnities4MainPage2 time spent: " + timeCost);
+    logger.debug("getEnities4MainPage2 time spent: " + timeCost);
 
     List<IndividualExt> individualsA2 = new ArrayList<IndividualExt>();
     List<IndividualExt> individualsA3 = new ArrayList<IndividualExt>();
@@ -354,6 +379,18 @@ public class FrontEndController
     modelMap.addAttribute("cities", cityService.criteriaQuery(conditions));
     modelMap.addAttribute("educations", educationService.criteriaQuery(conditions));
 
+    //the first time search-page is shown, query with no conditons;
+    int indivNum = PAGE_SIZE*4/10;
+    int compNum = PAGE_SIZE - indivNum;
+
+    List<ICondition> condList = new ArrayList<ICondition>();
+
+    List<IndividualExt> result_indivs = individualService.criteriaQuery(condList, null, null, 1, indivNum);
+    modelMap.addAttribute("individuals", result_indivs);
+
+    List<CompanyExt> result_comps = companyService.criteriaQuery(condList, null, null, 1, compNum);
+    modelMap.addAttribute("companies", result_comps);
+
     return "/sys/search";
   }
 
@@ -370,7 +407,7 @@ public class FrontEndController
     String ct = request.getParameter("ct");
     String ws = request.getParameter("ws");
     String ed = request.getParameter("ed");
-    
+    String page = request.getParameter("page");
 
     logger.debug("Yuanguo: sp="+sp);
     logger.debug("Yuanguo: vf="+vf);
@@ -382,9 +419,464 @@ public class FrontEndController
     logger.debug("Yuanguo: ct="+ct);
     logger.debug("Yuanguo: ws="+ws);
     logger.debug("Yuanguo: ed="+ed);
+    logger.debug("Yuanguo: page="+page);
 
 
+    int pageNo = 1;
+    int indivNum=0;
+    int compNum=0;
 
+    if(page!=null)
+    {
+      pageNo = Integer.parseInt(page.trim());
+    }
+
+    if(sp==null || sp.trim().equals("") || sp.trim().equals("0")) //individual and company
+    {
+      indivNum = PAGE_SIZE*4/10;
+      compNum = PAGE_SIZE - indivNum;
+    }
+    else if(sp.trim().equals("1")) //only individual
+    {
+      indivNum = PAGE_SIZE;
+      compNum = 0;
+    }
+    else //only company
+    {
+      indivNum = 0;
+      compNum = PAGE_SIZE;
+    }
+
+
+    List<ICondition> condList = new ArrayList<ICondition>();
+
+    if(vf!=null && !vf.trim().equals("") && !vf.trim().equals("0"))
+    {
+      Long verify = Long.parseLong(vf.trim());
+      if(verify==1L) //user wants validate-passed only
+      {
+        condList.add(new EqCondition("valid_pass", 1L)); //search for validate-passed
+      }
+      else
+      {
+        condList.add(new NeCondition("valid_pass", 1L)); //search for to-be-validated or validate-failed;
+      }
+    }
+
+    if(au!=null && !au.trim().equals("") && !au.trim().equals("0"))
+    {
+      Long auth = Long.parseLong(au.trim());
+      if(auth==1L) //user wants auth-passed only
+      {
+        condList.add(new EqCondition("auth_pass", 1L)); //search for auth-passed
+      }
+      else
+      {
+        condList.add(new NeCondition("auth_pass", 1L)); //search for to-be-auth or auth-failed;
+      }
+    }
+
+    if(ct!=null && !ct.trim().equals("") && !ct.trim().equals("0"))
+    {
+      Long city = Long.parseLong(ct.trim());
+      condList.add(new EqCondition("city.id", city));
+    }
+
+
+    if(indivNum>0)
+    {
+      //we have to make a copy of the condList, because we need to add more conds to it, which are not applicable for company query later;
+      List<ICondition> condList1 = new ArrayList<ICondition>();
+      for(ICondition iCond:condList)
+      {
+        condList1.add(iCond);
+      }
+
+      if(sp!=null && sp.trim().equals("1")) //user wants individual only, so there may be individual-specific conditions;
+      {
+        if(ws!=null && !ws.trim().equals("") && !ws.trim().equals("0"))
+        {
+          Long workstyle = Long.parseLong(ws.trim());
+          //because in front-page, 1:full-type, 2:part-time, but in backend, 0:full-time, 1:part-time;
+          workstyle -= 1L;
+          condList1.add(new EqCondition("workstyle", workstyle));
+        }
+        if(ed!=null && !ed.trim().equals("") && !ed.trim().equals("0"))
+        {
+          Long education = Long.parseLong(ed.trim());
+          condList1.add(new EqCondition("education.id", education));
+        }
+      }
+
+      boolean search = true;
+
+      if(search && lg!=null && !lg.trim().equals("") && !lg.trim().equals("0"))
+      {
+        Long lang = Long.parseLong(lg.trim());
+        Long[] supportIndivs = lgIndividualCache.get(lang);
+        if(supportIndivs==null)
+        {
+          logger.debug("Cache missed for individual-query: language="+lang);
+          LanguageExt languageExt = languageService.load(lang, true);
+          Set<IndividualExt> indivs = languageExt.getindividuals();
+          supportIndivs = new Long[indivs.size()];
+          int i=0;
+          for(IndividualExt ind:indivs)
+          {
+            supportIndivs[i++] = ind.getId();
+          }
+
+          if(supportIndivs.length>0)
+            lgIndividualCache.put(lang, supportIndivs);
+          else //no individual supports this language;
+            supportIndivs = null;
+        }
+        else
+        {
+          logger.debug("Cache hit for individual-query: language="+lang);
+          for(int i=0;i<supportIndivs.length;i++)
+          {
+            logger.debug("Individual: "+supportIndivs[i]);
+          }
+        }
+
+        if(supportIndivs!=null && supportIndivs.length>0) 
+        {
+          condList1.add(new InCondition("id",supportIndivs));
+        }
+        else
+        {
+          logger.debug("No individual support language:"+lg);
+          search = false;
+        }
+      }
+
+      if(search && fd!=null && !fd.trim().equals("") && !fd.trim().equals("0"))
+      {
+        Long field = Long.parseLong(fd.trim());
+        Long[] supportIndivs = fdIndividualCache.get(field);
+        if(supportIndivs==null)
+        {
+          logger.debug("Cache missed for individual-query: field="+field);
+          FieldExt fieldExt = fieldService.load(field, true);
+          Set<IndividualExt> indivs = fieldExt.getindividuals();
+          supportIndivs = new Long[indivs.size()];
+          int i=0;
+          for(IndividualExt ind:indivs)
+          {
+            supportIndivs[i++] = ind.getId();
+          }
+          if(supportIndivs.length>0)
+            fdIndividualCache.put(field, supportIndivs);
+          else
+            supportIndivs = null;
+        }
+        else
+        {
+          logger.debug("Cache hit for individual-query: field="+field);
+          for(int i=0;i<supportIndivs.length;i++)
+          {
+            logger.debug("Individual: "+supportIndivs[i]);
+          }
+        }
+
+        if(supportIndivs!=null && supportIndivs.length>0) 
+        {
+          condList1.add(new InCondition("id",supportIndivs));
+        }
+        else
+        {
+          logger.debug("No individual support field:"+fd);
+          search = false;
+        }
+      }
+
+      if(search && dt!=null && !dt.trim().equals("") && !dt.trim().equals("0"))
+      {
+        Long dtype = Long.parseLong(dt.trim());
+        Long[] supportIndivs = dtIndividualCache.get(dtype);
+        if(supportIndivs==null)
+        {
+          logger.debug("Cache missed for individual-query: doctype="+dtype);
+          DoctypeExt dtypeExt = doctypeService.load(dtype, true);
+          Set<IndividualExt> indivs = dtypeExt.getindividuals();
+          supportIndivs = new Long[indivs.size()];
+          int i=0;
+          for(IndividualExt ind:indivs)
+          {
+            supportIndivs[i++] = ind.getId();
+          }
+          if(supportIndivs.length>0)
+            dtIndividualCache.put(dtype, supportIndivs);
+          else
+            supportIndivs = null;
+        }
+        else
+        {
+          logger.debug("Cache hit for individual-query: doctype="+dtype);
+          for(int i=0;i<supportIndivs.length;i++)
+          {
+            logger.debug("Individual: "+supportIndivs[i]);
+          }
+        }
+
+        if(supportIndivs!=null && supportIndivs.length>0) 
+        {
+          condList1.add(new InCondition("id",supportIndivs));
+        }
+        else
+        {
+          logger.debug("No individual support doctype:"+dt);
+          search = false;
+        }
+      }
+
+      if(search && tt!=null && !tt.trim().equals("") && !tt.trim().equals("0"))
+      {
+        Long ttype = Long.parseLong(tt.trim());
+        Long[] supportIndivs = ttIndividualCache.get(ttype);
+        if(supportIndivs==null)
+        {
+          logger.debug("Cache missed for individual-query: transtype="+ttype);
+          TranstypeExt ttypeExt = transtypeService.load(ttype, true);
+          Set<IndividualExt> indivs = ttypeExt.getindividuals();
+          supportIndivs = new Long[indivs.size()];
+          int i=0;
+          for(IndividualExt ind:indivs)
+          {
+            supportIndivs[i++] = ind.getId();
+          }
+          if(supportIndivs.length>0)
+            ttIndividualCache.put(ttype, supportIndivs);
+          else
+            supportIndivs = null;
+        }
+        else
+        {
+          logger.debug("Cache hit for individual-query: transtype="+ttype);
+          for(int i=0;i<supportIndivs.length;i++)
+          {
+            logger.debug("Individual: "+supportIndivs[i]);
+          }
+        }
+
+        if(supportIndivs!=null && supportIndivs.length>0) 
+        {
+          condList1.add(new InCondition("id",supportIndivs));
+        }
+        else
+        {
+          logger.debug("No individual support transtype:"+tt);
+          search = false;
+        }
+      }
+
+
+      if(search)
+      {
+        List<IndividualExt> result_indivs = individualService.criteriaQuery(condList1, null, null, pageNo, indivNum);
+        modelMap.addAttribute("individuals", result_indivs);
+        int num_got = result_indivs.size();
+        if(num_got < indivNum && compNum > 0) //didn't get enough, and will search companies later, then get more companies;
+        {
+          compNum = PAGE_SIZE - num_got;
+        }
+
+        logger.debug("Yuanguo: result_indivs.size()="+result_indivs.size());
+        for(IndividualExt indiv: result_indivs)
+        {
+          logger.debug("Id:"+indiv.getId()+", Name="+indiv.getname());
+        }
+      }
+      else
+      {
+        logger.debug("Skip searching individuals because none meet all conditions");
+      }
+    }
+
+    if(compNum>0)
+    {
+      boolean search = true;
+      if(search && lg!=null && !lg.trim().equals("") && !lg.trim().equals("0"))
+      {
+        Long lang = Long.parseLong(lg.trim());
+        Long[] supportComps = lgCompanyCache.get(lang);
+        if(supportComps==null)
+        {
+          logger.debug("Cache missed for company-query: language="+lang);
+          LanguageExt languageExt = languageService.load(lang, true);
+          Set<CompanyExt> comps = languageExt.getcompanies();
+          supportComps = new Long[comps.size()];
+          int i=0;
+          for(CompanyExt c:comps)
+          {
+            supportComps[i++] = c.getId();
+          }
+
+          if(supportComps.length>0)
+          {
+            lgCompanyCache.put(lang, supportComps);
+          }
+          else //no company supports this language;
+          {
+            supportComps = null;
+          }
+        }
+        else
+        {
+          logger.debug("Cache hit for company-query: language="+lang);
+          for(int i=0;i<supportComps.length;i++)
+          {
+            logger.debug("Company: "+supportComps[i]);
+          }
+        }
+
+        if(supportComps!=null && supportComps.length>0)
+        {
+          condList.add(new InCondition("id",supportComps));
+        }
+        else
+        {
+          logger.debug("No company support language:"+lg);
+          search = false;
+        }
+      }
+
+      if(search && fd!=null && !fd.trim().equals("") && !fd.trim().equals("0"))
+      {
+        Long field = Long.parseLong(fd.trim());
+        Long[] supportComps = fdCompanyCache.get(field);
+        if(supportComps==null)
+        {
+          logger.debug("Cache missed for company-query: field="+field);
+          FieldExt fieldExt = fieldService.load(field, true);
+          Set<CompanyExt> comps = fieldExt.getcompanies();
+          supportComps = new Long[comps.size()];
+          int i=0;
+          for(CompanyExt cmp:comps)
+          {
+            supportComps[i++] = cmp.getId();
+          }
+          if(supportComps.length>0)
+            fdCompanyCache.put(field, supportComps);
+          else
+            supportComps = null;
+        }
+        else
+        {
+          logger.debug("Cache hit for company-query: field="+field);
+          for(int i=0;i<supportComps.length;i++)
+          {
+            logger.debug("Company: "+supportComps[i]);
+          }
+        }
+
+        if(supportComps!=null && supportComps.length>0) 
+        {
+          condList.add(new InCondition("id",supportComps));
+        }
+        else
+        {
+          logger.debug("No company support field:"+fd);
+          search = false;
+        }
+      }
+      
+      if(search && dt!=null && !dt.trim().equals("") && !dt.trim().equals("0"))
+      {
+        Long dtype = Long.parseLong(dt.trim());
+        Long[] supportComps = dtCompanyCache.get(dtype);
+        if(supportComps==null)
+        {
+          logger.debug("Cache missed for company-query: doctype="+dtype);
+          DoctypeExt dtypeExt = doctypeService.load(dtype, true);
+          Set<CompanyExt> comps = dtypeExt.getcompanies();
+          supportComps = new Long[comps.size()];
+          int i=0;
+          for(CompanyExt cmp:comps)
+          {
+            supportComps[i++] = cmp.getId();
+          }
+          if(supportComps.length>0)
+            dtCompanyCache.put(dtype, supportComps);
+          else
+            supportComps = null;
+        }
+        else
+        {
+          logger.debug("Cache hit for company-query: doctype="+dtype);
+          for(int i=0;i<supportComps.length;i++)
+          {
+            logger.debug("Company: "+supportComps[i]);
+          }
+        }
+
+        if(supportComps!=null && supportComps.length>0) 
+        {
+          condList.add(new InCondition("id",supportComps));
+        }
+        else
+        {
+          logger.debug("No company support doctype:"+dt);
+          search = false;
+        }
+      }
+
+      if(search && tt!=null && !tt.trim().equals("") && !tt.trim().equals("0"))
+      {
+        Long ttype = Long.parseLong(tt.trim());
+        Long[] supportComps = ttCompanyCache.get(ttype);
+        if(supportComps==null)
+        {
+          logger.debug("Cache missed for company-query: transtype="+ttype);
+          TranstypeExt ttypeExt = transtypeService.load(ttype, true);
+          Set<CompanyExt> comps = ttypeExt.getcompanies();
+          supportComps = new Long[comps.size()];
+          int i=0;
+          for(CompanyExt cmp:comps)
+          {
+            supportComps[i++] = cmp.getId();
+          }
+          if(supportComps.length>0)
+            ttCompanyCache.put(ttype, supportComps);
+          else
+            supportComps = null;
+        }
+        else
+        {
+          logger.debug("Cache hit for company-query: transtype="+ttype);
+          for(int i=0;i<supportComps.length;i++)
+          {
+            logger.debug("Company: "+supportComps[i]);
+          }
+        }
+
+        if(supportComps!=null && supportComps.length>0) 
+        {
+          condList.add(new InCondition("id",supportComps));
+        }
+        else
+        {
+          logger.debug("No company support transtype:"+tt);
+          search = false;
+        }
+      }
+
+      if(search)
+      {
+        List<CompanyExt> result_comps = companyService.criteriaQuery(condList, null, null, pageNo, compNum);
+        modelMap.addAttribute("companies", result_comps);
+        logger.debug("Yuanguo: result_comps.size()="+result_comps.size());
+        for(CompanyExt cmp: result_comps)
+        {
+          logger.debug("Id:"+cmp.getId()+", Name="+cmp.getName());
+        }
+      }
+      else
+      {
+        logger.debug("Skip searching companies because none meet all conditions");
+      }
+    }
 
     return "/sys/query";
   }

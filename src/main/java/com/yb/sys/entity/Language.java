@@ -50,6 +50,21 @@ public class Language implements Serializable, Comparable<Language>{
     this.individuals = individuals;
   }
 
+  private Set<CompanyExt> companies = new TreeSet<CompanyExt>();
+  public void addcompany(CompanyExt company)
+  {
+    this.companies.add(company);
+  }
+  public Set<CompanyExt> getcompanies()
+  {
+    return this.companies;
+  }
+  public void setcompanies(Set<CompanyExt> companies)
+  {
+    this.companies = companies;
+  }
+
+
 	public boolean equals(Object object)
     {
         if (this == object)

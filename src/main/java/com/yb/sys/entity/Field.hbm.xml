@@ -8,5 +8,17 @@
             <generator class="native" />
         </id>
 		<property name="field" column="field" type="java.lang.String" />
+
+        <!-- 
+          this makes "Set<IndividualExt> individuals" and "Set<CompanyExt> companies" auto-loaded 
+        -->
+        <set name="individuals" table="individual_field">
+          <key column="field_id" />
+          <many-to-many column="indiv_id" class="com.yb.sys.entity.IndividualExt" />
+        </set>
+        <set name="companies" table="company_field">
+          <key column="field_id" />
+          <many-to-many column="comp_id" class="com.yb.sys.entity.CompanyExt" />
+        </set>
     </class>
 </hibernate-mapping>
