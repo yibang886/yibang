@@ -59,7 +59,7 @@ public class FrontEndController
 {
   private static final Logger logger = LoggerFactory.getLogger(FrontEndController.class);
 
-  private static final int PAGE_SIZE = 20;
+  private static final int PAGE_SIZE = 5;
 
 	@Resource(name = "individualService")
 	private IIndividualServiceExt individualService;

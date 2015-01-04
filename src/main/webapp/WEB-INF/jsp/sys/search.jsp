@@ -123,7 +123,7 @@
           }
 
           //when the search conditions are changed, reset page number to 1;
-          queryParamObj["pg"]=1;
+          updatePgNumber(1, 6); //hard-code number of page number positions;
 
           queryParamObj[cond] = value; //update the cond to the new value;
 
@@ -364,27 +364,31 @@
           }
 
           //update the final page number;
-          queryParamObj["pg"] = curPg;
+          updatePgNumber(curPg, total);
+          queryByAjax("query.action");
+        }
+
+        function updatePgNumber(pgNo, total)
+        {
+          queryParamObj["pg"] = pgNo;
 
           //high light the page number that is selected; that is to calculate the position corresponding to
           //the final page number, then high light it and disable others;
-          var curPos = curPg%6;
-          if(curPos==0) 
-            curPos += 6;
+          var pos = pgNo%6;
+          if(pos==0) 
+            pos += 6;
 
           for(var i=1;i<=total;i++)
           {
             var elmt = document.getElementById("pg_pos_"+i);
             if(elmt != null)
             {
-              if(curPos == i)
+              if(pos == i)
                 elmt.className = "page active";
               else
                 elmt.className = "page";
             }
           }
-
-          queryByAjax("query.action");
         }
     </script>
 </head>
