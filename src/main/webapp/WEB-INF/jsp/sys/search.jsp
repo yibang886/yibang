@@ -33,7 +33,11 @@
             //individual specific params
             this["ws"]=0;  //work style:      0:all; 1:full-time;  2: part-time
             this["ed"]=0;  //education:       0:all; other: education id;
+
+            //page number
+            this["pg"]=1;
         }
+
         function HiddenSettingsObj()
         {
             this["sp"]=0; //service provider: never hidden;
@@ -55,36 +59,80 @@
         hiddenSettingsObj = new HiddenSettingsObj();
 
 
-        function getXMLHttpRequest() 
-        {  
-          var xmlHttp;
-          if(window.XMLHttpRequest) 
-          {
-              var xmlHttp = new window.XMLHttpRequest();
-          } 
-          else if (window.ActiveXObject) 
-          {
-              var xmlHttp = new window.ActiveXObject('Microsoft.XMLHTTP');
-          }
-          return xmlHttp;
-        }  
-
-        function queryWithNewCond(cond,id,total)
+        function process_indiv_specific(spValue)
         {
-          if(queryParamObj[cond] == id)
+          if(spValue!=1) //not individual selected
           {
+            queryParamObj["ws"]=0; //clear condition workstyle
+            queryParamObj["ed"]=0; //clear condition workstyle
+          }
+
+          for(var i=0; i<3; i++)
+          {
+            var elmt = document.getElementById("ws"+i);
+            if(elmt != null)
+            {
+              if(spValue==1) //individual selected
+              {
+                if(queryParamObj["ws"]==i)
+                {
+                  elmt.className = "search-param s-p-active";
+                }
+                else
+                {
+                  elmt.className = "search-param";
+                }
+              }
+              else
+              {
+                elmt.className = "search-param s-p-hiden";
+              }
+            }
+          }
+
+          for(var i=0; i<7; i++) //hard-code number of educations
+          {
+            var elmt = document.getElementById("ed"+i);
+            if(elmt != null)
+            {
+              if(spValue==1) //individual selected
+              {
+                if(queryParamObj["ed"]==i)
+                {
+                  elmt.className = "search-param s-p-active";
+                }
+                else
+                {
+                  elmt.className = "search-param";
+                }
+              }
+              else
+              {
+                elmt.className = "search-param s-p-hiden";
+              }
+            }
+          }
+        }
+
+        function queryWithNewCond(cond,value,total)
+        {
+          if(queryParamObj[cond] == value)
+          {
+            //value for this cond doesn't change, do nothing;
             return;
           }
 
-          var url = "query.action";
-          queryParamObj[cond] = id;
+          //when the search conditions are changed, reset page number to 1;
+          queryParamObj["pg"]=1;
+
+          queryParamObj[cond] = value; //update the cond to the new value;
 
           for(var i=0;i<total;i++)
           {
             var elmt = document.getElementById(cond+i);
             if(elmt!=null)
             {
-              if(i == id)
+              if(i == value)
               {
                   elmt.className = "search-param s-p-active";
               }
@@ -104,9 +152,15 @@
 
           if(cond=="sp") //if we are changing service provider;
           {
-            process_indiv_specific(id);
+            process_indiv_specific(value);
           }
 
+          var url = "query.action";
+          queryByAjax(url);
+        }
+
+        function queryByAjax(url)
+        {
           var first=1;
           for(var attr in queryParamObj)
           {
@@ -138,60 +192,19 @@
           }
         }
 
-        function process_indiv_specific(selected)
-        {
-          if(selected!=1) //not individual selected
+        function getXMLHttpRequest() 
+        {  
+          var xmlHttp;
+          if(window.XMLHttpRequest) 
           {
-            queryParamObj["ws"]=0; //clear condition workstyle
-            queryParamObj["ed"]=0; //clear condition workstyle
-          }
-
-          for(var i=0; i<3; i++)
+              var xmlHttp = new window.XMLHttpRequest();
+          } 
+          else if (window.ActiveXObject) 
           {
-            var elmt = document.getElementById("ws"+i);
-            if(elmt != null)
-            {
-              if(selected==1) //individual selected
-              {
-                if(queryParamObj["ws"]==i)
-                {
-                  elmt.className = "search-param s-p-active";
-                }
-                else
-                {
-                  elmt.className = "search-param";
-                }
-              }
-              else
-              {
-                elmt.className = "search-param s-p-hiden";
-              }
-            }
+              var xmlHttp = new window.ActiveXObject('Microsoft.XMLHTTP');
           }
-
-          for(var i=0; i<7; i++) //hard-code number of educations
-          {
-            var elmt = document.getElementById("ed"+i);
-            if(elmt != null)
-            {
-              if(selected==1) //individual selected
-              {
-                if(queryParamObj["ed"]==i)
-                {
-                  elmt.className = "search-param s-p-active";
-                }
-                else
-                {
-                  elmt.className = "search-param";
-                }
-              }
-              else
-              {
-                elmt.className = "search-param s-p-hiden";
-              }
-            }
-          }
-        }
+          return xmlHttp;
+        }  
 
         function change() 
         {
@@ -290,6 +303,10 @@
           else 
             return false; 
         } 
+
+        function queryWithNewPage(pageNo)
+        {
+        }
 
     </script>
 </head>
@@ -603,11 +620,11 @@
 
                     <div class="pages-lst">
                         <a class="page active" href="?page=1">1</a>
-                        <a class="page" href="?page=1?page=1">2</a>
-                        <a class="page" href="?page=1">3</a>
-                        <a class="page" href="?page=1">4</a>
-                        <a class="page" href="?page=1">5</a>
-                        <a class="page" href="?page=1">6</a>
+                        <a class="page" href="?page=2?">2</a>
+                        <a class="page" href="?page=3">3</a>
+                        <a class="page" href="?page=4">4</a>
+                        <a class="page" href="?page=5">5</a>
+                        <a class="page" href="?page=6">6</a>
                         <a class="page" href="?page=2">下一页</a>
                     </div>
 
