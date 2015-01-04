@@ -311,39 +311,10 @@
           {
             if(curPg==1)
               return;
-
             curPg--;
-            if(curPg%6 == 0) //e.g. if pg=7 and "上一页" is clicked, we need to show numbers: 1,2,3,4,5,6
-            {
-              for(var i=1;i<=total;i++)
-              {
-                var elmt = document.getElementById("pg_pos_"+i);
-                if(elmt != null)
-                {
-                  if(isIE())
-                    elmt.innerText = curPg - (total-i);
-                  else
-                    elmt.textContent = curPg - (total-i);
-                }
-              }
-            }
           }
           else if(pg_pos == "n")  //点击"下一页"
           {
-            if(curPg%6 == 0) //e.g. if pg=6 and "下一页" is clicked, we need to show numbers: 7,8,9,10,11,12
-            {
-              for(var i=1;i<=total;i++)
-              {
-                var elmt = document.getElementById("pg_pos_"+i);
-                if(elmt != null)
-                {
-                  if(isIE())
-                    elmt.innerText = curPg+i;
-                  else
-                    elmt.textContent = curPg+i;
-                }
-              }
-            }
             curPg++;
           }
           else //a position between 1 and 6 is selected;
@@ -359,12 +330,10 @@
             //if the same page is selected;
             if(distance==0)
               return;
-
             curPg = curPg - distance;
           }
 
-          //update the final page number;
-          updatePgNumber(curPg, total);
+          updatePgNumber(curPg, total); //update the final page number;
           queryByAjax("query.action");
         }
 
@@ -372,8 +341,11 @@
         {
           queryParamObj["pg"] = pgNo;
 
+          //we need to figure out the page numbers that are shown to user based on pgNo.
+          var m = Math.floor((pgNo-1)/6);
+
           //high light the page number that is selected; that is to calculate the position corresponding to
-          //the final page number, then high light it and disable others;
+          //the page number, then high light it and disable others;
           var pos = pgNo%6;
           if(pos==0) 
             pos += 6;
@@ -383,6 +355,11 @@
             var elmt = document.getElementById("pg_pos_"+i);
             if(elmt != null)
             {
+              if(isIE())
+                elmt.innerText = m*6+i;
+              else
+                elmt.textContent = m*6+i;
+
               if(pos == i)
                 elmt.className = "page active";
               else
