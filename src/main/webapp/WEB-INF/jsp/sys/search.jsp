@@ -155,8 +155,7 @@
             process_indiv_specific(value);
           }
 
-          var url = "query.action";
-          queryByAjax(url);
+          queryByAjax("query.action");
         }
 
         function queryByAjax(url)
@@ -304,10 +303,89 @@
             return false; 
         } 
 
-        function queryWithNewPage(pageNo)
+        function queryWithNewPage(pg_pos,total)
         {
-        }
+          var curPg = queryParamObj["pg"];
 
+          if(pg_pos == "p")  //点击"上一页"
+          {
+            if(curPg==1)
+              return;
+
+            curPg--;
+            if(curPg%6 == 0) //e.g. if pg=7 and "上一页" is clicked, we need to show numbers: 1,2,3,4,5,6
+            {
+              for(var i=1;i<=total;i++)
+              {
+                var elmt = document.getElementById("pg_pos_"+i);
+                if(elmt != null)
+                {
+                  if(isIE())
+                    elmt.innerText = curPg - (total-i);
+                  else
+                    elmt.textContent = curPg - (total-i);
+                }
+              }
+            }
+          }
+          else if(pg_pos == "n")  //点击"下一页"
+          {
+            if(curPg%6 == 0) //e.g. if pg=6 and "下一页" is clicked, we need to show numbers: 7,8,9,10,11,12
+            {
+              for(var i=1;i<=total;i++)
+              {
+                var elmt = document.getElementById("pg_pos_"+i);
+                if(elmt != null)
+                {
+                  if(isIE())
+                    elmt.innerText = curPg+i;
+                  else
+                    elmt.textContent = curPg+i;
+                }
+              }
+            }
+            curPg++;
+          }
+          else //a position between 1 and 6 is selected;
+          {
+            //calculate position of previouse page number;
+            var curPos = curPg%6;
+            if(curPos==0) 
+              curPos += 6;
+
+            //calculate the distance between prev page number and the one selected;
+            var distance = curPos - pg_pos;
+
+            //if the same page is selected;
+            if(distance==0)
+              return;
+
+            curPg = curPg - distance;
+          }
+
+          //update the final page number;
+          queryParamObj["pg"] = curPg;
+
+          //high light the page number that is selected; that is to calculate the position corresponding to
+          //the final page number, then high light it and disable others;
+          var curPos = curPg%6;
+          if(curPos==0) 
+            curPos += 6;
+
+          for(var i=1;i<=total;i++)
+          {
+            var elmt = document.getElementById("pg_pos_"+i);
+            if(elmt != null)
+            {
+              if(curPos == i)
+                elmt.className = "page active";
+              else
+                elmt.className = "page";
+            }
+          }
+
+          queryByAjax("query.action");
+        }
     </script>
 </head>
 
@@ -619,13 +697,14 @@
                     </div>
 
                     <div class="pages-lst">
-                        <a class="page active" href="?page=1">1</a>
-                        <a class="page" href="?page=2?">2</a>
-                        <a class="page" href="?page=3">3</a>
-                        <a class="page" href="?page=4">4</a>
-                        <a class="page" href="?page=5">5</a>
-                        <a class="page" href="?page=6">6</a>
-                        <a class="page" href="?page=2">下一页</a>
+                        <a id="pg_pos_p" class="page" onclick="queryWithNewPage('p',6)">上一页</a>
+                        <a id="pg_pos_1" class="page active" onclick="queryWithNewPage(1,6)">1</a>
+                        <a id="pg_pos_2" class="page" onclick="queryWithNewPage(2,6)">2</a>
+                        <a id="pg_pos_3" class="page" onclick="queryWithNewPage(3,6)">3</a>
+                        <a id="pg_pos_4" class="page" onclick="queryWithNewPage(4,6)">4</a>
+                        <a id="pg_pos_5" class="page" onclick="queryWithNewPage(5,6)">5</a>
+                        <a id="pg_pos_6" class="page" onclick="queryWithNewPage(6,6)">6</a>
+                        <a id="pg_pos_n" class="page" onclick="queryWithNewPage('n',6)">下一页</a>
                     </div>
 
                 </div>               

@@ -59,7 +59,7 @@ public class FrontEndController
 {
   private static final Logger logger = LoggerFactory.getLogger(FrontEndController.class);
 
-  private static final int PAGE_SIZE = 20;
+  private static final int PAGE_SIZE = 5;
 
 	@Resource(name = "individualService")
 	private IIndividualServiceExt individualService;
@@ -407,7 +407,7 @@ public class FrontEndController
     String ct = request.getParameter("ct");
     String ws = request.getParameter("ws");
     String ed = request.getParameter("ed");
-    String page = request.getParameter("page");
+    String pg = request.getParameter("pg");
 
     logger.debug("Yuanguo: sp="+sp);
     logger.debug("Yuanguo: vf="+vf);
@@ -419,16 +419,16 @@ public class FrontEndController
     logger.debug("Yuanguo: ct="+ct);
     logger.debug("Yuanguo: ws="+ws);
     logger.debug("Yuanguo: ed="+ed);
-    logger.debug("Yuanguo: page="+page);
+    logger.debug("Yuanguo: pg="+pg);
 
 
     int pageNo = 1;
     int indivNum=0;
     int compNum=0;
 
-    if(page!=null)
+    if(pg!=null)
     {
-      pageNo = Integer.parseInt(page.trim());
+      pageNo = Integer.parseInt(pg.trim());
     }
 
     if(sp==null || sp.trim().equals("") || sp.trim().equals("0")) //individual and company
@@ -677,11 +677,6 @@ public class FrontEndController
         List<IndividualExt> result_indivs = individualService.criteriaQuery(condList1, null, null, pageNo, indivNum);
         modelMap.addAttribute("individuals", result_indivs);
         int num_got = result_indivs.size();
-        if(num_got < indivNum && compNum > 0) //didn't get enough, and will search companies later, then get more companies;
-        {
-          compNum = PAGE_SIZE - num_got;
-        }
-
         logger.debug("Yuanguo: result_indivs.size()="+result_indivs.size());
         for(IndividualExt indiv: result_indivs)
         {
