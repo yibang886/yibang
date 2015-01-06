@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import java.net.URLDecoder;
+
 import javax.annotation.Resource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -59,7 +61,7 @@ public class FrontEndController
 {
   private static final Logger logger = LoggerFactory.getLogger(FrontEndController.class);
 
-  private static final int PAGE_SIZE = 20;
+  private static final int PAGE_SIZE = 5;
 
 	@Resource(name = "individualService")
 	private IIndividualServiceExt individualService;
@@ -408,6 +410,19 @@ public class FrontEndController
     String ws = request.getParameter("ws");
     String ed = request.getParameter("ed");
     String pg = request.getParameter("pg");
+    String st = request.getParameter("st");
+    if(st!=null)
+    {
+      try{
+        st = URLDecoder.decode(st,"UTF-8");  
+        st = st.trim();
+      }
+      catch(Throwable t)
+      {
+        logger.warn("failed to decode URI parameter st:"+st);
+        st = null;
+      }
+    }
 
     logger.debug("Yuanguo: sp="+sp);
     logger.debug("Yuanguo: vf="+vf);
@@ -420,6 +435,7 @@ public class FrontEndController
     logger.debug("Yuanguo: ws="+ws);
     logger.debug("Yuanguo: ed="+ed);
     logger.debug("Yuanguo: pg="+pg);
+    logger.debug("Yuanguo: st="+st);
 
 
     int pageNo = 1;
@@ -482,6 +498,10 @@ public class FrontEndController
       condList.add(new EqCondition("city.id", city));
     }
 
+    if(st!=null && !st.trim().equals(""))
+    {
+      condList.add(new LikeCondition("name", st));
+    }
 
     if(indivNum>0)
     {

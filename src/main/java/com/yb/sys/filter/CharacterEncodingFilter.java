@@ -13,6 +13,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;  
 import javax.servlet.http.HttpServletResponse;  
 
+
+//注意：CharacterEncodingFilter只对POST请求起作用。
+//对于GET请求：
+//   1. 前端javascript要encodeURIComponent(URI参数);
+//   2. 后端String param = URLDecoder.decode(request.getParameter("param_name"),"UTF-8");
+
 public class CharacterEncodingFilter extends HttpServlet implements Filter {  
 
   private static final long serialVersionUID = 1L;  

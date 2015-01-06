@@ -19,6 +19,9 @@
     <link href="<%=request.getContextPath()%>/resource/ybcss/project.css" rel="stylesheet" type="text/css" />
 
     <script type="text/javascript">
+        //IE doesn't support string trim, this makes it support;
+        String.prototype.trim=function(){return this.replace(/(^\s*)|(\s*$)/g,"");}
+
         function QueryParamObj()
         {
             this["sp"]=0; //service provider: 0:all; 1:individual; 2:company
@@ -36,6 +39,9 @@
 
             //page number
             this["pg"]=1;
+
+            //search text
+            this["st"]="";
         }
 
         function HiddenSettingsObj()
@@ -57,139 +63,19 @@
         //global variables;
         queryParamObj = new QueryParamObj();
         hiddenSettingsObj = new HiddenSettingsObj();
+        last_search_criteria = "cond";
+
+        //const variables;
+        pg_no_shown = 6;
 
 
-        function process_indiv_specific(spValue)
-        {
-          if(spValue!=1) //not individual selected
-          {
-            queryParamObj["ws"]=0; //clear condition workstyle
-            queryParamObj["ed"]=0; //clear condition workstyle
-          }
-
-          for(var i=0; i<3; i++)
-          {
-            var elmt = document.getElementById("ws"+i);
-            if(elmt != null)
-            {
-              if(spValue==1) //individual selected
-              {
-                if(queryParamObj["ws"]==i)
-                {
-                  elmt.className = "search-param s-p-active";
-                }
-                else
-                {
-                  elmt.className = "search-param";
-                }
-              }
-              else
-              {
-                elmt.className = "search-param s-p-hiden";
-              }
-            }
-          }
-
-          for(var i=0; i<7; i++) //hard-code number of educations
-          {
-            var elmt = document.getElementById("ed"+i);
-            if(elmt != null)
-            {
-              if(spValue==1) //individual selected
-              {
-                if(queryParamObj["ed"]==i)
-                {
-                  elmt.className = "search-param s-p-active";
-                }
-                else
-                {
-                  elmt.className = "search-param";
-                }
-              }
-              else
-              {
-                elmt.className = "search-param s-p-hiden";
-              }
-            }
-          }
-        }
-
-        function queryWithNewCond(cond,value,total)
-        {
-          if(queryParamObj[cond] == value)
-          {
-            //value for this cond doesn't change, do nothing;
-            return;
-          }
-
-          //when the search conditions are changed, reset page number to 1;
-          updatePgNumber(1, 6); //hard-code number of page number positions;
-
-          queryParamObj[cond] = value; //update the cond to the new value;
-
-          for(var i=0;i<total;i++)
-          {
-            var elmt = document.getElementById(cond+i);
-            if(elmt!=null)
-            {
-              if(i == value)
-              {
-                  elmt.className = "search-param s-p-active";
-              }
-              else
-              {
-                if(hiddenSettingsObj[cond]==1 && i>15)
-                {
-                    elmt.className = "search-param s-p-hiden";
-                }
-                else
-                {
-                    elmt.className = "search-param";
-                }
-              }
-            }
-          }
-
-          if(cond=="sp") //if we are changing service provider;
-          {
-            process_indiv_specific(value);
-          }
-
-          queryByAjax("query.action");
-        }
-
-        function queryByAjax(url)
-        {
-          var first=1;
-          for(var attr in queryParamObj)
-          {
-            if(queryParamObj[attr] != '0')
-            {
-                if(first==1)
-                {
-                  first=0;
-                  url = url+"?"+attr+"="+queryParamObj[attr];
-                }
-                else
-                {
-                  url = url+"&"+attr+"="+queryParamObj[attr];
-                }
-            }
-          }
-
-          xmlHttp = getXMLHttpRequest();
-
-          if(xmlHttp == null)
-          {
-              alert('Failed to get XMLHttpRequest');
-          }
-          else
-          {
-              xmlHttp.onreadystatechange = change;
-              xmlHttp.open("GET",url,true);
-              xmlHttp.send(null);
-          }
-        }
+        function isIE()
+        {  
+          if (window.navigator.userAgent.toLowerCase().indexOf("msie")>=1) 
+            return true; 
+          else 
+            return false; 
+        } 
 
         function getXMLHttpRequest() 
         {  
@@ -204,6 +90,39 @@
           }
           return xmlHttp;
         }  
+
+        function queryByAjax(criteria)
+        {
+          var url = "query.action?pg="+queryParamObj["pg"];
+          if(criteria == "cond")
+          {
+            for(var attr in queryParamObj)
+            {
+              if(attr!="st" && attr!="pg" && queryParamObj[attr] != 0)
+                url = url+"&"+attr+"="+queryParamObj[attr];
+            }
+          }
+          else if(criteria == "text")
+          {
+            if(queryParamObj["st"]!="")
+              url = url+"&st="+queryParamObj["st"];
+          }
+          else
+          {
+            alert("Invalid parameter for function queryByAjax");
+            return ;
+          }
+
+          xmlHttp = getXMLHttpRequest();
+          if(xmlHttp == null)
+              alert('Failed to get XMLHttpRequest');
+          else
+          {
+              xmlHttp.onreadystatechange = change;
+              xmlHttp.open("GET",url,true);
+              xmlHttp.send(null);
+          }
+        }
 
         function change() 
         {
@@ -223,7 +142,193 @@
                 }
             }
         }
-        
+
+        function highlightCond(cond, value, total)
+        {
+          for(var i=0;i<total;i++)
+          {
+            var elmt = document.getElementById(cond+i);
+            if(elmt!=null)
+            {
+              if(i == value)
+              {
+                elmt.className = "search-param s-p-active";
+              }
+              else
+              {
+                if(hiddenSettingsObj[cond]==1 && i>15)
+                  elmt.className = "search-param s-p-hiden";
+                else
+                  elmt.className = "search-param";
+              }
+            }
+          }
+        }
+
+        function show_indiv_specific(isShow)
+        {
+          queryParamObj["ws"]=0; //clear when first shown or hidden
+          queryParamObj["ed"]=0; //clear when first shown or hidden
+
+          for(var i=0; i<3; i++) //hard-code number of workstyles;
+          {
+            var elmt = document.getElementById("ws"+i);
+            if(elmt != null)
+            {
+              if(isShow)
+              {
+                if(i==0) //clear when first shown
+                  elmt.className = "search-param s-p-active";
+                else
+                  elmt.className = "search-param";
+              }
+              else
+                elmt.className = "search-param s-p-hiden";
+            }
+          }
+
+          for(var i=0; i<7; i++) //hard-code number of educations
+          {
+            var elmt = document.getElementById("ed"+i);
+            if(elmt != null)
+            {
+              if(isShow)
+              {
+                if(i==0) //clear when first shown
+                  elmt.className = "search-param s-p-active";
+                else
+                  elmt.className = "search-param";
+              }
+              else
+                elmt.className = "search-param s-p-hiden";
+            }
+          }
+        }
+
+        function queryWithNewCond(cond,value,total)
+        {
+          if(last_search_criteria=="cond" && queryParamObj[cond] == value)
+            return;
+
+          last_search_criteria = "cond";
+          updatePgNumber(1); //rest page# to 1 when conditions change;
+          queryParamObj[cond] = value; //update the cond to the new value;
+          highlightCond(cond, value, total);
+
+          if(cond=="sp") //if we are changing service provider;
+          {
+            if(value==1) //individual
+              show_indiv_specific(true);
+            else
+              show_indiv_specific(false);
+          }
+
+          queryByAjax("cond");
+        }
+
+        function queryWithText()
+        {
+          var txt = getSearchText();
+          if( last_search_criteria=="text" && queryParamObj["st"]==txt )
+            return;
+
+          last_search_criteria = "text";
+          updatePgNumber(1);
+          queryParamObj["st"]=txt;
+
+          queryByAjax("text");
+        }
+
+        function getSearchText()
+        {
+          var txt = "";
+          var ipt = document.getElementById("txt_input");
+          if(ipt!=null)
+          {
+            txt = ipt.value;
+            if(txt!=null)
+            {
+              txt = txt.trim();
+              if(txt!="")
+                txt = encodeURIComponent(txt);
+            }
+            if(txt==null)
+              txt = "";
+          }
+          return txt;
+        }
+
+        function queryWithNewPage(pg_pos)
+        {
+          var curPg = queryParamObj["pg"];
+
+          if(pg_pos == "p")  //点击"上一页"
+          {
+            if(curPg==1)
+              return;
+            curPg--;
+          }
+          else if(pg_pos == "n")  //点击"下一页"
+          {
+            curPg++;
+          }
+          else //a position between 1 and pg_no_shown is selected;
+          {
+            //calculate position of previouse page number;
+            var curPos = curPg%pg_no_shown;
+            if(curPos==0) 
+              curPos += pg_no_shown;
+
+            //calculate the distance between prev page number and the one selected;
+            var distance = curPos - pg_pos;
+
+            //if the same page is selected;
+            if(distance==0)
+              return;
+            curPg = curPg - distance;
+          }
+
+          updatePgNumber(curPg); //update the final page number;
+
+          queryByAjax(last_search_criteria);
+        }
+
+        function updatePgNumber(pgNo)
+        {
+          if(pgNo<=0)
+          {
+            alert("Unknown error occurred that caused pgNo le 0");
+            return;
+          }
+          queryParamObj["pg"] = pgNo;
+
+          //we need to figure out the page numbers that are shown to user based on pgNo.
+          var m = Math.floor((pgNo-1)/pg_no_shown);
+
+          //high light the page number that is selected; that is to calculate the position corresponding to
+          //the page number, then high light it and disable others;
+          var pos = pgNo%pg_no_shown;
+          if(pos==0) 
+            pos += pg_no_shown;
+
+          for(var i=1;i<=pg_no_shown;i++)
+          {
+            var elmt = document.getElementById("pg_pos_"+i);
+            if(elmt != null)
+            {
+              if(isIE())
+                elmt.innerText = m*pg_no_shown+i;
+              else
+                elmt.textContent = m*pg_no_shown+i;
+
+              if(pos == i)
+                elmt.className = "page active";
+              else
+                elmt.className = "page";
+            }
+          }
+        }
+
         function more_hide(cond, elemtId, total)
         {
           var more_hide_elemt = document.getElementById(elemtId);
@@ -236,25 +341,17 @@
               if(elmt != null)
               {
                 if(i==queryParamObj[cond])
-                {
                   elmt.className = "search-param s-p-active";
-                }
                 else
-                {
                   elmt.className = "search-param";
-                }
               }
             }
 
             //set to expanded
             if(isIE())
-            {
               more_hide_elemt.innerText = "隐藏<<";
-            }
             else
-            {
               more_hide_elemt.textContent = "隐藏<<";
-            }
             hiddenSettingsObj[cond] = 0; 
           }
           else //expanded currently, so hide
@@ -271,100 +368,19 @@
                 else
                 {
                   if(i<=15)
-                  {
                     elmt.className = "search-param";
-                  }
                   else
-                  {
                     elmt.className = "search-param s-p-hiden";
-                  }
                 }
               }
             }
 
             //set to hidden
             if(isIE())
-            {
               more_hide_elemt.innerText = "更多>>";
-            }
             else
-            {
               more_hide_elemt.textContent = "更多>>";
-            }
             hiddenSettingsObj[cond] = 1; 
-          }
-        }
-
-        function isIE()
-        {  
-          if (window.navigator.userAgent.toLowerCase().indexOf("msie")>=1) 
-            return true; 
-          else 
-            return false; 
-        } 
-
-        function queryWithNewPage(pg_pos,total)
-        {
-          var curPg = queryParamObj["pg"];
-
-          if(pg_pos == "p")  //点击"上一页"
-          {
-            if(curPg==1)
-              return;
-            curPg--;
-          }
-          else if(pg_pos == "n")  //点击"下一页"
-          {
-            curPg++;
-          }
-          else //a position between 1 and 6 is selected;
-          {
-            //calculate position of previouse page number;
-            var curPos = curPg%6;
-            if(curPos==0) 
-              curPos += 6;
-
-            //calculate the distance between prev page number and the one selected;
-            var distance = curPos - pg_pos;
-
-            //if the same page is selected;
-            if(distance==0)
-              return;
-            curPg = curPg - distance;
-          }
-
-          updatePgNumber(curPg, total); //update the final page number;
-          queryByAjax("query.action");
-        }
-
-        function updatePgNumber(pgNo, total)
-        {
-          queryParamObj["pg"] = pgNo;
-
-          //we need to figure out the page numbers that are shown to user based on pgNo.
-          var m = Math.floor((pgNo-1)/6);
-
-          //high light the page number that is selected; that is to calculate the position corresponding to
-          //the page number, then high light it and disable others;
-          var pos = pgNo%6;
-          if(pos==0) 
-            pos += 6;
-
-          for(var i=1;i<=total;i++)
-          {
-            var elmt = document.getElementById("pg_pos_"+i);
-            if(elmt != null)
-            {
-              if(isIE())
-                elmt.innerText = m*6+i;
-              else
-                elmt.textContent = m*6+i;
-
-              if(pos == i)
-                elmt.className = "page active";
-              else
-                elmt.className = "page";
-            }
           }
         }
     </script>
@@ -387,10 +403,8 @@
         <div class="parea head-search clearfix">
             <div class="logo"><img src="<%=request.getContextPath()%>/resource/ybimg/logo.png" alt=""></div>
             <div class="search">
-            <form action="">
-                <input type="text" class="search-input">
-                <input type="submit" value="搜索" class="search-btn">
-            </form>
+                <input id="txt_input" type="text" class="search-input">
+                <input type="submit" value="搜索" class="search-btn" onclick="queryWithText()">
             </div>
         </div>
 
@@ -678,14 +692,14 @@
                     </div>
 
                     <div class="pages-lst">
-                        <a id="pg_pos_p" class="page" onclick="queryWithNewPage('p',6)">上一页</a>
-                        <a id="pg_pos_1" class="page active" onclick="queryWithNewPage(1,6)">1</a>
-                        <a id="pg_pos_2" class="page" onclick="queryWithNewPage(2,6)">2</a>
-                        <a id="pg_pos_3" class="page" onclick="queryWithNewPage(3,6)">3</a>
-                        <a id="pg_pos_4" class="page" onclick="queryWithNewPage(4,6)">4</a>
-                        <a id="pg_pos_5" class="page" onclick="queryWithNewPage(5,6)">5</a>
-                        <a id="pg_pos_6" class="page" onclick="queryWithNewPage(6,6)">6</a>
-                        <a id="pg_pos_n" class="page" onclick="queryWithNewPage('n',6)">下一页</a>
+                        <a id="pg_pos_p" class="page" onclick="queryWithNewPage('p')">上一页</a>
+                        <a id="pg_pos_1" class="page active" onclick="queryWithNewPage(1)">1</a>
+                        <a id="pg_pos_2" class="page" onclick="queryWithNewPage(2)">2</a>
+                        <a id="pg_pos_3" class="page" onclick="queryWithNewPage(3)">3</a>
+                        <a id="pg_pos_4" class="page" onclick="queryWithNewPage(4)">4</a>
+                        <a id="pg_pos_5" class="page" onclick="queryWithNewPage(5)">5</a>
+                        <a id="pg_pos_6" class="page" onclick="queryWithNewPage(6)">6</a>
+                        <a id="pg_pos_n" class="page" onclick="queryWithNewPage('n')">下一页</a>
                     </div>
 
                 </div>               
