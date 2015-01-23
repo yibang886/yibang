@@ -9,6 +9,15 @@
     <meta name="description" content="译邦" />
     <base target="_blank" />
     <link href="<%=request.getContextPath()%>/resource/ybcss/project.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript">
+        function goSearch()
+        {
+            var form = document.getElementById("search_form");
+            form.action = "<%=request.getContextPath()%>/index.action;
+            form.submit();
+        }
+    </script>
 </head>
 <body>
 <div class="pwindow yibang">
@@ -27,10 +36,10 @@
         <div class="parea head-search clearfix">
             <div class="logo"><img src="<%=request.getContextPath()%>/resource/ybimg/logo.png" alt=""></div>
             <div class="search">
-            <form action="">
-                <input type="text" class="search-input">
-                <input type="submit" value="搜索" class="search-btn">
-            </form>
+                <form id="search_form" method="get" target="_self">
+                    <input name="st" type="text" class="search-input"/>
+                    <input type="submit" value="搜索" class="search-btn" onclick="goSearch()"/>
+                </form>
             </div>
         </div>
         <div class="pbanner">

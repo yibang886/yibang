@@ -63,29 +63,29 @@ public class FrontEndController
 
   private static final int PAGE_SIZE = 5;
 
-	@Resource(name = "individualService")
-	private IIndividualServiceExt individualService;
+  @Resource(name = "individualService")
+  private IIndividualServiceExt individualService;
 
   @Resource(name = "companyService")
   private ICompanyServiceExt companyService;
 
-	@Resource(name = "cityService")
-	private ICityServiceExt cityService;
+  @Resource(name = "cityService")
+  private ICityServiceExt cityService;
 
-	@Resource(name = "languageService")
-	private ILanguageServiceExt languageService;
+  @Resource(name = "languageService")
+  private ILanguageServiceExt languageService;
   
-	@Resource(name = "fieldService")
-	private IFieldServiceExt fieldService;
+  @Resource(name = "fieldService")
+  private IFieldServiceExt fieldService;
 
-	@Resource(name = "transtypeService")
-	private ITranstypeServiceExt transtypeService;
-	
-	@Resource(name = "doctypeService")
-	private IDoctypeServiceExt doctypeService;
+  @Resource(name = "transtypeService")
+  private ITranstypeServiceExt transtypeService;
+  
+  @Resource(name = "doctypeService")
+  private IDoctypeServiceExt doctypeService;
 
-	@Resource(name = "educationService")
-	private IEducationServiceExt educationService;
+  @Resource(name = "educationService")
+  private IEducationServiceExt educationService;
 
 
   //map: language-ID(Long) -->  ID of companies which support this language (Long[])
@@ -109,11 +109,19 @@ public class FrontEndController
   public static LRUCache<Long, Long[]> fdIndividualCache = new LRUCache<Long, Long[]>(16);
 
 
-	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	//public String index(@ModelAttribute IndividualModel individualModel, @ModelAttribute CompanyModel companyModel, ModelMap modelMap)
-	public String index(ModelMap modelMap)
+  @RequestMapping(value = "/index", method = RequestMethod.GET)
+  //public String index(@ModelAttribute IndividualModel individualModel, @ModelAttribute CompanyModel companyModel, ModelMap modelMap)
+  public String index(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response)
   {
     logger.debug("In FrontEndController.index()");
+
+    String st = request.getParameter("st");
+    if(st != null)
+    {
+      st = st.trim();
+    }
+
+    logger.debug("Yuanguo: st="+st);
 
     //          Company       Individual
     // A1         1              0
@@ -125,8 +133,8 @@ public class FrontEndController
 
     Long beginTime = System.currentTimeMillis();
 
-    List<IndividualExt> indivs = (List<IndividualExt>) getEnities4MainPage2(10, 0); // 0 for individual;
-    List<CompanyExt> comps = (List<CompanyExt>)getEnities4MainPage2(13, 1); // 1 for company;
+    List<IndividualExt> indivs = (List<IndividualExt>) getEnities4MainPage2(10, 0, st); // 0 for individual;
+    List<CompanyExt> comps = (List<CompanyExt>)getEnities4MainPage2(13, 1, st); // 1 for company;
 
     Long timeCost = System.currentTimeMillis() - beginTime;
     logger.debug("getEnities4MainPage2 time spent: " + timeCost);
@@ -172,14 +180,14 @@ public class FrontEndController
         curCompList = companiesA4;
     }
 
-		modelMap.addAttribute("individualsA2", individualsA2);
-		modelMap.addAttribute("individualsA3", individualsA3);
-		modelMap.addAttribute("individualsA4", individualsA4);
+    modelMap.addAttribute("individualsA2", individualsA2);
+    modelMap.addAttribute("individualsA3", individualsA3);
+    modelMap.addAttribute("individualsA4", individualsA4);
 
-		modelMap.addAttribute("companiesA1", companiesA1);
-		modelMap.addAttribute("companiesA2", companiesA2);
-		modelMap.addAttribute("companiesA3", companiesA3);
-		modelMap.addAttribute("companiesA4", companiesA4);
+    modelMap.addAttribute("companiesA1", companiesA1);
+    modelMap.addAttribute("companiesA2", companiesA2);
+    modelMap.addAttribute("companiesA3", companiesA3);
+    modelMap.addAttribute("companiesA4", companiesA4);
 
     /*
     if(compsA1.size()>0)
@@ -197,12 +205,12 @@ public class FrontEndController
         compA1.setLanguages(top);
       }
 
-		  modelMap.addAttribute("companyA1", compA1);
+      modelMap.addAttribute("companyA1", compA1);
     }
     */
 
-		return "/sys/index";
-	}
+    return "/sys/index";
+  }
 
 
   //getEnities4MainPage1() and getEnities4MainPage2() are 2 functions that query data to be shown on main page. The basic
@@ -258,7 +266,7 @@ public class FrontEndController
 
 
   //see comments of getEnities4MainPage1 function;
-  private List getEnities4MainPage2(int num, int indivOrComp) //indivOrComp, 0: individual; 1: company;
+  private List getEnities4MainPage2(int num, int indivOrComp, String search_text) //indivOrComp, 0: individual; 1: company;
   {
     List<AssocCriteria> assocCriterias = new ArrayList<AssocCriteria>();
 
@@ -272,22 +280,42 @@ public class FrontEndController
     List<List<ICondition>> conditionsList = new ArrayList<List<ICondition>>();
 
     List<ICondition> conditionsA1 = new ArrayList<ICondition>();
+    if(search_text!=null && !search_text.equals(""))
+    {
+      conditionsA1.add(new LikeCondition("name", search_text));
+    }
     conditionsA1.add(new EqCondition("recompos.id", 1L));  // A1
     conditionsList.add(conditionsA1);
 
     List<ICondition> conditionsA2 = new ArrayList<ICondition>();
+    if(search_text!=null && !search_text.equals(""))
+    {
+      conditionsA2.add(new LikeCondition("name", search_text));
+    }
     conditionsA2.add(new EqCondition("recompos.id", 2L));  // A2
     conditionsList.add(conditionsA2);
 
     List<ICondition> conditionsA3 = new ArrayList<ICondition>();
+    if(search_text!=null && !search_text.equals(""))
+    {
+      conditionsA3.add(new LikeCondition("name", search_text));
+    }
     conditionsA3.add(new EqCondition("recompos.id", 3L));  // A3
     conditionsList.add(conditionsA3);
 
     List<ICondition> conditionsA4 = new ArrayList<ICondition>();
+    if(search_text!=null && !search_text.equals(""))
+    {
+      conditionsA4.add(new LikeCondition("name", search_text));
+    }
     conditionsA4.add(new EqCondition("recompos.id", 4L));  // A4
     conditionsList.add(conditionsA4);
 
     List<ICondition> conditionsNO = new ArrayList<ICondition>();
+    if(search_text!=null && !search_text.equals(""))
+    {
+      conditionsNO.add(new LikeCondition("name", search_text));
+    }
     conditionsNO.add(new EqCondition("recompos.id", 5L));  // NO
     conditionsList.add(conditionsNO);
 
@@ -369,8 +397,8 @@ public class FrontEndController
   }
   */
 
-	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public String search(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response)
+  @RequestMapping(value = "/search", method = RequestMethod.GET)
+  public String search(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response)
   {
     //pass enumerations like cities, educations, schools and etc to company/edit.jsp
     List<ICondition> conditions = new ArrayList<ICondition>();
@@ -396,8 +424,8 @@ public class FrontEndController
     return "/sys/search";
   }
 
-	@RequestMapping(value = "/query", method = RequestMethod.GET)
-	public String query(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response)
+  @RequestMapping(value = "/query", method = RequestMethod.GET)
+  public String query(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response)
   {
     String sp = request.getParameter("sp");
     String vf = request.getParameter("vf");
