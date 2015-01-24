@@ -383,11 +383,16 @@
         
         if(validate()==0)
           return 0;
+
         if(emailValid==0)
+        {
+          alert("邮箱地址无效或者不唯一");
           return 0;
+        }
+
         if(emailValid==2)
         {
-          alert("请稍等,正在验证箱是否唯一");
+          alert("正在验证邮箱是否唯一,稍后重新提交");
           return 0;
         }
 
