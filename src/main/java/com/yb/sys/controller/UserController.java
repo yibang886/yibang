@@ -71,43 +71,43 @@ public class UserController {
 
   private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-	@Resource(name = "userService")
-	private IUserServiceExt userService;
+  @Resource(name = "userService")
+  private IUserServiceExt userService;
 
-	@Resource(name = "individualService")
-	private IIndividualServiceExt individualService;
+  @Resource(name = "individualService")
+  private IIndividualServiceExt individualService;
 
-	@Resource(name = "companyService")
-	private ICompanyServiceExt companyService;
+  @Resource(name = "companyService")
+  private ICompanyServiceExt companyService;
 
   //Added by Yuanguo: when go to edit page, user should be alloed to select living city, education, school and etc. 
   //These service beans are used to load the enumerations.
-	@Resource(name = "educationService")
-	private IEducationServiceExt educationService;
+  @Resource(name = "educationService")
+  private IEducationServiceExt educationService;
 
-	@Resource(name = "schoolService")
-	private ISchoolServiceExt schoolService;
+  @Resource(name = "schoolService")
+  private ISchoolServiceExt schoolService;
 
-	@Resource(name = "cityService")
-	private ICityServiceExt cityService;
+  @Resource(name = "cityService")
+  private ICityServiceExt cityService;
 
-	@Resource(name = "recomposService")
-	private IRecomposServiceExt recomposService;
+  @Resource(name = "recomposService")
+  private IRecomposServiceExt recomposService;
 
-	@Resource(name = "languageService")
-	private ILanguageServiceExt languageService;
+  @Resource(name = "languageService")
+  private ILanguageServiceExt languageService;
   
-	@Resource(name = "fieldService")
-	private IFieldServiceExt fieldService;
+  @Resource(name = "fieldService")
+  private IFieldServiceExt fieldService;
 
-	@Resource(name = "transtypeService")
-	private ITranstypeServiceExt transtypeService;
-	
-	@Resource(name = "doctypeService")
-	private IDoctypeServiceExt doctypeService;
+  @Resource(name = "transtypeService")
+  private ITranstypeServiceExt transtypeService;
+  
+  @Resource(name = "doctypeService")
+  private IDoctypeServiceExt doctypeService;
 
-	@Resource(name = "configService")
-	private ConfigService configService;
+  @Resource(name = "configService")
+  private ConfigService configService;
 
   
 
@@ -150,90 +150,194 @@ public class UserController {
     session.setAttribute("user", null);
     return "../../../sessionout";
   }
-	
-	@RequestMapping(value = "/user/index")
-	public String index(@ModelAttribute UserModel userModel, ModelMap model){
+  
+  @RequestMapping(value = "/user/index")
+  public String index(@ModelAttribute UserModel userModel, ModelMap model){
 
     //even for index page, we don't show admin account;
-		List<ICondition> conditions = new ArrayList<ICondition>();
+    List<ICondition> conditions = new ArrayList<ICondition>();
     conditions.add(new NeCondition("user_type",new Long(2L)));
     conditions.add(new NeCondition("user_type",new Long(3L)));
-		
-		userModel.setItems(userService.criteriaQuery(conditions));
-		model.addAttribute(userModel);
-		return "/sys/user/index";
-	}
-	
-	@RequestMapping(value = "/user/query")
-	public String query(@ModelAttribute UserModel userModel, ModelMap model){
-		UserExt userQueryCon = userModel.getUserQueryCon();
-		List<ICondition> conditions = new ArrayList<ICondition>();
+    
+    userModel.setItems(userService.criteriaQuery(conditions));
+    model.addAttribute(userModel);
+    return "/sys/user/index";
+  }
+  
+  @RequestMapping(value = "/user/query")
+  public String query(@ModelAttribute UserModel userModel, ModelMap model){
+    UserExt userQueryCon = userModel.getUserQueryCon();
+    List<ICondition> conditions = new ArrayList<ICondition>();
     generateConditions(conditions, userQueryCon);
 
     float allNum = userService.criteriaQueryCount(conditions);
     userModel.setPageCount((int)Math.ceil(allNum/userModel.getPageSize()));
 
-		userModel.setItems(userService.criteriaQuery(conditions, null, userModel.getCurrentPage(), userModel.getPageSize()));
+    userModel.setItems(userService.criteriaQuery(conditions, null, userModel.getCurrentPage(), userModel.getPageSize()));
 
-		model.addAttribute(userModel);
-		return "/sys/user/index";
-	}
-	
-	@RequestMapping(value = "/user/goView")
-	public String goView(@ModelAttribute UserModel userModel, ModelMap model){
-		if(userModel.getDataId() != 0){
-			UserExt userExt = userService.load(userModel.getDataId(), true);
-			userModel.setUserExt(userExt);
-		}
-		
-		model.addAttribute(userModel);
-		return "/sys/user/detail";
-	}
-	
-	@RequestMapping(value = "/user/goCreate")
-	public String goCreate(@ModelAttribute UserModel userModel, ModelMap model){
-		userModel.setOperationType("create");
-		model.addAttribute(userModel);
-		return "/sys/user/edit";
-	}
-	
-	@RequestMapping(value = "/user/doCreate")
-	public String doCreate(@ModelAttribute UserModel userModel, ModelMap model){
-		if(userModel.getUserExt() != null){
-			userService.create(userModel.getUserExt());
-		}
-		
-		return "forward:/user/query";
-	}
-	
-	@RequestMapping(value = "/user/goEdit")
-	public String goEdit(@ModelAttribute UserModel userModel, ModelMap model){
-		userModel.setOperationType("edit");
-		if(userModel.getDataId() != 0){
-			UserExt userExt = userService.load(userModel.getDataId(), true);
-			userModel.setUserExt(userExt);
-			model.addAttribute(userModel);
-		}
-		return "/sys/user/edit";
-	}
-	
-	@RequestMapping(value = "/user/doEdit")
-	public String doEdit(@ModelAttribute UserModel userModel, ModelMap model){
-		if(userModel.getUserExt() != null && userModel.getUserExt().getId() != 0){
-			UserExt userExt = userModel.getUserExt();
-			UserExt userExtPer = userService.load(userModel.getUserExt().getId(), true);
-			userService.save(userExt);
-		}
-		return "forward:/user/query";
-	}
-	
+    model.addAttribute(userModel);
+    return "/sys/user/index";
+  }
+  
+  @RequestMapping(value = "/user/goView")
+  public String goView(@ModelAttribute UserModel userModel, ModelMap model){
+    if(userModel.getDataId() != 0){
+      UserExt userExt = userService.load(userModel.getDataId(), true);
+      userModel.setUserExt(userExt);
+    }
+    
+    model.addAttribute(userModel);
+    return "/sys/user/detail";
+  }
+  
+  @RequestMapping(value = "/user/goCreate")
+  public String goCreate(@ModelAttribute UserModel userModel, ModelMap model){
+    userModel.setOperationType("create");
+    model.addAttribute(userModel);
+    return "/sys/user/edit";
+  }
+  
+  @RequestMapping(value = "/user/doCreate")
+  public String doCreate(@ModelAttribute UserModel userModel, ModelMap model){
+    if(userModel.getUserExt() != null){
+
+      String email = userModel.getUserExt().getemail();
+      String pwd = userModel.getUserExt().getpassword();
+      String tel = userModel.getUserExt().gettel();
+      String mob = userModel.getUserExt().getmobile();
+      String fax = userModel.getUserExt().getfax();
+      String qq = userModel.getUserExt().getqq();
+      String wx = userModel.getUserExt().getweixin();
+
+      if(email!=null) email = email.trim();
+      if(pwd!=null) pwd = pwd.trim();
+      if(tel!=null) tel = tel.trim();
+      if(mob!=null) mob = mob.trim();
+      if(fax!=null) fax = fax.trim();
+      if(qq!=null) qq = qq.trim();
+      if(wx!=null) wx = wx.trim(); 
+
+      if(email!=null && !email.equals(""))
+        userModel.getUserExt().setemail(email);
+      else
+        userModel.getUserExt().setemail(null);
+
+      if(pwd!=null && !pwd.equals(""))
+        userModel.getUserExt().setpassword(pwd);
+      else
+        userModel.getUserExt().setpassword(null);
+
+      if(tel!=null && !tel.equals(""))
+        userModel.getUserExt().settel(tel);
+      else
+        userModel.getUserExt().settel(null);
+      
+      if(mob!=null && !mob.equals(""))
+        userModel.getUserExt().setmobile(mob);
+      else
+        userModel.getUserExt().setmobile(null);
+
+      if(fax!=null && !fax.equals(""))
+        userModel.getUserExt().setfax(fax);
+      else
+        userModel.getUserExt().setfax(null);
+
+      if(qq!=null && !qq.equals(""))
+        userModel.getUserExt().setqq(qq);
+      else
+        userModel.getUserExt().setqq(null);
+
+      if(wx!=null && !wx.equals(""))
+        userModel.getUserExt().setweixin(wx);
+      else
+        userModel.getUserExt().setweixin(null);
+
+      userService.create(userModel.getUserExt());
+    }
+    
+    return "forward:/user/query";
+  }
+  
+  @RequestMapping(value = "/user/goEdit")
+  public String goEdit(@ModelAttribute UserModel userModel, ModelMap model){
+    userModel.setOperationType("edit");
+    if(userModel.getDataId() != 0){
+      UserExt userExt = userService.load(userModel.getDataId(), true);
+      userModel.setUserExt(userExt);
+      model.addAttribute(userModel);
+    }
+    return "/sys/user/edit";
+  }
+  
+  @RequestMapping(value = "/user/doEdit")
+  public String doEdit(@ModelAttribute UserModel userModel, ModelMap model){
+    if(userModel.getUserExt() != null && userModel.getUserExt().getId() != 0){
+
+      String email = userModel.getUserExt().getemail();
+      String pwd = userModel.getUserExt().getpassword();
+      String tel = userModel.getUserExt().gettel();
+      String mob = userModel.getUserExt().getmobile();
+      String fax = userModel.getUserExt().getfax();
+      String qq = userModel.getUserExt().getqq();
+      String wx = userModel.getUserExt().getweixin();
+
+      if(email!=null) email = email.trim();
+      if(pwd!=null) pwd = pwd.trim();
+      if(tel!=null) tel = tel.trim();
+      if(mob!=null) mob = mob.trim();
+      if(fax!=null) fax = fax.trim();
+      if(qq!=null) qq = qq.trim();
+      if(wx!=null) wx = wx.trim(); 
+
+      if(email!=null && !email.equals(""))
+        userModel.getUserExt().setemail(email);
+      else
+        userModel.getUserExt().setemail(null);
+
+      if(pwd!=null && !pwd.equals(""))
+        userModel.getUserExt().setpassword(pwd);
+      else
+        userModel.getUserExt().setpassword(null);
+
+      if(tel!=null && !tel.equals(""))
+        userModel.getUserExt().settel(tel);
+      else
+        userModel.getUserExt().settel(null);
+      
+      if(mob!=null && !mob.equals(""))
+        userModel.getUserExt().setmobile(mob);
+      else
+        userModel.getUserExt().setmobile(null);
+
+      if(fax!=null && !fax.equals(""))
+        userModel.getUserExt().setfax(fax);
+      else
+        userModel.getUserExt().setfax(null);
+
+      if(qq!=null && !qq.equals(""))
+        userModel.getUserExt().setqq(qq);
+      else
+        userModel.getUserExt().setqq(null);
+
+      if(wx!=null && !wx.equals(""))
+        userModel.getUserExt().setweixin(wx);
+      else
+        userModel.getUserExt().setweixin(null);
+
+      UserExt userExt = userModel.getUserExt();
+      UserExt userExtPer = userService.load(userModel.getUserExt().getId(), true);
+      userService.save(userExt);
+    }
+    return "forward:/user/query";
+  }
+  
   @RequestMapping(value = "/user/doDelete")
-	public String doDelete(@ModelAttribute UserModel userModel, ModelMap model){
-		if(userModel.getUserExt() != null){
-			userService.create(userModel.getUserExt());
-		}
-		if(userModel.getDataId() != 0){
-			UserExt userExt = userService.load(userModel.getDataId(), true);
+  public String doDelete(@ModelAttribute UserModel userModel, ModelMap model){
+    if(userModel.getUserExt() != null){
+      userService.create(userModel.getUserExt());
+    }
+    if(userModel.getDataId() != 0){
+      UserExt userExt = userService.load(userModel.getDataId(), true);
 
       if(userExt.getindividual() != null)
       {
@@ -241,31 +345,31 @@ public class UserController {
         return "/invalid";
       }
 
-			userService.delete(userExt);
-		}
-		return "forward:/user/query";
-	}
+      userService.delete(userExt);
+    }
+    return "forward:/user/query";
+  }
 
   //Yuanguo: individual/edit.jsp or company/edit.jsp has two usecases: 
   //   1. user entity publishes (creates) an individual enity; 
   //   2. individual/company entity modification operation; 
-	@RequestMapping(value = "/user/goPublish")
-	public String goPublish(@ModelAttribute UserModel entityModel, ModelMap model){
+  @RequestMapping(value = "/user/goPublish")
+  public String goPublish(@ModelAttribute UserModel entityModel, ModelMap model){
 
     //For usecase 1, edit.jsp should return to /user/goPublish; and for usecase 2, edit.jsp should return 
     //to /individual/doEdit (or /company/doEdit). The edit.jsp knows which usecase by "operationType";
-		entityModel.setOperationType("publish");
+    entityModel.setOperationType("publish");
 
     //program gets here from index.jsp (see line: user/goPublish.action?dataId=${ var.id }), so
     //dataId should be the ID of the user;
     Long userId = entityModel.getDataId();
 
-		if( userId == 0){
+    if( userId == 0){
       logger.error("DataId ("+userId+") is invalid");
       return "/invalid";
-		}
+    }
 
-  	UserExt userExt = userService.load(userId, true);
+    UserExt userExt = userService.load(userId, true);
     if(userExt == null)
     {
       logger.error("Failed to load user by ID:"+userId);
@@ -276,7 +380,7 @@ public class UserController {
     entityModel.setDataId(userId);
 
     //pass enumerations like cities, educations, schools and etc to individual/edit.jsp
-		List<ICondition> conditions = new ArrayList<ICondition>();
+    List<ICondition> conditions = new ArrayList<ICondition>();
     entityModel.setCityEnum(cityService.criteriaQuery(conditions));
     entityModel.setRecomposEnum(recomposService.criteriaQuery(conditions));
     entityModel.setLanguageEnum(languageService.criteriaQuery(conditions));
@@ -304,9 +408,9 @@ public class UserController {
       //although model.addAttribute(userModel) worked fine (when parameter "entityModel" was named userModel before). Is 
       //this because of @ModelAttribute in the function signature?
       //The answer: model.addAttribute(obj) equals to model.addAttribute("objClassNameLowerCaseFirstChar", obj);
-  	  model.addAttribute("entityModel",entityModel);
+      model.addAttribute("entityModel",entityModel);
 
-		  return "/sys/individual/edit";
+      return "/sys/individual/edit";
     }
     else if(userExt.getuser_type()==1) //翻译公司
     {
@@ -319,18 +423,18 @@ public class UserController {
 
       //create a new intance of CompanyExt; it will be passed to company/edit.jsp and it will be populated there.
       entityModel.setCompanyExt(new CompanyExt());
-  	  model.addAttribute("entityModel",entityModel);
-		  return "/sys/company/edit";
+      model.addAttribute("entityModel",entityModel);
+      return "/sys/company/edit";
     }
     else
     {
       logger.error("Cannot publish translation service because user_type ("+userExt.getuser_type()+") is invalid");
       return "/invalid";
     }
-	}
+  }
 
-	@RequestMapping(value = "/user/doPublish")
-	public String doPublish(@ModelAttribute UserModel entityModel, ModelMap model, HttpServletRequest request){
+  @RequestMapping(value = "/user/doPublish")
+  public String doPublish(@ModelAttribute UserModel entityModel, ModelMap model, HttpServletRequest request){
     UserExt userExt = userService.load(entityModel.getDataId(), true);
 
     entityModel.setOperationType("publish");
@@ -411,9 +515,9 @@ public class UserController {
   
         entityModel.setFileType("photo"); //upload photo next;
   
-    	  model.addAttribute("entityModel",entityModel);
+        model.addAttribute("entityModel",entityModel);
   
-  		  return "/sys/individual/upload";
+        return "/sys/individual/upload";
       }
       else if(userExt.getuser_type()==1) //翻译公司
       {
@@ -439,9 +543,9 @@ public class UserController {
   
         entityModel.setFileType("logo"); //upload logo next;
   
-    	  model.addAttribute("entityModel",entityModel);
+        model.addAttribute("entityModel",entityModel);
   
-  		  return "/sys/company/upload";
+        return "/sys/company/upload";
       }
     }
     else
@@ -450,22 +554,22 @@ public class UserController {
       return "/invalid";
     }
 
-		return "/invalid";
+    return "/invalid";
   }
 
   //Yuanguo: we want to receive uploaded file by HttpServletRequest, thus we use this kind of controller which 
   //takes request and response as parameters;
-	@RequestMapping(value = "/user/doUploadFile")
-	public String doUploadFile(HttpServletRequest request, HttpServletResponse response)
+  @RequestMapping(value = "/user/doUploadFile")
+  public String doUploadFile(HttpServletRequest request, HttpServletResponse response)
   {
     Long userId = Long.parseLong(request.getParameter("dataId"));
 
-		if( userId == 0){
+    if( userId == 0){
       logger.error("DataId ("+userId+") is invalid");
       return "/invalid";
-		}
+    }
 
-  	UserExt userExt = userService.load(userId, true);
+    UserExt userExt = userService.load(userId, true);
     if(userExt == null)
     {
       logger.error("Failed to load user by ID:"+userId);

@@ -23,6 +23,22 @@
     <!-- 静态资源访问 -->
     <mvc:resources mapping="/resource/**" location="/resource/" cache-period="31556926" /> 
 
+    <!--add the following 2 beans, so that controller can return json directly to client -->
+    <bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">  
+        <property name="supportedMediaTypes">  
+            <list>  
+                <value>application/json;charset=UTF-8</value>  
+           </list>  
+        </property>
+    </bean>
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">    
+        <property name="messageConverters">
+            <list >
+                <ref bean="mappingJacksonHttpMessageConverter" />
+            </list>
+        </property>    
+    </bean>
+
     <!-- 数据源 -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
       <property name="driverClass" value="com.mysql.jdbc.Driver"></property>

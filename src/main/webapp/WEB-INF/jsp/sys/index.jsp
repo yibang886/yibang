@@ -19,6 +19,7 @@
         }
     </script>
 </head>
+
 <body>
 <div class="pwindow yibang">
     <div class="phead">
@@ -27,7 +28,7 @@
                 客服热线：400-888-8888
             </div>
             <div class="right-tools">
-                <a href="">注册</a>
+                <a href="goRegister.action" target="_self">注册</a>
                 <a href="" class="login-link">登录</a><span class="spline">|</span><a href="">关于</a>
             </div>            
         </div>

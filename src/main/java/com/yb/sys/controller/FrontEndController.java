@@ -5,6 +5,8 @@ import java.util.TreeSet;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.HashMap;
 
 import java.net.URLDecoder;
 
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.common.hibernate.*;
 import com.common.LRUCache;
@@ -45,6 +48,11 @@ import com.yb.sys.service.IDoctypeServiceExt;
 import com.yb.sys.entity.EducationExt;
 import com.yb.sys.model.EducationModel;
 import com.yb.sys.service.IEducationServiceExt;
+import com.yb.sys.entity.UserExt;
+import com.yb.sys.model.UserModel;
+import com.yb.sys.service.IUserServiceExt;
+
+import com.yb.sys.model.UserModel;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,7 +61,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.hibernate.criterion.Order;
-//import org.hibernate.criterion.Property;
 
 @Controller
 @Scope("request")
@@ -86,6 +93,9 @@ public class FrontEndController
 
   @Resource(name = "educationService")
   private IEducationServiceExt educationService;
+
+  @Resource(name = "userService")
+  private IUserServiceExt userService;
 
 
   //map: language-ID(Long) -->  ID of companies which support this language (Long[])
@@ -922,5 +932,111 @@ public class FrontEndController
     }
 
     return "/sys/query";
+  }
+
+  @RequestMapping(value = "/goRegister")
+  public String goRegister(@ModelAttribute UserModel userModel, ModelMap model){
+    userModel.setOperationType("create");
+    model.addAttribute(userModel);
+    return "/sys/register";
+  }
+
+  @RequestMapping(value = "/doRegister")
+  public String doRegister(@ModelAttribute UserModel userModel, ModelMap model){
+    if(userModel.getUserExt() != null){
+
+      String email = userModel.getUserExt().getemail();
+      String pwd = userModel.getUserExt().getpassword();
+      String tel = userModel.getUserExt().gettel();
+      String mob = userModel.getUserExt().getmobile();
+      String fax = userModel.getUserExt().getfax();
+      String qq = userModel.getUserExt().getqq();
+      String wx = userModel.getUserExt().getweixin();
+
+      if(email!=null) email = email.trim();
+      if(pwd!=null) pwd = pwd.trim();
+      if(tel!=null) tel = tel.trim();
+      if(mob!=null) mob = mob.trim();
+      if(fax!=null) fax = fax.trim();
+      if(qq!=null) qq = qq.trim();
+      if(wx!=null) wx = wx.trim(); 
+
+      if(email!=null && !email.equals(""))
+        userModel.getUserExt().setemail(email);
+      else
+        userModel.getUserExt().setemail(null);
+
+      if(pwd!=null && !pwd.equals(""))
+        userModel.getUserExt().setpassword(pwd);
+      else
+        userModel.getUserExt().setpassword(null);
+
+      if(tel!=null && !tel.equals(""))
+        userModel.getUserExt().settel(tel);
+      else
+        userModel.getUserExt().settel(null);
+      
+      if(mob!=null && !mob.equals(""))
+        userModel.getUserExt().setmobile(mob);
+      else
+        userModel.getUserExt().setmobile(null);
+
+      if(fax!=null && !fax.equals(""))
+        userModel.getUserExt().setfax(fax);
+      else
+        userModel.getUserExt().setfax(null);
+
+      if(qq!=null && !qq.equals(""))
+        userModel.getUserExt().setqq(qq);
+      else
+        userModel.getUserExt().setqq(null);
+
+      if(wx!=null && !wx.equals(""))
+        userModel.getUserExt().setweixin(wx);
+      else
+        userModel.getUserExt().setweixin(null);
+
+      userModel.getUserExt().setcoin(0L);
+
+      userService.create(userModel.getUserExt());
+    }
+
+    if(userModel.getUserExt().getuser_type()==0L) 
+      return "/sys/indiv_home"; //individual
+    else
+      return "/sys/comp_home";  //company
+  }
+
+  @RequestMapping(value = "/emailUnique")
+  @ResponseBody
+  public Map<String,Integer> emailUnique(HttpServletRequest request, HttpServletResponse response, ModelMap model){
+
+    String email = request.getParameter("email");
+    if(email != null) email = email.trim();
+
+    Map<String,Integer> map = new HashMap<String,Integer>();
+    String key = "NumWithEmail";
+
+    if(email!=null && !email.equals(""))
+    {
+      List<ICondition> conditions = new ArrayList<ICondition>();
+      conditions.add(new EqCondition("email",email));
+      try{
+        int allNum = userService.criteriaQueryCount(conditions);
+        map.put(key,allNum);
+      }
+      catch(Exception e)
+      {
+        logger.error("Unexpected exception thrown");
+        e.printStackTrace();
+        map.put(key,-1);
+      }
+    }
+    else //client should never give null or empty email
+    {
+      map.put(key,-1);
+    }
+
+    return map;
   }
 }
