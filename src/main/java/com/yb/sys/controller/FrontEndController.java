@@ -946,7 +946,6 @@ public class FrontEndController
     if(userModel.getUserExt() != null){
 
       String email = userModel.getUserExt().getemail();
-      String pwd = userModel.getUserExt().getpassword();
       String tel = userModel.getUserExt().gettel();
       String mob = userModel.getUserExt().getmobile();
       String fax = userModel.getUserExt().getfax();
@@ -954,7 +953,6 @@ public class FrontEndController
       String wx = userModel.getUserExt().getweixin();
 
       if(email!=null) email = email.trim();
-      if(pwd!=null) pwd = pwd.trim();
       if(tel!=null) tel = tel.trim();
       if(mob!=null) mob = mob.trim();
       if(fax!=null) fax = fax.trim();
@@ -965,11 +963,6 @@ public class FrontEndController
         userModel.getUserExt().setemail(email);
       else
         userModel.getUserExt().setemail(null);
-
-      if(pwd!=null && !pwd.equals(""))
-        userModel.getUserExt().setpassword(pwd);
-      else
-        userModel.getUserExt().setpassword(null);
 
       if(tel!=null && !tel.equals(""))
         userModel.getUserExt().settel(tel);
