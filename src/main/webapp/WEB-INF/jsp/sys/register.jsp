@@ -72,14 +72,8 @@
                                         <span class="form-label">用户类型(*)</span>
                                         <div class="form-control">
                                             <select required name="userExt.user_type">
-                                                <c:if test="${ userModel.operationType eq 'edit' }">
-                                                    <option value="0" <c:if test="${userModel.userExt.user_type==0}"><c:out value="selected"/></c:if> >个人译员</option>
-                                                    <option value="1" <c:if test="${userModel.userExt.user_type==1}"><c:out value="selected"/></c:if> >翻译公司</option>
-                                                </c:if>
-                                                <c:if test="${ userModel.operationType eq 'create' }">
-                                                    <option value="0" selected="true">个人译员</option>
-                                                    <option value="1">翻译公司</option>
-                                                </c:if>
+                                                <option value="0" selected="true">个人译员</option>
+                                                <option value="1">翻译公司</option>
                                             </select>
                                         </div>
                                     </div>
@@ -115,17 +109,8 @@
                                         </div>
                                     </div> 
 
-                                    <c:if test="${ userModel.operationType eq 'edit' }">
-                                        <input type="hidden" value="${ userModel.userExt.id }" name="userExt.id"/>
-                                    </c:if>
-
                                     <div class="form-btns">
-                                        <c:if test="${ userModel.operationType eq 'create' }">
-                                            <input class="form-submit form-submit-b" type="button" value="提交" onclick="doUserCreate()" >
-                                        </c:if>
-                                        <c:if test="${ userModel.operationType eq 'edit' }">
-                                            <input class="form-submit form-submit-b" type="button" value="提交" onclick="doUserEdit()" >
-                                        </c:if>
+                                        <input class="form-submit form-submit-b" type="button" value="提交" onclick="doUserCreate()" >
                                     </div> 
                                 </form>
                             </div>

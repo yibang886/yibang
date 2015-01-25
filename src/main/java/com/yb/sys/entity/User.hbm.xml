@@ -8,6 +8,7 @@
             <generator class="native" />
         </id>
         <one-to-one name="individual" class="com.yb.sys.entity.IndividualExt" outer-join="false" /> 
+        <one-to-one name="company" class="com.yb.sys.entity.CompanyExt" outer-join="false" /> 
 		<property name="email" column="email" type="java.lang.String" />
 		<property name="password" column="password" type="java.lang.String" />
 		<property name="tel" column="tel" type="java.lang.String" />

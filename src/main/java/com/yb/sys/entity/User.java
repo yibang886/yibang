@@ -30,6 +30,17 @@ public class User implements Serializable{
 	public void setindividual(IndividualExt individual){
 		this.individual = individual;
 	}
+
+  private CompanyExt company; 
+	
+	public CompanyExt getcompany(){
+		return company;
+	}
+	
+	public void setcompany(CompanyExt company){
+		this.company = company;
+	}
+
 	
 	private String email;
 	

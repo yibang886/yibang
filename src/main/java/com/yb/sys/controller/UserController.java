@@ -331,6 +331,12 @@ public class UserController {
         return "/invalid";
       }
 
+      if(userExt.getcompany() != null)
+      {
+        logger.info("Cannot delete user entity before corresponding company is deleted");
+        return "/invalid";
+      }
+
       userService.delete(userExt);
     }
     return "forward:/user/query";

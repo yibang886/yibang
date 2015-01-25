@@ -991,10 +991,171 @@ public class FrontEndController
 
       userModel.getUserExt().setcoin(0L);
 
-      userService.create(userModel.getUserExt());
+      try{
+        userService.create(userModel.getUserExt());
+      }
+      catch(Exception e)
+      {
+        logger.debug("Unexpected exception thrown");
+        e.printStackTrace();
+        //TODO: error page;
+        return "/sys/error_page";
+      }
     }
 
+    //in home page of a user, there are 3 pages that might be shown: 0. My Status; 1. Base Info; 2. Translation Service;
+    //thus, when we go to this page, we need to specify which one to show;
+    model.addAttribute("page", 2);
+
+    //we need to pass the userId back and forth;
+    model.addAttribute("userId", userModel.getUserExt().getId());
+
     if(userModel.getUserExt().getuser_type()==0L) 
+      return "/sys/indiv_home"; //individual
+    else
+      return "/sys/comp_home";  //company
+  }
+
+
+  @RequestMapping(value = "/doUserEdit")
+  public String doUserEdit(@ModelAttribute UserModel userModel, ModelMap model, HttpServletRequest request){
+
+    if(userModel.getUserExt() == null || userModel.getUserExt().getId() == 0)
+    {
+      logger.error("Unknown userId");
+      //TODO: error page;
+      return "/sys/error_page";
+    }
+
+    UserExt userExtPer = userService.load(userModel.getUserExt().getId(), true);
+
+    Long userType;
+
+    String cancel = request.getParameter("cancel");
+
+    if(cancel==null) //no cancel, so we should edit (modify) the user object;
+    {
+      //check if we can edit: if the translation service has been published, userType cannot modified;
+      if(userModel.getUserExt().getuser_type() != userExtPer.getuser_type())
+      {
+        if(userExtPer.getindividual()!=null || userExtPer.getcompany()!=null)
+        {
+          //TODO: error page;
+          return "/sys/error_page";
+        }
+      }
+
+      userType = userModel.getUserExt().getuser_type();
+
+      String tel = userModel.getUserExt().gettel();
+      String mob = userModel.getUserExt().getmobile();
+      String fax = userModel.getUserExt().getfax();
+      String qq = userModel.getUserExt().getqq();
+      String wx = userModel.getUserExt().getweixin();
+  
+      if(tel!=null) tel = tel.trim();
+      if(mob!=null) mob = mob.trim();
+      if(fax!=null) fax = fax.trim();
+      if(qq!=null) qq = qq.trim();
+      if(wx!=null) wx = wx.trim(); 
+  
+      if(tel!=null && !tel.equals(""))
+        userModel.getUserExt().settel(tel);
+      else
+        userModel.getUserExt().settel(null);
+      
+      if(mob!=null && !mob.equals(""))
+        userModel.getUserExt().setmobile(mob);
+      else
+        userModel.getUserExt().setmobile(null);
+  
+      if(fax!=null && !fax.equals(""))
+        userModel.getUserExt().setfax(fax);
+      else
+        userModel.getUserExt().setfax(null);
+  
+      if(qq!=null && !qq.equals(""))
+        userModel.getUserExt().setqq(qq);
+      else
+        userModel.getUserExt().setqq(null);
+  
+      if(wx!=null && !wx.equals(""))
+        userModel.getUserExt().setweixin(wx);
+      else
+        userModel.getUserExt().setweixin(null);
+  
+      UserExt userExt = userModel.getUserExt();
+      userExt.setcoin(userExtPer.getcoin());
+      userService.save(userExt);
+    }
+    else //cancel
+    {
+      userType =  userExtPer.getuser_type();
+
+      userModel.setUserExt(userExtPer);
+      model.addAttribute("userModel", userModel);
+    }
+
+    model.addAttribute("page", 1);
+    model.addAttribute("userId", userModel.getUserExt().getId());
+    if(userType==0L) 
+      return "/sys/indiv_home"; //individual
+    else
+      return "/sys/comp_home";  //company
+  }
+
+  @RequestMapping(value = "/home")
+  public String home(HttpServletRequest request, HttpServletResponse response, ModelMap model){
+
+    Long userType;
+    try{
+      userType = Long.parseLong(request.getParameter("type").trim());
+    } 
+    catch (Throwable e){
+      logger.debug("Unexpected exception thrown");
+      e.printStackTrace();
+      //TODO: error page;
+      return "/sys/error_page";
+    }
+
+    Long userId;
+    try{
+      userId = Long.parseLong(request.getParameter("id").trim());
+    }
+    catch (Throwable e){
+      logger.debug("Unexpected exception thrown");
+      e.printStackTrace();
+      //TODO: error page;
+      return "/sys/error_page";
+    }
+
+    Integer page = 0;
+    try{
+      page = Integer.parseInt(request.getParameter("page").trim());
+    }
+    catch (Throwable e){
+      logger.warn("Unexpected exception thrown");
+      e.printStackTrace();
+    }
+
+    model.addAttribute("page", page);
+    model.addAttribute("userId", userId);
+
+    if(page==0) //My Status
+    {
+    }
+    else if(page==1) //user base info
+    {
+      UserModel userModel = new UserModel();
+      UserExt userExt = userService.load(userId, true);
+      userModel.setUserExt(userExt);
+      model.addAttribute("userModel", userModel);
+    }
+    else //Translation service
+    {
+    }
+
+    if(userType==0L) 
       return "/sys/indiv_home"; //individual
     else
       return "/sys/comp_home";  //company
