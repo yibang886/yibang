@@ -51,8 +51,13 @@ import com.yb.sys.service.IEducationServiceExt;
 import com.yb.sys.entity.UserExt;
 import com.yb.sys.model.UserModel;
 import com.yb.sys.service.IUserServiceExt;
+import com.yb.sys.entity.SchoolExt;
+import com.yb.sys.model.SchoolModel;
+import com.yb.sys.service.ISchoolServiceExt;
+import com.yb.sys.entity.RecomposExt;
+import com.yb.sys.model.RecomposModel;
+import com.yb.sys.service.IRecomposServiceExt;
 
-import com.yb.sys.model.UserModel;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -96,6 +101,12 @@ public class FrontEndController
 
   @Resource(name = "userService")
   private IUserServiceExt userService;
+
+  @Resource(name = "schoolService")
+  private ISchoolServiceExt schoolService;
+
+  @Resource(name = "recomposService")
+  private IRecomposServiceExt recomposService;
 
 
   //map: language-ID(Long) -->  ID of companies which support this language (Long[])
@@ -942,7 +953,8 @@ public class FrontEndController
   }
 
   @RequestMapping(value = "/doRegister")
-  public String doRegister(@ModelAttribute UserModel userModel, ModelMap model){
+  public String doRegister(@ModelAttribute UserModel userModel, ModelMap model)
+  {
     if(userModel.getUserExt() != null){
 
       String email = userModel.getUserExt().getemail();
@@ -996,7 +1008,7 @@ public class FrontEndController
       }
       catch(Exception e)
       {
-        logger.debug("Unexpected exception thrown");
+        logger.error("Unexpected exception thrown when creating user");
         e.printStackTrace();
         //TODO: error page;
         return "/sys/error_page";
@@ -1010,20 +1022,37 @@ public class FrontEndController
     //we need to pass the userId back and forth;
     model.addAttribute("userId", userModel.getUserExt().getId());
 
-    if(userModel.getUserExt().getuser_type()==0L) 
-      return "/sys/indiv_home"; //individual
-    else
-      return "/sys/comp_home";  //company
+    if(userModel.getUserExt().getuser_type()==0L)  //individual
+    {
+      IndividualModel individualModel = new IndividualModel();
+
+      //pass enumerations like cities, educations, schools and etc to individual/edit.jsp
+      List<ICondition> conditions = new ArrayList<ICondition>();
+      individualModel.setCityEnum(cityService.criteriaQuery(conditions));
+      individualModel.setEducationEnum(educationService.criteriaQuery(conditions));
+      individualModel.setSchoolEnum(schoolService.criteriaQuery(conditions));
+      individualModel.setLanguageEnum(languageService.criteriaQuery(conditions));
+      individualModel.setFieldEnum(fieldService.criteriaQuery(conditions));
+      individualModel.setTranstypeEnum(transtypeService.criteriaQuery(conditions));
+      individualModel.setDoctypeEnum(doctypeService.criteriaQuery(conditions));
+
+      model.addAttribute("individualModel",individualModel);
+      return "/sys/indiv_home"; 
+    }
+    else //company
+    {
+      return "/sys/comp_home";  
+    }
   }
 
 
   @RequestMapping(value = "/doUserEdit")
-  public String doUserEdit(@ModelAttribute UserModel userModel, ModelMap model, HttpServletRequest request){
+  public String doUserEdit(@ModelAttribute UserModel userModel, ModelMap model, HttpServletRequest request)
+  {
 
     if(userModel.getUserExt() == null || userModel.getUserExt().getId() == 0)
     {
       logger.error("Unknown userId");
-      //TODO: error page;
       return "/sys/error_page";
     }
 
@@ -1036,11 +1065,11 @@ public class FrontEndController
     if(cancel==null) //no cancel, so we should edit (modify) the user object;
     {
       //check if we can edit: if the translation service has been published, userType cannot modified;
-      if(userModel.getUserExt().getuser_type() != userExtPer.getuser_type())
+      if(!userModel.getUserExt().getuser_type().equals(userExtPer.getuser_type()))
       {
         if(userExtPer.getindividual()!=null || userExtPer.getcompany()!=null)
         {
-          //TODO: error page;
+          logger.debug("Cannot modify user type if translation service has been published.");
           return "/sys/error_page";
         }
       }
@@ -1098,23 +1127,279 @@ public class FrontEndController
 
     model.addAttribute("page", 1);
     model.addAttribute("userId", userModel.getUserExt().getId());
-    if(userType==0L) 
-      return "/sys/indiv_home"; //individual
-    else
-      return "/sys/comp_home";  //company
+    if(userType==0L)  //individual
+    {
+      return "/sys/indiv_home"; 
+    }
+    else  //company
+    {
+      return "/sys/comp_home";  
+    }
   }
 
+  
+
+  void getCheckboxValues(HttpServletRequest request, Set<LanguageExt> languages, Set<FieldExt> fields, Set<TranstypeExt> transtypes, Set<DoctypeExt> doctypes)
+  {
+    //get languages selected by language checkbox
+    String[] lang_ids = request.getParameterValues("langCheckbox");
+    if(lang_ids != null)
+    {
+      for(String lang_id:lang_ids)
+      {
+        LanguageExt lang = new LanguageExt();
+        lang.setId(Long.parseLong(lang_id));
+        languages.add(lang);
+      }
+    }
+
+    //get fields selected by field checkbox
+    String[] field_ids = request.getParameterValues("fieldCheckbox");
+    if(field_ids != null)
+    {
+      for(String field_id:field_ids)
+      {
+        FieldExt field = new FieldExt();
+        field.setId(Long.parseLong(field_id));
+        fields.add(field);
+      }
+    }
+
+    //get transtypes slected by transtype checkbox
+    String[] transtype_ids = request.getParameterValues("transtypeCheckbox");
+    if(transtype_ids != null)
+    {
+      for(String transtype_id:transtype_ids)
+      {
+        TranstypeExt transtype = new TranstypeExt();
+        transtype.setId(Long.parseLong(transtype_id));
+        transtypes.add(transtype);
+      }
+    }
+
+    //get doctypes selected by doctype checkbox
+    String[] doctype_ids = request.getParameterValues("doctypeCheckbox");
+    if(doctype_ids != null)
+    {
+      for(String doctype_id:doctype_ids)
+      {
+        DoctypeExt doctype = new DoctypeExt();
+        doctype.setId(Long.parseLong(doctype_id));
+        doctypes.add(doctype);
+      }
+    }
+  }
+
+
+  @RequestMapping(value = "/doCreateOrEditIndiv")
+  public String doCreateOrEditIndiv(@ModelAttribute IndividualModel individualModel, ModelMap model, HttpServletRequest request)
+  {
+    IndividualExt individualExt = individualModel.getIndividualExt();
+    if( individualExt == null)
+    {
+      logger.error("individualModel cannot be null for doCreateOrEditIndiv");
+      return "/sys/error_page";
+    }
+
+    Long userId;
+    UserExt userExtPer;
+    try{
+      userId = Long.parseLong(request.getParameter("id").trim());
+      userExtPer = userService.load(userId, true);
+      if( userExtPer.getuser_type() != 0L)
+      {
+        logger.error("User type should be 0 (individual), but it is " + userExtPer.getuser_type());
+        return "/sys/error_page";
+      }
+    }
+    catch (Throwable e){
+      logger.error("Unexpected exception thrown when parsing userId or loading user by the userId");
+      e.printStackTrace();
+      return "/sys/error_page";
+    }
+
+    model.addAttribute("page", 2);
+    model.addAttribute("userId", userId);
+
+    //pass enumerations like cities, educations, schools and etc to individual/edit.jsp
+    List<ICondition> conditions = new ArrayList<ICondition>();
+    individualModel.setCityEnum(cityService.criteriaQuery(conditions));
+    individualModel.setEducationEnum(educationService.criteriaQuery(conditions));
+    individualModel.setSchoolEnum(schoolService.criteriaQuery(conditions));
+    individualModel.setLanguageEnum(languageService.criteriaQuery(conditions));
+    individualModel.setFieldEnum(fieldService.criteriaQuery(conditions));
+    individualModel.setTranstypeEnum(transtypeService.criteriaQuery(conditions));
+    individualModel.setDoctypeEnum(doctypeService.criteriaQuery(conditions));
+
+    String cancel = request.getParameter("cancel");
+
+    if(cancel!=null) //cancel
+    {
+      IndividualExt indiv = userExtPer.getindividual();
+      individualModel.setIndividualExt(indiv);
+      model.addAttribute("individualModel", individualModel);
+    }
+    else  //not cancel, so create or edit the individual object
+    {
+      String name = individualExt.getname();
+      if(name!=null) name = name.trim();
+      if(name==null || name.equals(""))
+      {
+        logger.error("Name cannot be null or empty.");
+        return "/sys/error_page";
+      }
+      individualExt.setname(name);
+
+      Long gender = individualExt.getgender();
+      if(gender==null || (gender!=0L && gender!=1L))
+      {
+        logger.error("Gender invalid: "+gender);
+        return "/sys/error_page";
+      }
+
+      EducationExt edu = individualExt.geteducation();
+      if(edu==null)
+      {
+        logger.error("Education is null");
+        return "/sys/error_page";
+      }
+ 
+      SchoolExt school = individualExt.getschool();
+      if(school==null)
+      {
+        logger.error("School is null");
+        return "/sys/error_page";
+      }
+
+      Long birth_year = individualExt.getbirth_year();
+      if(birth_year==null)
+      {
+        logger.error("Birth_year is null");
+        return "/sys/error_page";
+      }
+
+      CityExt city = individualExt.getcity();
+      if(city==null)
+      {
+        logger.error("City is null");
+        return "/sys/error_page";
+      }
+      
+      String mainpage = individualExt.getmainpage();
+      if(mainpage!=null) mainpage=mainpage.trim();
+      if(mainpage!=null && !mainpage.equals(""))
+        individualExt.setmainpage(mainpage);
+      else
+        individualExt.setmainpage(null);
+
+      Long workstyle = individualExt.getworkstyle();
+      if(workstyle==null || (workstyle!=0L && workstyle!=1L))
+      {
+        logger.error("Workstyle invalid: "+workstyle);
+        return "/sys/error_page";
+      }
+
+      if(individualExt.getexp_year()==null)
+        individualExt.setexp_year(0L);
+
+      if(individualExt.getexp_trans()==null)
+        individualExt.setexp_trans(0L);
+
+      String works = individualExt.getworks();
+      if(works!=null) works=works.trim();
+      if(works!=null && !works.equals(""))
+        individualExt.setworks(works);
+      else
+        individualExt.setworks(null);
+
+      String introduct = individualExt.getintroduct();
+      if(introduct!=null) introduct=introduct.trim();
+      if(introduct!=null && !introduct.equals(""))
+        individualExt.setintroduct(introduct);
+      else
+        individualExt.setintroduct(null);
+
+      Set<LanguageExt> languages = new TreeSet<LanguageExt>();
+      Set<FieldExt> fields = new TreeSet<FieldExt>();
+      Set<TranstypeExt> transtypes = new TreeSet<TranstypeExt>();
+      Set<DoctypeExt> doctypes = new TreeSet<DoctypeExt>();
+
+      getCheckboxValues(request, languages, fields, transtypes, doctypes);
+
+      individualExt.setlanguages(languages);
+      individualExt.setfields(fields);
+      individualExt.settranstypes(transtypes);
+      individualExt.setdoctypes(doctypes);
+
+      if(individualExt.getauth_pass()==null)
+        individualExt.setauth_pass(0L);   //wait to be authenticated
+
+      if(individualExt.getvalid_pass()==null)
+        individualExt.setvalid_pass(0L);   //wait to be authenticated
+
+      if(individualExt.getrecompos()==null)
+        individualExt.setrecompos(recomposService.load(5L, true)); //5 is "No recompos"
+
+      if(individualExt.getId() == null) //user is creating the individual instance (publishing translation service)
+      {
+        logger.debug("Creating individual with id="+userId);
+
+        //individual has a one-to-one relationship with user, thus set the same 'id' with the related user; see
+        //Individual.hbm.xml;
+        individualExt.setId(userId);
+  
+        try{
+          //save the IndividualExt instance created in goPublish() and populated with value in individual/edit.jsp;
+          individualService.create(individualExt);
+        }
+        catch (Throwable e){
+          logger.error("Unexpected exception thrown when creating individual");
+          e.printStackTrace();
+          return "/sys/error_page";
+        }
+      }
+      else //user is modifying the individual instance (modifying translation service)
+      {
+        IndividualExt individualExtPer = individualService.load(individualExt.getId(), true);
+
+        //We don't set these fields in edit.jsp, so we need to keep the existing values, or they will become null;
+        individualExt.setphoto(individualExtPer.getphoto());
+        individualExt.settranscert(individualExtPer.gettranscert());
+        individualExt.setlangcert(individualExtPer.getlangcert());
+        individualExt.setprofcert(individualExtPer.getprofcert());
+        individualExt.setauthfile(individualExtPer.getauthfile());
+
+        try{
+          //save the IndividualExt instance created in goPublish() and populated with value in individual/edit.jsp;
+          individualService.save(individualExt);
+        }
+        catch (Throwable e){
+          logger.error("Unexpected exception thrown when modifying individual");
+          e.printStackTrace();
+          return "/sys/error_page";
+        }
+      }
+
+      individualModel.setIndividualExt(individualExt);
+
+      model.addAttribute("individualModel", individualModel);
+    }
+
+    return "/sys/indiv_home"; 
+  }
+
+
   @RequestMapping(value = "/home")
-  public String home(HttpServletRequest request, HttpServletResponse response, ModelMap model){
+  public String home(HttpServletRequest request, HttpServletResponse response, ModelMap model)
+  {
 
     Long userType;
     try{
       userType = Long.parseLong(request.getParameter("type").trim());
     } 
     catch (Throwable e){
-      logger.debug("Unexpected exception thrown");
+      logger.error("Unexpected exception thrown when parsing userType");
       e.printStackTrace();
-      //TODO: error page;
       return "/sys/error_page";
     }
 
@@ -1123,7 +1408,7 @@ public class FrontEndController
       userId = Long.parseLong(request.getParameter("id").trim());
     }
     catch (Throwable e){
-      logger.debug("Unexpected exception thrown");
+      logger.error("Unexpected exception thrown when parsing userId");
       e.printStackTrace();
       //TODO: error page;
       return "/sys/error_page";
@@ -1134,31 +1419,61 @@ public class FrontEndController
       page = Integer.parseInt(request.getParameter("page").trim());
     }
     catch (Throwable e){
-      logger.warn("Unexpected exception thrown");
+      logger.warn("Unexpected exception thrown when parsing page");
       e.printStackTrace();
     }
 
     model.addAttribute("page", page);
     model.addAttribute("userId", userId);
 
-    if(page==0) //My Status
-    {
-    }
-    else if(page==1) //user base info
-    {
-      UserModel userModel = new UserModel();
-      UserExt userExt = userService.load(userId, true);
-      userModel.setUserExt(userExt);
-      model.addAttribute("userModel", userModel);
-    }
-    else //Translation service
-    {
-    }
 
-    if(userType==0L) 
-      return "/sys/indiv_home"; //individual
-    else
-      return "/sys/comp_home";  //company
+    if(userType==0L)  //individual
+    {
+
+      if(page==0) //My Status
+      {
+      }
+      else if(page==1) //user base info
+      {
+        UserModel userModel = new UserModel();
+        UserExt userExt = userService.load(userId, true);
+        userModel.setUserExt(userExt);
+
+        model.addAttribute("userModel", userModel);
+      }
+      else //Translation service
+      {
+        IndividualModel individualModel = new IndividualModel();
+
+        IndividualExt individualExt = null;
+        try{
+          individualExt = individualService.load(userId, true);
+        }
+        catch(Throwable e)
+        {
+          logger.debug("Cannot load individual object, maybe not published");
+          individualExt = null;
+        }
+        individualModel.setIndividualExt(individualExt);
+  
+        //pass enumerations like cities, educations, schools and etc to individual/edit.jsp
+        List<ICondition> conditions = new ArrayList<ICondition>();
+        individualModel.setCityEnum(cityService.criteriaQuery(conditions));
+        individualModel.setEducationEnum(educationService.criteriaQuery(conditions));
+        individualModel.setSchoolEnum(schoolService.criteriaQuery(conditions));
+        individualModel.setLanguageEnum(languageService.criteriaQuery(conditions));
+        individualModel.setFieldEnum(fieldService.criteriaQuery(conditions));
+        individualModel.setTranstypeEnum(transtypeService.criteriaQuery(conditions));
+        individualModel.setDoctypeEnum(doctypeService.criteriaQuery(conditions));
+  
+        model.addAttribute("individualModel",individualModel);
+      }
+      return "/sys/indiv_home"; 
+    }
+    else //company
+    {
+      return "/sys/comp_home";  
+    }
   }
 
   @RequestMapping(value = "/emailUnique")
@@ -1181,7 +1496,7 @@ public class FrontEndController
       }
       catch(Exception e)
       {
-        logger.error("Unexpected exception thrown");
+        logger.error("Unexpected exception thrown when query count of users by the email:"+email);
         e.printStackTrace();
         map.put(key,-1);
       }

@@ -268,8 +268,8 @@ CREATE TABLE IF NOT EXISTS individual
   workstyle INT UNSIGNED NOT NULL DEFAULT 1,   /*工作方式, 0:全职；1:兼职*/
   exp_year INT UNSIGNED NOT NULL DEFAULT 0,    /*工作年限*/
   exp_trans INT UNSIGNED NOT NULL DEFAULT 0,   /*翻译经验，单位：万字，例如15表示15万字*/
-  works VARCHAR(64),                           /*翻译作品*/
-  introduct VARCHAR(1024) NOT NULL,            /*个人简介*/
+  works VARCHAR(256),                          /*翻译作品*/
+  introduct VARCHAR(1024),               /*个人简介*/
   photo VARCHAR(256),                    /*照片图片文件名后缀*/
   langcert VARCHAR(256),                 /*语言等级证书图片文件名后缀*/
   transcert VARCHAR(256),                /*翻译证书图片文件名后缀*/

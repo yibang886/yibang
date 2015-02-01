@@ -253,6 +253,17 @@
         checkEmailUnique(email);
     }
 
+    function getLength(str)
+    {
+        var count = 0;
+        for(var i = 0; i < str.length; i++) 
+        {
+            count++;
+            if(escape(str.charAt(i)).length > 4) count++;
+        }
+        return count;
+    }
+
     function validate()
     {
         var digitPattern = /^\d+(\.\d+)?$/;
@@ -351,7 +362,7 @@
             wx=wx.trim();
             if(wx != "")
             {
-                if(wx.length > 32)
+                if(getLength(wx) > 32)
                 {
                     alert("微信号码长度不正确");
                     return 0;
