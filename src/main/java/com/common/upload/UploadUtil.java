@@ -71,18 +71,20 @@ public class UploadUtil
 
       for ( int k=0; k<fileItems.size(); k++)
       {
+        logger.debug("got an item");
         FileItem fi = (FileItem)fileItems.get(k);
 
         if ( fi.isFormField () ) //ordinary field of form, instead of a file; because the "enctype" of from is "multipart/form-data"
                                  //we cannot recive ordinary fields in normal way anymore; thus we have to receive by FileItem;
         {
+          String fieldName = fi.getFieldName();
+          logger.debug("this iteam is an ordinary field, filedName="+fieldName);
           if(skipText)
           {
-            logger.info("Skip receiving ordinary fields ...");
+            logger.info("Skip receiving ordinary field, filedName="+fieldName);
           }
           else
           {
-            String fieldName = fi.getFieldName();
             String fieldValue = fi.getString();
             logger.debug("Received ordinary field: ("+ fieldName + ":" + fieldValue+")");
             if(fieldName!=null&&!fieldName.trim().equals("")&&fieldValue!=null&&!fieldValue.trim().equals(""))
@@ -93,13 +95,14 @@ public class UploadUtil
         }
         else // file field
         {
+          String fileName = fi.getName();
+          logger.debug("this iteam is a file, fileName="+fileName);
           if(skipFile)
           {
-            logger.info("Skip receiving files ...");
+            logger.info("Skip receiving file, fileName="+fileName);
           }
           else
           {
-            String fileName = fi.getName();
             String suffix = fileName.substring(fileName.lastIndexOf("."));
             suffix = pre_suffix + suffix;
   

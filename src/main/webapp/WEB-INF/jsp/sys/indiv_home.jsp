@@ -160,397 +160,447 @@
                                                 </form>
                                             </div>
                                         </c:when>
-                                        <c:otherwise>
+                                        <c:otherwise>   <%-- publish or edit individual translation service --%>
                                             <div class="cinfo-bd">
                                                 <ul class="publish-flow clearfix">
+                                                    <c:choose>
+                                                      <c:when test="${step>=1}">
                                                     <li class="step current">
+                                                      </c:when>
+                                                      <c:otherwise>
+                                                    <li class="step">
+                                                      </c:otherwise>
+                                                    </c:choose>
                                                         <span>1</span>
                                                         <p>填写基本信息</p>
                                                         <i></i>
                                                     </li>
+                                                    <c:choose>
+                                                      <c:when test="${step>=2}">
+                                                    <li class="step current">
+                                                      </c:when>
+                                                      <c:otherwise>
                                                     <li class="step">
+                                                      </c:otherwise>
+                                                    </c:choose>
                                                         <span>2</span>
                                                         <p>上传照片</p>
                                                         <i></i>
                                                     </li>
+                                                    <c:choose>
+                                                      <c:when test="${step>=3}">
+                                                    <li class="step current">
+                                                      </c:when>
+                                                      <c:otherwise>
                                                     <li class="step">
+                                                      </c:otherwise>
+                                                    </c:choose>
                                                         <span>3</span>
                                                         <p>上传语言登记证书</p>
                                                         <i></i>                                                
                                                     </li>
+                                                    <c:choose>
+                                                      <c:when test="${step>=4}">
+                                                    <li class="step current">
+                                                      </c:when>
+                                                      <c:otherwise>
                                                     <li class="step">
+                                                      </c:otherwise>
+                                                    </c:choose>
                                                         <span>4</span>
                                                         <p>上传翻译证书</p>
                                                         <i></i>                                                
                                                     </li>
+                                                    <c:choose>
+                                                      <c:when test="${step>=5}">
+                                                    <li class="step current">
+                                                      </c:when>
+                                                      <c:otherwise>
                                                     <li class="step">
+                                                      </c:otherwise>
+                                                    </c:choose>
                                                         <span>5</span>
                                                         <p>上传毕业证书</p>
                                                         <i></i>                                                
                                                     </li>
+                                                    <c:choose>
+                                                      <c:when test="${step>=6}">
+                                                    <li class="step current">
+                                                      </c:when>
+                                                      <c:otherwise>
                                                     <li class="step">
+                                                      </c:otherwise>
+                                                    </c:choose>
                                                         <span>6</span>
                                                         <p>上传认证资料</p>                                              
                                                     </li>
                                                 </ul>
-                                                <form class="c-info-form translate-form i-translate-form" method="post" novalidate="novalidate" id="indivForm" target="_self">
-                                                    <div class="clearfix">
-                                                        <div class="form-group form-item2">
-                                                            <span class="form-label">姓名(*)</span>
-                                                            <div class="form-control">
-                                                                <input required name="individualExt.name" type="text" id="iNameIpt"
-                                                                                value="<c:out value="${ individualModel.individualExt.name }" escapeXml="true" />" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group form-item2">
-                                                            <span class="form-label">性别(*)</span>
-                                                            <div class="form-control">
-                                                                <select name="individualExt.gender">
-                                                                    <c:choose>
-                                                                        <c:when test="${ !empty individualModel.individualExt }">
-                                                                            <option value="0" <c:if test="${individualModel.individualExt.gender==0}"><c:out value="selected"/></c:if> >男</option>
-                                                                            <option value="1" <c:if test="${individualModel.individualExt.gender==1}"><c:out value="selected"/></c:if> >女</option>
-                                                                        </c:when>
-                                                                        <c:otherwise>
-                                                                            <option value="0" selected="true">男</option>
-                                                                            <option value="1">女</option>
-                                                                        </c:otherwise>
-                                                                    </c:choose>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group form-item2">
-                                                            <span class="form-label">教育水平(*)</span>
-                                                            <div class="form-control">
-                                                                <select required name="individualExt.education.id">
-                                                                    <c:choose>
-                                                                        <c:when test="${ !empty individualModel.individualExt }">
-                                                                            <c:forEach items="${individualModel.educationEnum}" var="var">
-                                                                                <option value="${var.id}" <c:if test="${individualModel.individualExt.education.id==var.id}"><c:out value="selected"/></c:if> >
-                                                                                    ${var.education}
-                                                                                </option>
-                                                                            </c:forEach>
-                                                                        </c:when>
-                                                                        <c:otherwise>
-                                                                            <c:forEach items="${individualModel.educationEnum}" var="var">
-                                                                                <option value="${var.id}">
-                                                                                    ${var.education}
-                                                                                </option>
-                                                                            </c:forEach>
-                                                                        </c:otherwise>
-                                                                    </c:choose>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group form-item2">
-                                                            <span class="form-label">毕业院校(*)</span>
-                                                            <div class="form-control">
-                                                                <select required name="individualExt.school.id">
-                                                                    <c:choose>
-                                                                        <c:when test="${ !empty individualModel.individualExt }">
-                                                                            <c:forEach items="${individualModel.schoolEnum}" var="var">
-                                                                                <option value="${var.id}" <c:if test="${individualModel.individualExt.school.id==var.id}"><c:out value="selected"/></c:if> >
-                                                                                    ${var.school}
-                                                                                </option>
-                                                                            </c:forEach>
-                                                                        </c:when>
-                                                                        <c:otherwise>
-                                                                            <c:forEach items="${individualModel.schoolEnum}" var="var">
-                                                                                <option value="${var.id}">
-                                                                                    ${var.school}
-                                                                                </option>
-                                                                            </c:forEach>
-                                                                        </c:otherwise>
-                                                                    </c:choose>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group form-item2">
-                                                            <span class="form-label">出生年份(*)</span>
-                                                            <div class="form-control">
-                                                                <%--
-                                                                <c:choose>
-                                                                    <c:when test="${ !empty individualModel.individualExt }">
-                                                                        <input required type="text" name="individualExt.birth_year" 
-                                                                                        value="<c:out value="${ individualModel.individualExt.birth_year }" escapeXml="true" />" />
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <input required type="text" name="individualExt.birth_year" value="1980" />
-                                                                    </c:otherwise>
-                                                                </c:choose>
-                                                                --%>
-                                                                <c:choose>
-                                                                    <c:when test="${ !empty individualModel.individualExt }">
-                                                                        <select required name="individualExt.birth_year">
-                                                                            <c:forEach var="year" begin="1970" end="2014" step="1">
-                                                                                <option value="${year}" <c:if test="${individualModel.individualExt.birth_year==year}"><c:out value="selected"/></c:if> >
-                                                                                    ${year}
-                                                                                </option>
-                                                                            </c:forEach>
+                                                <c:choose>
+                                                    <c:when test="${step==1}">
+                                                        <form class="c-info-form translate-form i-translate-form" method="post" novalidate="novalidate" id="indivForm" target="_self">
+                                                            <div class="clearfix">
+                                                                <div class="form-group form-item2">
+                                                                    <span class="form-label">姓名(*)</span>
+                                                                    <div class="form-control">
+                                                                        <input required name="individualExt.name" type="text" id="iNameIpt"
+                                                                                        value="<c:out value="${ individualModel.individualExt.name }" escapeXml="true" />" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group form-item2">
+                                                                    <span class="form-label">性别(*)</span>
+                                                                    <div class="form-control">
+                                                                        <select name="individualExt.gender">
+                                                                            <c:choose>
+                                                                                <c:when test="${ !empty individualModel.individualExt }">
+                                                                                    <option value="0" <c:if test="${individualModel.individualExt.gender==0}"><c:out value="selected"/></c:if> >男</option>
+                                                                                    <option value="1" <c:if test="${individualModel.individualExt.gender==1}"><c:out value="selected"/></c:if> >女</option>
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    <option value="0" selected="true">男</option>
+                                                                                    <option value="1">女</option>
+                                                                                </c:otherwise>
+                                                                            </c:choose>
                                                                         </select>
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <select required name="individualExt.birth_year">
-                                                                            <c:forEach var="year" begin="1970" end="2014" step="1">
-                                                                                <option value="${year}" <c:if test="${year==1985}"><c:out value="selected"/></c:if> >
-                                                                                    ${year}
-                                                                                </option>
-                                                                            </c:forEach>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group form-item2">
+                                                                    <span class="form-label">教育水平(*)</span>
+                                                                    <div class="form-control">
+                                                                        <select required name="individualExt.education.id">
+                                                                            <c:choose>
+                                                                                <c:when test="${ !empty individualModel.individualExt }">
+                                                                                    <c:forEach items="${individualModel.educationEnum}" var="var">
+                                                                                        <option value="${var.id}" <c:if test="${individualModel.individualExt.education.id==var.id}"><c:out value="selected"/></c:if> >
+                                                                                            ${var.education}
+                                                                                        </option>
+                                                                                    </c:forEach>
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    <c:forEach items="${individualModel.educationEnum}" var="var">
+                                                                                        <option value="${var.id}">
+                                                                                            ${var.education}
+                                                                                        </option>
+                                                                                    </c:forEach>
+                                                                                </c:otherwise>
+                                                                            </c:choose>
                                                                         </select>
-                                                                    </c:otherwise>
-                                                                </c:choose>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group form-item2">
+                                                                    <span class="form-label">毕业院校(*)</span>
+                                                                    <div class="form-control">
+                                                                        <select required name="individualExt.school.id">
+                                                                            <c:choose>
+                                                                                <c:when test="${ !empty individualModel.individualExt }">
+                                                                                    <c:forEach items="${individualModel.schoolEnum}" var="var">
+                                                                                        <option value="${var.id}" <c:if test="${individualModel.individualExt.school.id==var.id}"><c:out value="selected"/></c:if> >
+                                                                                            ${var.school}
+                                                                                        </option>
+                                                                                    </c:forEach>
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    <c:forEach items="${individualModel.schoolEnum}" var="var">
+                                                                                        <option value="${var.id}">
+                                                                                            ${var.school}
+                                                                                        </option>
+                                                                                    </c:forEach>
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group form-item2">
+                                                                    <span class="form-label">出生年份(*)</span>
+                                                                    <div class="form-control">
+                                                                        <c:choose>
+                                                                            <c:when test="${ !empty individualModel.individualExt }">
+                                                                                <select required name="individualExt.birth_year">
+                                                                                    <c:forEach var="year" begin="1970" end="2014" step="1">
+                                                                                        <option value="${year}" <c:if test="${individualModel.individualExt.birth_year==year}"><c:out value="selected"/></c:if> >
+                                                                                            ${year}
+                                                                                        </option>
+                                                                                    </c:forEach>
+                                                                                </select>
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                <select required name="individualExt.birth_year">
+                                                                                    <c:forEach var="year" begin="1970" end="2014" step="1">
+                                                                                        <option value="${year}" <c:if test="${year==1985}"><c:out value="selected"/></c:if> >
+                                                                                            ${year}
+                                                                                        </option>
+                                                                                    </c:forEach>
+                                                                                </select>
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group form-item2">
+                                                                    <span class="form-label">工作方式(*)</span>
+                                                                    <div class="form-control">
+                                                                        <select required name="individualExt.workstyle">
+                                                                            <c:choose>
+                                                                                <c:when test="${ !empty individualModel.individualExt }">
+                                                                                    <option value="0" <c:if test="${individualModel.individualExt.workstyle==0}"><c:out value="selected"/></c:if> >全职</option>
+                                                                                    <option value="1" <c:if test="${individualModel.individualExt.workstyle==1}"><c:out value="selected"/></c:if> >兼职</option>
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    <option value="0" selected="true">全职</option>
+                                                                                    <option value="1">兼职</option>
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </select>
+                                                                    </div>
+                                                                </div> 
+                                                            </div>                                                   
+                                                            <div class="form-group">
+                                                                <span class="form-label">所在城市(*)</span>
+                                                                <div class="form-control">
+                                                                    <select required name="individualExt.city.id">
+                                                                        <c:choose>
+                                                                            <c:when test="${ !empty individualModel.individualExt }">
+                                                                                <c:forEach items="${individualModel.cityEnum}" var="var">
+                                                                                    <option value="${var.id}" <c:if test="${individualModel.individualExt.city.id==var.id}"><c:out value="selected"/></c:if> >
+                                                                                        ${var.city}
+                                                                                    </option>
+                                                                                </c:forEach>
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                <c:forEach items="${individualModel.cityEnum}" var="var">
+                                                                                    <option value="${var.id}">
+                                                                                        ${var.city}
+                                                                                    </option>
+                                                                                </c:forEach>
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+                                                                    </select>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="form-group form-item2">
-                                                            <span class="form-label">工作方式(*)</span>
-                                                            <div class="form-control">
-                                                                <select required name="individualExt.workstyle">
+                                                            <div class="form-group">
+                                                                <span class="form-label">语种</span>
+                                                                <div class="form-control">
                                                                     <c:choose>
                                                                         <c:when test="${ !empty individualModel.individualExt }">
-                                                                            <option value="0" <c:if test="${individualModel.individualExt.workstyle==0}"><c:out value="selected"/></c:if> >全职</option>
-                                                                            <option value="1" <c:if test="${individualModel.individualExt.workstyle==1}"><c:out value="selected"/></c:if> >兼职</option>
+                                                                            <c:forEach items="${individualModel.languageEnum}" var="var">
+                                                                               <c:choose> 
+                                                                                   <c:when test="${var.id <= 10}">
+                                                                               <span id="lg${var.id}" class="checkbox ">
+                                                                                   </c:when>
+                                                                                   <c:otherwise>
+                                                                               <span id="lg${var.id}" class="checkbox hide-check">
+                                                                                   </c:otherwise>
+                                                                               </c:choose> 
+                                                                                    <input name="langCheckbox" value="${var.id}" type="checkbox" 
+                                                                                           <c:forEach items="${individualModel.individualExt.languages}" var="lang">
+                                                                                             <c:if test="${lang.id==var.id}">
+                                                                                               <c:out value="checked"/>
+                                                                                             </c:if>
+                                                                                           </c:forEach> /> 
+                                                                                    ${var.language}
+                                                                                </span>
+                                                                            </c:forEach>
                                                                         </c:when>
                                                                         <c:otherwise>
-                                                                            <option value="0" selected="true">全职</option>
-                                                                            <option value="1">兼职</option>
+                                                                            <c:forEach items="${individualModel.languageEnum}" var="var">
+                                                                               <c:choose> 
+                                                                                   <c:when test="${var.id <= 10}">
+                                                                               <span id="lg${var.id}" class="checkbox ">
+                                                                                   </c:when>
+                                                                                   <c:otherwise>
+                                                                               <span id="lg${var.id}" class="checkbox hide-check">
+                                                                                   </c:otherwise>
+                                                                               </c:choose> 
+                                                                                    <input name="langCheckbox" value="${var.id}" type="checkbox"/>${var.language}
+                                                                                </span>
+                                                                            </c:forEach>
                                                                         </c:otherwise>
                                                                     </c:choose>
-                                                                </select>
+                                                                    <a class="more-check" id="lg_more_hide" onclick="more_hide('lg','lg_more_hide', ${fn:length(individualModel.languageEnum)})">更多&gt;&gt;</a>
+                                                                </div>
                                                             </div>
-                                                        </div> 
-                                                    </div>                                                   
-                                                    <div class="form-group">
-                                                        <span class="form-label">所在城市(*)</span>
-                                                        <div class="form-control">
-                                                            <select required name="individualExt.city.id">
-                                                                <c:choose>
-                                                                    <c:when test="${ !empty individualModel.individualExt }">
-                                                                        <c:forEach items="${individualModel.cityEnum}" var="var">
-                                                                            <option value="${var.id}" <c:if test="${individualModel.individualExt.city.id==var.id}"><c:out value="selected"/></c:if> >
-                                                                                ${var.city}
-                                                                            </option>
-                                                                        </c:forEach>
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <c:forEach items="${individualModel.cityEnum}" var="var">
-                                                                            <option value="${var.id}">
-                                                                                ${var.city}
-                                                                            </option>
-                                                                        </c:forEach>
-                                                                    </c:otherwise>
-                                                                </c:choose>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <span class="form-label">语种</span>
-                                                        <div class="form-control">
-                                                            <c:choose>
-                                                                <c:when test="${ !empty individualModel.individualExt }">
-                                                                    <c:forEach items="${individualModel.languageEnum}" var="var">
-                                                                       <c:choose> 
-                                                                           <c:when test="${var.id <= 10}">
-                                                                       <span id="lg${var.id}" class="checkbox ">
-                                                                           </c:when>
-                                                                           <c:otherwise>
-                                                                       <span id="lg${var.id}" class="checkbox hide-check">
-                                                                           </c:otherwise>
-                                                                       </c:choose> 
-                                                                            <input name="langCheckbox" value="${var.id}" type="checkbox" 
-                                                                                   <c:forEach items="${individualModel.individualExt.languages}" var="lang">
-                                                                                     <c:if test="${lang.id==var.id}">
-                                                                                       <c:out value="checked"/>
-                                                                                     </c:if>
-                                                                                   </c:forEach> /> 
-                                                                            ${var.language}
-                                                                        </span>
-                                                                    </c:forEach>
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <c:forEach items="${individualModel.languageEnum}" var="var">
-                                                                       <c:choose> 
-                                                                           <c:when test="${var.id <= 10}">
-                                                                       <span id="lg${var.id}" class="checkbox ">
-                                                                           </c:when>
-                                                                           <c:otherwise>
-                                                                       <span id="lg${var.id}" class="checkbox hide-check">
-                                                                           </c:otherwise>
-                                                                       </c:choose> 
-                                                                            <input name="langCheckbox" value="${var.id}" type="checkbox"/>${var.language}
-                                                                        </span>
-                                                                    </c:forEach>
-                                                                </c:otherwise>
-                                                            </c:choose>
-                                                            <a class="more-check" id="lg_more_hide" onclick="more_hide('lg','lg_more_hide', ${fn:length(individualModel.languageEnum)})">更多&gt;&gt;</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <span class="form-label">专业领域</span>
-                                                        <div class="form-control">
-                                                            <c:choose>
-                                                                <c:when test="${ !empty individualModel.individualExt }">
-                                                                    <c:forEach items="${individualModel.fieldEnum}" var="var">
-                                                                       <c:choose> 
-                                                                           <c:when test="${var.id <= 10}">
-                                                                       <span id="fd${var.id}" class="checkbox ">
-                                                                           </c:when>
-                                                                           <c:otherwise>
-                                                                       <span id="fd${var.id}" class="checkbox hide-check">
-                                                                           </c:otherwise>
-                                                                       </c:choose> 
-                                                                            <input name="fieldCheckbox" value="${var.id}" type="checkbox" 
-                                                                                   <c:forEach items="${individualModel.individualExt.fields}" var="field">
-                                                                                       <c:if test="${field.id==var.id}">
-                                                                                           <c:out value="checked"/>
-                                                                                       </c:if>
-                                                                                   </c:forEach> />
-                                                                            ${var.field}
-                                                                        </span>
-                                                                    </c:forEach>
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <c:forEach items="${individualModel.fieldEnum}" var="var">
-                                                                       <c:choose> 
-                                                                           <c:when test="${var.id <= 10}">
-                                                                       <span id="fd${var.id}" class="checkbox ">
-                                                                           </c:when>
-                                                                           <c:otherwise>
-                                                                       <span id="fd${var.id}" class="checkbox hide-check">
-                                                                           </c:otherwise>
-                                                                       </c:choose> 
-                                                                           <input name="fieldCheckbox" value="${var.id}" type="checkbox"/>${var.field}
-                                                                       </span>
-                                                                    </c:forEach>
-                                                                </c:otherwise>
-                                                            </c:choose>
-                                                            <a class="more-check" id="fd_more_hide" onclick="more_hide('fd','fd_more_hide', ${fn:length(individualModel.fieldEnum)})">更多&gt;&gt;</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <span class="form-label">文档类型</span>
-                                                        <div class="form-control">
-                                                            <c:choose>
-                                                                <c:when test="${ !empty individualModel.individualExt }">
-                                                                    <c:forEach items="${individualModel.doctypeEnum}" var="var">
-                                                                       <c:choose> 
-                                                                           <c:when test="${var.id <= 10}">
-                                                                       <span id="dt${var.id}" class="checkbox ">
-                                                                           </c:when>
-                                                                           <c:otherwise>
-                                                                       <span id="dt${var.id}" class="checkbox hide-check">
-                                                                           </c:otherwise>
-                                                                       </c:choose> 
-                                                                            <input name="doctypeCheckbox" value="${var.id}" type="checkbox" 
-                                                                                   <c:forEach items="${individualModel.individualExt.doctypes}" var="doctype">
-                                                                                       <c:if test="${doctype.id==var.id}">
-                                                                                           <c:out value="checked"/>
-                                                                                       </c:if>
-                                                                                   </c:forEach> />
-                                                                            ${var.doctype}
-                                                                        </span>
-                                                                    </c:forEach>
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <c:forEach items="${individualModel.doctypeEnum}" var="var">
-                                                                       <c:choose> 
-                                                                           <c:when test="${var.id <= 10}">
-                                                                       <span id="dt${var.id}" class="checkbox ">
-                                                                           </c:when>
-                                                                           <c:otherwise>
-                                                                       <span id="dt${var.id}" class="checkbox hide-check">
-                                                                           </c:otherwise>
-                                                                       </c:choose> 
-                                                                           <input name="doctypeCheckbox" value="${var.id}" type="checkbox"/>${var.doctype}
-                                                                       </span>
-                                                                    </c:forEach>
-                                                                </c:otherwise>
-                                                            </c:choose>
-                                                            <a class="more-check" id="dt_more_hide" onclick="more_hide('dt','dt_more_hide', ${fn:length(individualModel.doctypeEnum)})">更多&gt;&gt;</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <span class="form-label">翻译类型</span>
-                                                        <div class="form-control">
-                                                            <c:choose>
-                                                                <c:when test="${ !empty individualModel.individualExt }">
-                                                                    <c:forEach items="${individualModel.transtypeEnum}" var="var">
-                                                                       <span class="checkbox ">
-                                                                            <input name="transtypeCheckbox" value="${var.id}" type="checkbox" 
-                                                                                <c:forEach items="${individualModel.individualExt.transtypes}" var="transtype">
-                                                                                    <c:if test="${transtype.id==var.id}">
-                                                                                        <c:out value="checked"/>
-                                                                                    </c:if>
-                                                                                </c:forEach> />
-                                                                            ${var.transtype}
-                                                                        </span>
-                                                                    </c:forEach>
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <c:forEach items="${individualModel.transtypeEnum}" var="var">
-                                                                        <span class="checkbox ">
-                                                                            <input name="transtypeCheckbox" value="${var.id}" type="checkbox"/>${var.transtype}
-                                                                       </span>
-                                                                    </c:forEach>
-                                                                </c:otherwise>
-                                                            </c:choose>
-                                                        </div>
-                                                    </div>
-                                                    <div class="clearfix">
-                                                        <div class="form-group form-item2">
-                                                            <span class="form-label">工作经验</span>
-                                                            <div class="form-control">
-                                                                <input id="expYIpt" type="text" name="individualExt.exp_year" value="<c:out value="${ individualModel.individualExt.exp_year }" escapeXml="true" />" />
-                                                                <span class="unit">年</span>
+                                                            <div class="form-group">
+                                                                <span class="form-label">专业领域</span>
+                                                                <div class="form-control">
+                                                                    <c:choose>
+                                                                        <c:when test="${ !empty individualModel.individualExt }">
+                                                                            <c:forEach items="${individualModel.fieldEnum}" var="var">
+                                                                               <c:choose> 
+                                                                                   <c:when test="${var.id <= 10}">
+                                                                               <span id="fd${var.id}" class="checkbox ">
+                                                                                   </c:when>
+                                                                                   <c:otherwise>
+                                                                               <span id="fd${var.id}" class="checkbox hide-check">
+                                                                                   </c:otherwise>
+                                                                               </c:choose> 
+                                                                                    <input name="fieldCheckbox" value="${var.id}" type="checkbox" 
+                                                                                           <c:forEach items="${individualModel.individualExt.fields}" var="field">
+                                                                                               <c:if test="${field.id==var.id}">
+                                                                                                   <c:out value="checked"/>
+                                                                                               </c:if>
+                                                                                           </c:forEach> />
+                                                                                    ${var.field}
+                                                                                </span>
+                                                                            </c:forEach>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <c:forEach items="${individualModel.fieldEnum}" var="var">
+                                                                               <c:choose> 
+                                                                                   <c:when test="${var.id <= 10}">
+                                                                               <span id="fd${var.id}" class="checkbox ">
+                                                                                   </c:when>
+                                                                                   <c:otherwise>
+                                                                               <span id="fd${var.id}" class="checkbox hide-check">
+                                                                                   </c:otherwise>
+                                                                               </c:choose> 
+                                                                                   <input name="fieldCheckbox" value="${var.id}" type="checkbox"/>${var.field}
+                                                                               </span>
+                                                                            </c:forEach>
+                                                                        </c:otherwise>
+                                                                    </c:choose>
+                                                                    <a class="more-check" id="fd_more_hide" onclick="more_hide('fd','fd_more_hide', ${fn:length(individualModel.fieldEnum)})">更多&gt;&gt;</a>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="form-group form-item2">
-                                                            <span class="form-label">翻译经验</span>
-                                                            <div class="form-control">
-                                                                <input id="expTIpt" type="text" name="individualExt.exp_trans" value="<c:out value="${ individualModel.individualExt.exp_trans }" escapeXml="true" />" />
-                                                                <span class="unit">万字</span>
+                                                            <div class="form-group">
+                                                                <span class="form-label">文档类型</span>
+                                                                <div class="form-control">
+                                                                    <c:choose>
+                                                                        <c:when test="${ !empty individualModel.individualExt }">
+                                                                            <c:forEach items="${individualModel.doctypeEnum}" var="var">
+                                                                               <c:choose> 
+                                                                                   <c:when test="${var.id <= 10}">
+                                                                               <span id="dt${var.id}" class="checkbox ">
+                                                                                   </c:when>
+                                                                                   <c:otherwise>
+                                                                               <span id="dt${var.id}" class="checkbox hide-check">
+                                                                                   </c:otherwise>
+                                                                               </c:choose> 
+                                                                                    <input name="doctypeCheckbox" value="${var.id}" type="checkbox" 
+                                                                                           <c:forEach items="${individualModel.individualExt.doctypes}" var="doctype">
+                                                                                               <c:if test="${doctype.id==var.id}">
+                                                                                                   <c:out value="checked"/>
+                                                                                               </c:if>
+                                                                                           </c:forEach> />
+                                                                                    ${var.doctype}
+                                                                                </span>
+                                                                            </c:forEach>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <c:forEach items="${individualModel.doctypeEnum}" var="var">
+                                                                               <c:choose> 
+                                                                                   <c:when test="${var.id <= 10}">
+                                                                               <span id="dt${var.id}" class="checkbox ">
+                                                                                   </c:when>
+                                                                                   <c:otherwise>
+                                                                               <span id="dt${var.id}" class="checkbox hide-check">
+                                                                                   </c:otherwise>
+                                                                               </c:choose> 
+                                                                                   <input name="doctypeCheckbox" value="${var.id}" type="checkbox"/>${var.doctype}
+                                                                               </span>
+                                                                            </c:forEach>
+                                                                        </c:otherwise>
+                                                                    </c:choose>
+                                                                    <a class="more-check" id="dt_more_hide" onclick="more_hide('dt','dt_more_hide', ${fn:length(individualModel.doctypeEnum)})">更多&gt;&gt;</a>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <span class="form-label">翻译作品</span>
-                                                        <div class="form-control">
-                                                            <c:choose>
-                                                                <c:when test="${ !empty individualModel.individualExt }">
-                                                                    <textarea id="worksTA" name="individualExt.works" rows="3">${individualModel.individualExt.works}</textarea>
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <textarea id="worksTA" name="individualExt.works" rows="3">限长128个中文字符或者256个英文字符</textarea>
-                                                                </c:otherwise>
-                                                            </c:choose>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <span class="form-label">个人简介</span>
-                                                        <div class="form-control">
-                                                            <c:choose>
-                                                                <c:when test="${ !empty individualModel.individualExt }">
-                                                                    <textarea id="introTA" name="individualExt.introduct" rows="3">${individualModel.individualExt.introduct}</textarea>
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <textarea id="introTA" name="individualExt.introduct" rows="3">限长512个中文字符或者1024个英文字符</textarea>
-                                                                </c:otherwise>
-                                                            </c:choose>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <span class="form-label">个人主页</span>
-                                                        <div class="form-control">
-                                                            <input type="text" name="individualExt.mainpage" value="<c:out value="${ individualModel.individualExt.mainpage }" escapeXml="true" />" />
-                                                        </div>
-                                                    </div>
-        
-                                                    <input type="hidden" value="${individualModel.individualExt.id}" name="individualExt.id"/>
+                                                            <div class="form-group">
+                                                                <span class="form-label">翻译类型</span>
+                                                                <div class="form-control">
+                                                                    <c:choose>
+                                                                        <c:when test="${ !empty individualModel.individualExt }">
+                                                                            <c:forEach items="${individualModel.transtypeEnum}" var="var">
+                                                                               <span class="checkbox ">
+                                                                                    <input name="transtypeCheckbox" value="${var.id}" type="checkbox" 
+                                                                                        <c:forEach items="${individualModel.individualExt.transtypes}" var="transtype">
+                                                                                            <c:if test="${transtype.id==var.id}">
+                                                                                                <c:out value="checked"/>
+                                                                                            </c:if>
+                                                                                        </c:forEach> />
+                                                                                    ${var.transtype}
+                                                                                </span>
+                                                                            </c:forEach>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <c:forEach items="${individualModel.transtypeEnum}" var="var">
+                                                                                <span class="checkbox ">
+                                                                                    <input name="transtypeCheckbox" value="${var.id}" type="checkbox"/>${var.transtype}
+                                                                               </span>
+                                                                            </c:forEach>
+                                                                        </c:otherwise>
+                                                                    </c:choose>
+                                                                </div>
+                                                            </div>
+                                                            <div class="clearfix">
+                                                                <div class="form-group form-item2">
+                                                                    <span class="form-label">工作经验</span>
+                                                                    <div class="form-control">
+                                                                        <input id="expYIpt" type="text" name="individualExt.exp_year" value="<c:out value="${ individualModel.individualExt.exp_year }" escapeXml="true" />" />
+                                                                        <span class="unit">年</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group form-item2">
+                                                                    <span class="form-label">翻译经验</span>
+                                                                    <div class="form-control">
+                                                                        <input id="expTIpt" type="text" name="individualExt.exp_trans" value="<c:out value="${ individualModel.individualExt.exp_trans }" escapeXml="true" />" />
+                                                                        <span class="unit">万字</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <span class="form-label">翻译作品</span>
+                                                                <div class="form-control">
+                                                                    <c:choose>
+                                                                        <c:when test="${ !empty individualModel.individualExt }">
+                                                                            <textarea id="worksTA" name="individualExt.works" rows="3">${individualModel.individualExt.works}</textarea>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <textarea id="worksTA" name="individualExt.works" rows="3">限长128个中文字符或者256个英文字符</textarea>
+                                                                        </c:otherwise>
+                                                                    </c:choose>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <span class="form-label">个人简介</span>
+                                                                <div class="form-control">
+                                                                    <c:choose>
+                                                                        <c:when test="${ !empty individualModel.individualExt }">
+                                                                            <textarea id="introTA" name="individualExt.introduct" rows="3">${individualModel.individualExt.introduct}</textarea>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <textarea id="introTA" name="individualExt.introduct" rows="3">限长512个中文字符或者1024个英文字符</textarea>
+                                                                        </c:otherwise>
+                                                                    </c:choose>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <span class="form-label">个人主页</span>
+                                                                <div class="form-control">
+                                                                    <input type="text" name="individualExt.mainpage" value="<c:out value="${ individualModel.individualExt.mainpage }" escapeXml="true" />" />
+                                                                </div>
+                                                            </div>
                 
-                                                    <div class="form-btns">
-                                                        <input class="form-submit blue-btn form-submit-s" type="button" value="保存" onclick="doCreateOrEditIndiv(0, ${userId})">
-                                                        <input class="form-submit blue-btn form-submit-s" type="button" value="取消" onclick="doCreateOrEditIndiv(1, ${userId})">
-                                                    </div>                         
-                                                </form>
+                                                            <input type="hidden" value="${individualModel.individualExt.id}" name="individualExt.id"/>
+                        
+                                                            <div class="form-btns">
+                                                                <input class="form-submit blue-btn form-submit-s" type="button" value="保存" onclick="doCreateOrEditIndiv(${userId}, 1, 0)">
+                                                                <input class="form-submit blue-btn form-submit-s" type="button" value="取消" onclick="doCreateOrEditIndiv(${userId}, 1, 1)">
+                                                            </div>                         
+                                                        </form>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <div class="img-upload clearfix">
+                                                            <div class="img-preview"></div>
+                                                            <div class="img-upload-form">
+                                                                <form id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data" target="_self">
+                                                                    <input id="upfile" name="upfile" class="upload-input" type="file" multiple="false" />
+                                                                    <p>请选择小于2M的图片</p>
+                                                                    <div class="form-btns">
+                                                                        <input class="form-submit blue-btn form-submit-s" type="button" value="提交" onclick="doCreateOrEditIndiv(${userId}, ${step}, 0)">
+                                                                        <input class="form-submit blue-btn form-submit-s" type="button" value="跳过" onclick="doCreateOrEditIndiv(${userId}, ${step}, 1)">
+                                                                    </div> 
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </div>
                                         </c:otherwise>
                                     </c:choose>
@@ -890,20 +940,67 @@
         return 1;
     }
 
-    function doCreateOrEditIndiv(cancel,userId)
+    function strEndWith(str, suffix)
     {
-        var form = document.getElementById("indivForm");
-        if(cancel==1)
+        var reg=new RegExp(suffix+"$");
+        return reg.test(str);
+    }
+
+    //step 1 can be canclled and other steps can be skipped. Thus if step is 1, the last parameter indicates cancel or not, and
+    //if the step is not 1, the last parameter indicates skip or not;
+    function doCreateOrEditIndiv(userId, step, cancelOrSkip)
+    {
+        var action = "<%=request.getContextPath()%>/doCreateOrEditIndiv.action?id="+userId+"&step="+step;
+
+        if(step == 1) //step 1
         {
-            form.action = "<%=request.getContextPath()%>/doCreateOrEditIndiv.action?id="+userId+"&cancel=1";
-            form.submit();
-        }
-        else
-        {
-            if(validateIndiv()==1)
+            var indivForm = document.getElementById("indivForm");
+            if(cancelOrSkip==1)
             {
-                form.action = "<%=request.getContextPath()%>/doCreateOrEditIndiv.action?id="+userId;
-                form.submit();
+                indivForm.action = action+"&cancel=1";
+                indivForm.submit();
+            }
+            else
+            {
+                indivForm.action = action;
+                if(validateIndiv()==1)
+                {
+                    indivForm.submit();
+                }
+            }
+        }
+        else //not step 1
+        {
+            var upForm = document.getElementById("uploadForm");
+            if(cancelOrSkip==1)
+            {
+                upForm.action = action+"&skip=1";
+                upForm.submit();
+            }
+            else
+            {
+                var fileName = document.getElementById("upfile").value;
+                if(fileName!=null) fileName=fileName.trim();
+
+                if(fileName==null || fileName=="")
+                {
+                    alert("请选择文件");
+                    return;
+                }
+
+                if( !strEndWith(fileName,".png") && 
+                    !strEndWith(fileName,".jpg") && 
+                    !strEndWith(fileName,".jpe") && 
+                    !strEndWith(fileName,".jpeg") &&
+                    !strEndWith(fileName,".gif") &&
+                    !strEndWith(fileName,".jfif") )
+                {
+                    alert("只能选择.png，.jpg，.jpe，.jpeg，.gif或.jfif文件");
+                    return;
+                }
+
+                upForm.action = action;
+                upForm.submit();
             }
         }
     }

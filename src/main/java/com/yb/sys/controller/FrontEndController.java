@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Calendar;
+
+import java.io.File;
 
 import java.net.URLDecoder;
 
@@ -22,6 +25,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.common.hibernate.*;
 import com.common.LRUCache;
+import com.common.upload.UploadUtil;
+import com.common.upload.ReceivedFile;
+import com.common.upload.ReceivedData;
+import com.common.config.ConfigService;
 
 import com.yb.sys.entity.IndividualExt;
 import com.yb.sys.model.IndividualModel;
@@ -57,7 +64,6 @@ import com.yb.sys.service.ISchoolServiceExt;
 import com.yb.sys.entity.RecomposExt;
 import com.yb.sys.model.RecomposModel;
 import com.yb.sys.service.IRecomposServiceExt;
-
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -108,6 +114,8 @@ public class FrontEndController
   @Resource(name = "recomposService")
   private IRecomposServiceExt recomposService;
 
+  @Resource(name = "configService")
+  private ConfigService configService;
 
   //map: language-ID(Long) -->  ID of companies which support this language (Long[])
   public static LRUCache<Long, Long[]> lgCompanyCache = new LRUCache<Long, Long[]>(24);
@@ -1010,14 +1018,15 @@ public class FrontEndController
       {
         logger.error("Unexpected exception thrown when creating user");
         e.printStackTrace();
-        //TODO: error page;
         return "/sys/error_page";
       }
     }
 
     //in home page of a user, there are 3 pages that might be shown: 0. My Status; 1. Base Info; 2. Translation Service;
-    //thus, when we go to this page, we need to specify which one to show;
+    //thus, when we go to this page, we need to specify which one to show; and if it is 2 (Translation Service), there are
+    //muli steps, so it is needed to set step in this case;
     model.addAttribute("page", 2);
+    model.addAttribute("step", 1); //first step in publishing or editing individual translation service;
 
     //we need to pass the userId back and forth;
     model.addAttribute("userId", userModel.getUserExt().getId());
@@ -1194,198 +1203,324 @@ public class FrontEndController
   @RequestMapping(value = "/doCreateOrEditIndiv")
   public String doCreateOrEditIndiv(@ModelAttribute IndividualModel individualModel, ModelMap model, HttpServletRequest request)
   {
-    IndividualExt individualExt = individualModel.getIndividualExt();
-    if( individualExt == null)
-    {
-      logger.error("individualModel cannot be null for doCreateOrEditIndiv");
-      return "/sys/error_page";
-    }
-
     Long userId;
-    UserExt userExtPer;
     try{
       userId = Long.parseLong(request.getParameter("id").trim());
-      userExtPer = userService.load(userId, true);
-      if( userExtPer.getuser_type() != 0L)
-      {
-        logger.error("User type should be 0 (individual), but it is " + userExtPer.getuser_type());
-        return "/sys/error_page";
-      }
     }
     catch (Throwable e){
-      logger.error("Unexpected exception thrown when parsing userId or loading user by the userId");
+      logger.error("Unexpected exception thrown when parsing userId");
+      e.printStackTrace();
+      return "/sys/error_page";
+    }
+    model.addAttribute("userId", userId);
+
+
+    Integer step;
+    try{
+      step = Integer.parseInt(request.getParameter("step").trim());
+    }
+    catch (Throwable e){
+      logger.error("Unexpected exception thrown when parsing step");
       e.printStackTrace();
       return "/sys/error_page";
     }
 
-    model.addAttribute("page", 2);
-    model.addAttribute("userId", userId);
-
-    //pass enumerations like cities, educations, schools and etc to individual/edit.jsp
-    List<ICondition> conditions = new ArrayList<ICondition>();
-    individualModel.setCityEnum(cityService.criteriaQuery(conditions));
-    individualModel.setEducationEnum(educationService.criteriaQuery(conditions));
-    individualModel.setSchoolEnum(schoolService.criteriaQuery(conditions));
-    individualModel.setLanguageEnum(languageService.criteriaQuery(conditions));
-    individualModel.setFieldEnum(fieldService.criteriaQuery(conditions));
-    individualModel.setTranstypeEnum(transtypeService.criteriaQuery(conditions));
-    individualModel.setDoctypeEnum(doctypeService.criteriaQuery(conditions));
-
-    String cancel = request.getParameter("cancel");
-
-    if(cancel!=null) //cancel
+    if(step==1)
     {
-      IndividualExt indiv = userExtPer.getindividual();
-      individualModel.setIndividualExt(indiv);
-      model.addAttribute("individualModel", individualModel);
-    }
-    else  //not cancel, so create or edit the individual object
-    {
-      String name = individualExt.getname();
-      if(name!=null) name = name.trim();
-      if(name==null || name.equals(""))
+      IndividualExt individualExt = individualModel.getIndividualExt();
+      if( individualExt == null)
       {
-        logger.error("Name cannot be null or empty.");
-        return "/sys/error_page";
-      }
-      individualExt.setname(name);
-
-      Long gender = individualExt.getgender();
-      if(gender==null || (gender!=0L && gender!=1L))
-      {
-        logger.error("Gender invalid: "+gender);
+        logger.error("individualModel cannot be null for step 1 of Creating-Or-Editing-Individual");
         return "/sys/error_page";
       }
 
-      EducationExt edu = individualExt.geteducation();
-      if(edu==null)
+      String cancel = request.getParameter("cancel");
+
+      if(cancel!=null) //cancel the 1st step
       {
-        logger.error("Education is null");
-        return "/sys/error_page";
-      }
- 
-      SchoolExt school = individualExt.getschool();
-      if(school==null)
-      {
-        logger.error("School is null");
-        return "/sys/error_page";
-      }
+        //since we canclled the 1st step, we try to load the original individual instance; if the user
+        //has not published the translation serivice, load will return null, this is expected;
+        IndividualExt origIndiv = individualService.load(userId,true);         
+        individualModel.setIndividualExt(origIndiv);
 
-      Long birth_year = individualExt.getbirth_year();
-      if(birth_year==null)
-      {
-        logger.error("Birth_year is null");
-        return "/sys/error_page";
-      }
+        //pass enumerations like cities, educations, schools and etc to individual/edit.jsp
+        List<ICondition> conditions = new ArrayList<ICondition>();
+        individualModel.setCityEnum(cityService.criteriaQuery(conditions));
+        individualModel.setEducationEnum(educationService.criteriaQuery(conditions));
+        individualModel.setSchoolEnum(schoolService.criteriaQuery(conditions));
+        individualModel.setLanguageEnum(languageService.criteriaQuery(conditions));
+        individualModel.setFieldEnum(fieldService.criteriaQuery(conditions));
+        individualModel.setTranstypeEnum(transtypeService.criteriaQuery(conditions));
+        individualModel.setDoctypeEnum(doctypeService.criteriaQuery(conditions));
 
-      CityExt city = individualExt.getcity();
-      if(city==null)
-      {
-        logger.error("City is null");
-        return "/sys/error_page";
-      }
-      
-      String mainpage = individualExt.getmainpage();
-      if(mainpage!=null) mainpage=mainpage.trim();
-      if(mainpage!=null && !mainpage.equals(""))
-        individualExt.setmainpage(mainpage);
-      else
-        individualExt.setmainpage(null);
-
-      Long workstyle = individualExt.getworkstyle();
-      if(workstyle==null || (workstyle!=0L && workstyle!=1L))
-      {
-        logger.error("Workstyle invalid: "+workstyle);
-        return "/sys/error_page";
-      }
-
-      if(individualExt.getexp_year()==null)
-        individualExt.setexp_year(0L);
-
-      if(individualExt.getexp_trans()==null)
-        individualExt.setexp_trans(0L);
-
-      String works = individualExt.getworks();
-      if(works!=null) works=works.trim();
-      if(works!=null && !works.equals(""))
-        individualExt.setworks(works);
-      else
-        individualExt.setworks(null);
-
-      String introduct = individualExt.getintroduct();
-      if(introduct!=null) introduct=introduct.trim();
-      if(introduct!=null && !introduct.equals(""))
-        individualExt.setintroduct(introduct);
-      else
-        individualExt.setintroduct(null);
-
-      Set<LanguageExt> languages = new TreeSet<LanguageExt>();
-      Set<FieldExt> fields = new TreeSet<FieldExt>();
-      Set<TranstypeExt> transtypes = new TreeSet<TranstypeExt>();
-      Set<DoctypeExt> doctypes = new TreeSet<DoctypeExt>();
-
-      getCheckboxValues(request, languages, fields, transtypes, doctypes);
-
-      individualExt.setlanguages(languages);
-      individualExt.setfields(fields);
-      individualExt.settranstypes(transtypes);
-      individualExt.setdoctypes(doctypes);
-
-      if(individualExt.getauth_pass()==null)
-        individualExt.setauth_pass(0L);   //wait to be authenticated
-
-      if(individualExt.getvalid_pass()==null)
-        individualExt.setvalid_pass(0L);   //wait to be authenticated
-
-      if(individualExt.getrecompos()==null)
-        individualExt.setrecompos(recomposService.load(5L, true)); //5 is "No recompos"
-
-      if(individualExt.getId() == null) //user is creating the individual instance (publishing translation service)
-      {
-        logger.debug("Creating individual with id="+userId);
-
-        //individual has a one-to-one relationship with user, thus set the same 'id' with the related user; see
-        //Individual.hbm.xml;
-        individualExt.setId(userId);
+        model.addAttribute("individualModel", individualModel);
   
-        try{
-          //save the IndividualExt instance created in goPublish() and populated with value in individual/edit.jsp;
-          individualService.create(individualExt);
-        }
-        catch (Throwable e){
-          logger.error("Unexpected exception thrown when creating individual");
-          e.printStackTrace();
-          return "/sys/error_page";
-        }
+        //since we canclled the 1st step, we stay at the 1st step of the translation service page;
+        model.addAttribute("page", 2); 
+        model.addAttribute("step", 1);
+  
+        return "/sys/indiv_home"; 
       }
-      else //user is modifying the individual instance (modifying translation service)
+      else  //not cancel the 1st step, so create or edit the individual object
       {
-        IndividualExt individualExtPer = individualService.load(individualExt.getId(), true);
-
-        //We don't set these fields in edit.jsp, so we need to keep the existing values, or they will become null;
-        individualExt.setphoto(individualExtPer.getphoto());
-        individualExt.settranscert(individualExtPer.gettranscert());
-        individualExt.setlangcert(individualExtPer.getlangcert());
-        individualExt.setprofcert(individualExtPer.getprofcert());
-        individualExt.setauthfile(individualExtPer.getauthfile());
-
-        try{
-          //save the IndividualExt instance created in goPublish() and populated with value in individual/edit.jsp;
-          individualService.save(individualExt);
-        }
-        catch (Throwable e){
-          logger.error("Unexpected exception thrown when modifying individual");
-          e.printStackTrace();
+        String name = individualExt.getname();
+        if(name!=null) name = name.trim();
+        if(name==null || name.equals(""))
+        {
+          logger.error("Name cannot be null or empty.");
           return "/sys/error_page";
+        }
+        individualExt.setname(name);
+  
+        Long gender = individualExt.getgender();
+        if(gender==null || (gender!=0L && gender!=1L))
+        {
+          logger.error("Gender invalid: "+gender);
+          return "/sys/error_page";
+        }
+  
+        EducationExt edu = individualExt.geteducation();
+        if(edu==null)
+        {
+          logger.error("Education is null");
+          return "/sys/error_page";
+        }
+   
+        SchoolExt school = individualExt.getschool();
+        if(school==null)
+        {
+          logger.error("School is null");
+          return "/sys/error_page";
+        }
+  
+        Long birth_year = individualExt.getbirth_year();
+        if(birth_year==null)
+        {
+          logger.error("Birth_year is null");
+          return "/sys/error_page";
+        }
+  
+        CityExt city = individualExt.getcity();
+        if(city==null)
+        {
+          logger.error("City is null");
+          return "/sys/error_page";
+        }
+        
+        String mainpage = individualExt.getmainpage();
+        if(mainpage!=null) mainpage=mainpage.trim();
+        if(mainpage!=null && !mainpage.equals(""))
+          individualExt.setmainpage(mainpage);
+        else
+          individualExt.setmainpage(null);
+  
+        Long workstyle = individualExt.getworkstyle();
+        if(workstyle==null || (workstyle!=0L && workstyle!=1L))
+        {
+          logger.error("Workstyle invalid: "+workstyle);
+          return "/sys/error_page";
+        }
+  
+        if(individualExt.getexp_year()==null)
+          individualExt.setexp_year(0L);
+  
+        if(individualExt.getexp_trans()==null)
+          individualExt.setexp_trans(0L);
+  
+        String works = individualExt.getworks();
+        if(works!=null) works=works.trim();
+        if(works!=null && !works.equals(""))
+          individualExt.setworks(works);
+        else
+          individualExt.setworks(null);
+  
+        String introduct = individualExt.getintroduct();
+        if(introduct!=null) introduct=introduct.trim();
+        if(introduct!=null && !introduct.equals(""))
+          individualExt.setintroduct(introduct);
+        else
+          individualExt.setintroduct(null);
+  
+        Set<LanguageExt> languages = new TreeSet<LanguageExt>();
+        Set<FieldExt> fields = new TreeSet<FieldExt>();
+        Set<TranstypeExt> transtypes = new TreeSet<TranstypeExt>();
+        Set<DoctypeExt> doctypes = new TreeSet<DoctypeExt>();
+  
+        getCheckboxValues(request, languages, fields, transtypes, doctypes);
+  
+        individualExt.setlanguages(languages);
+        individualExt.setfields(fields);
+        individualExt.settranstypes(transtypes);
+        individualExt.setdoctypes(doctypes);
+  
+        if(individualExt.getauth_pass()==null)
+          individualExt.setauth_pass(0L);   //wait to be authenticated
+  
+        if(individualExt.getvalid_pass()==null)
+          individualExt.setvalid_pass(0L);   //wait to be authenticated
+  
+        if(individualExt.getrecompos()==null)
+          individualExt.setrecompos(recomposService.load(5L, true)); //5 is "No recompos"
+  
+        if(individualExt.getId() == null) //user is creating the individual instance (publishing translation service)
+        {
+          logger.debug("Creating individual with id="+userId);
+  
+          //individual has a one-to-one relationship with user, thus set the same 'id' with the related user; see
+          //Individual.hbm.xml;
+          individualExt.setId(userId);
+    
+          try{
+            //save the IndividualExt instance created in goPublish() and populated with value in individual/edit.jsp;
+            individualService.create(individualExt);
+          }
+          catch (Throwable e){
+            logger.error("Unexpected exception thrown when creating individual");
+            e.printStackTrace();
+            return "/sys/error_page";
+          }
+        }
+        else //user is modifying the individual instance (modifying translation service)
+        {
+          IndividualExt individualExtPer = individualService.load(individualExt.getId(), true);
+  
+          //We don't set these fields in edit.jsp, so we need to keep the existing values, or they will become null;
+          individualExt.setphoto(individualExtPer.getphoto());
+          individualExt.settranscert(individualExtPer.gettranscert());
+          individualExt.setlangcert(individualExtPer.getlangcert());
+          individualExt.setprofcert(individualExtPer.getprofcert());
+          individualExt.setauthfile(individualExtPer.getauthfile());
+  
+          try{
+            //save the IndividualExt instance created in goPublish() and populated with value in individual/edit.jsp;
+            individualService.save(individualExt);
+          }
+          catch (Throwable e){
+            logger.error("Unexpected exception thrown when modifying individual");
+            e.printStackTrace();
+            return "/sys/error_page";
+          }
+        }
+
+        model.addAttribute("page", 2); 
+        model.addAttribute("step", 2); //go the 2nd step
+
+        return "/sys/indiv_home"; 
+      }
+    }
+    else //not the 1st step; that is to upload files (step2:photo; step3:language level certificate; step4:translation certificate; step5:profession certificate; step6: authentication file) 
+    {
+      String fileType; 
+      if(step==2) fileType = "photo";
+      else if(step==3) fileType = "language_cert";
+      else if(step==4) fileType = "translation_cert";
+      else if(step==5) fileType = "profession_cert";
+      else if(step==6) fileType = "authentication_file";
+      else
+      {
+        logger.error("Invalid step ("+step+") in publishing or editing individual");
+        return "/sys/error_page";
+      }
+
+      IndividualExt individual;
+      try{
+        individual = individualService.load(userId, true);
+      }
+      catch(Throwable e)
+      {
+        logger.error("Failed to load the individual instance for which are are uploading files");
+        e.printStackTrace();
+        return "/sys/error_page";
+      }
+
+      if(individual == null)
+      {
+        logger.error("The individual instance for which are are uploading files is null");
+        return "/sys/error_page";
+      }
+
+      String skip = request.getParameter("skip");
+      if(skip!=null)  //skip uploading
+      {
+        logger.debug("Skip uploading "+fileType);
+      }
+      else //not skip uploading;
+      {
+        logger.debug("Receiving " + fileType);
+
+        String localPath = "/ybstore/individual/"+userId+"/"+fileType;
+        String filePath = configService.getProperty("docBase")+localPath;
+
+        //Yuanguo: add a number to the suffix of image file; the number will be updated with system time in 
+        //milli seconds every time a new image is uploaded; why?
+        //Because, if we don't add the number, when the image is updated, the "src" in <img src="..."/> is 
+        //not updated, as a result, the browser will use the cached image instead of reloading the new one. 
+        //Someone on internet gave another solution: 
+        //     append "?t=Math.random()" to src.
+        //however, it will force a reload every time;
+        ReceivedData receivedData = UploadUtil.receive(request, true, false, filePath, "."+Calendar.getInstance().getTimeInMillis());
+        List<ReceivedFile> files = receivedData.getFileList(); 
+
+        if(files == null || files.size() == 0)
+        {
+          logger.error("error occurred when receiving " + fileType);
+        }
+        else
+        {
+          if(files.size() > 1)
+          {
+            logger.warn("more than 1 images are uploaded, we only care about the first one");
+          }
+
+          File rawFile = files.get(0).getFile();
+          String suffix = files.get(0).getSuffix();
+
+          if(fileType.equals("photo"))
+            individual.setphoto(localPath+"/raw"+suffix);
+          else if(fileType.equals("language_cert"))
+            individual.setlangcert(localPath+"/raw"+suffix);
+          else if(fileType.equals("translation_cert"))
+            individual.settranscert(localPath+"/raw"+suffix);
+          else if(fileType.equals("profession_cert"))
+            individual.setprofcert(localPath+"/raw"+suffix);
+          else if(fileType.equals("authentication_file"))
+            individual.setauthfile(localPath+"/raw"+suffix);
+             
+          individualService.save(individual);
+
+          //delete original files if ther is any;
+          File folder = new File(filePath);
+          if(folder.isDirectory())
+          {
+            String[] fileList = folder.list();
+            for(int i=0;i<fileList.length;i++)
+            {
+              if(!fileList[i].endsWith(suffix))
+              {
+                File beDeleted = new File(filePath, fileList[i]);
+                beDeleted.delete();
+              }
+            }
+          }
+          else
+          {
+            logger.warn("Something is wrong, "+filePath+" is not a folder");
+          }
         }
       }
 
-      individualModel.setIndividualExt(individualExt);
-
-      model.addAttribute("individualModel", individualModel);
+      if(step==6) //the last step
+      {
+        model.addAttribute("page", 0); 
+        return "/sys/indiv_home"; 
+      }
+      else //not the last step, go to next step
+      {
+        model.addAttribute("page", 2); 
+        model.addAttribute("step", step+1); //go the 2nd step
+        return "/sys/indiv_home"; 
+      }
     }
-
-    return "/sys/indiv_home"; 
   }
 
 
@@ -1410,7 +1545,6 @@ public class FrontEndController
     catch (Throwable e){
       logger.error("Unexpected exception thrown when parsing userId");
       e.printStackTrace();
-      //TODO: error page;
       return "/sys/error_page";
     }
 
@@ -1423,8 +1557,10 @@ public class FrontEndController
       e.printStackTrace();
     }
 
-    model.addAttribute("page", page);
     model.addAttribute("userId", userId);
+    model.addAttribute("page", page);
+    if(page==2)  
+      model.addAttribute("step", 1); //first step in publishing or editing individual translation service;
 
 
     if(userType==0L)  //individual
