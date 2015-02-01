@@ -196,7 +196,7 @@
                                                       </c:otherwise>
                                                     </c:choose>
                                                         <span>3</span>
-                                                        <p>上传语言登记证书</p>
+                                                        <p>上传语言等级证书</p>
                                                         <i></i>                                                
                                                     </li>
                                                     <c:choose>
@@ -220,7 +220,7 @@
                                                       </c:otherwise>
                                                     </c:choose>
                                                         <span>5</span>
-                                                        <p>上传毕业证书</p>
+                                                        <p>上传专业证书</p>
                                                         <i></i>                                                
                                                     </li>
                                                     <c:choose>
