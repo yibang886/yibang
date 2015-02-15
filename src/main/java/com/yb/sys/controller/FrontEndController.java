@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.common.hibernate.*;
 import com.common.LRUCache;
@@ -67,6 +68,7 @@ import com.yb.sys.service.IRecomposServiceExt;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1644,4 +1646,50 @@ public class FrontEndController
 
     return map;
   }
+
+
+  @RequestMapping(value = "/goLogin")
+  public String goLogin(@ModelAttribute UserModel userModel, ModelMap model){
+    return "/sys/login";
+  }
+
+
+  @RequestMapping(value = "/doLogin")
+  public String doLogin(@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session, HttpServletRequest request, ModelMap map)
+  {
+    if(email!=null)
+      email = email.trim();
+    if(password!=null)
+      password = password.trim();
+
+    if(email!=null&&!email.equals(""))
+    {
+      List<ICondition> conditions = new ArrayList<ICondition>();
+      conditions.add(new EqCondition("email",email));
+      List<UserExt> userList = userService.criteriaQuery(conditions);
+      if(userList.size()==1 && userList.get(0).getpassword()!=null)
+      {
+        UserExt userExt = userList.get(0);
+        if(userExt.getpassword().equals(password))
+        {
+          session.setAttribute("user", userExt);
+        }
+        else
+        {
+          map.addAttribute("error", "用户名不存在或者密码错误");
+        }
+      }
+      else
+      {
+        map.addAttribute("error", "用户名不存在或者密码错误");
+      }
+    }
+    else
+    {
+      map.addAttribute("error", "用户名不存在或者密码错误");
+    }
+
+    return "/sys/login";
+  }
+
 }
