@@ -50,8 +50,8 @@
                             <b class="caret"></b>
                           </a>
                           <ul class="dropdown-menu">
-                            <li><a href="home?id=${user.id}&type=${user.user_type}" target="_self">主页</a></li>
-                            <li><a href="">退出</a></li>
+                            <li><a href="home?id=${user.id}&type=${user.user_type}" target="_self">空间</a></li>
+                            <li><a href="<%=request.getContextPath()%>/logout.action" target="_self">退出</a></li>
                           </ul>
                         </li>
                       </ul>

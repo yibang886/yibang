@@ -1430,14 +1430,14 @@ public class FrontEndController
       }
       catch(Throwable e)
       {
-        logger.error("Failed to load the individual instance for which are are uploading files");
+        logger.error("Failed to load the individual instance for which we are uploading files");
         e.printStackTrace();
         return "/sys/error_page";
       }
 
       if(individual == null)
       {
-        logger.error("The individual instance for which are are uploading files is null");
+        logger.error("The individual instance for which we are uploading files is null");
         return "/sys/error_page";
       }
 
@@ -1556,6 +1556,310 @@ public class FrontEndController
     }
   }
 
+  @RequestMapping(value = "/doCreateOrEditComp")
+  public String doCreateOrEditComp(@ModelAttribute CompanyModel companyModel, ModelMap model, HttpServletRequest request)
+  {
+    Long userId;
+    try{
+      userId = Long.parseLong(request.getParameter("id").trim());
+    }
+    catch (Throwable e){
+      logger.error("Unexpected exception thrown when parsing userId");
+      e.printStackTrace();
+      return "/sys/error_page";
+    }
+    model.addAttribute("userId", userId);
+
+
+    Integer step;
+    try{
+      step = Integer.parseInt(request.getParameter("step").trim());
+    }
+    catch (Throwable e){
+      logger.error("Unexpected exception thrown when parsing step");
+      e.printStackTrace();
+      return "/sys/error_page";
+    }
+
+    if(step==1)
+    {
+      CompanyExt companyExt = companyModel.getCompanyExt();
+      if( companyExt == null)
+      {
+        logger.error("companyModel cannot be null for step 1 of Creating-Or-Editing-Company");
+        return "/sys/error_page";
+      }
+
+      String cancel = request.getParameter("cancel");
+
+      if(cancel!=null) //cancel the 1st step
+      {
+        //since we canclled the 1st step, we try to load the original company instance; if the user
+        //has not published the translation serivice, load will return null, this is expected;
+        CompanyExt origComp = companyService.load(userId,true);         
+        companyModel.setCompanyExt(origComp);
+
+        //pass enumerations like cities, languages and etc to company/edit.jsp
+        List<ICondition> conditions = new ArrayList<ICondition>();
+        companyModel.setCityEnum(cityService.criteriaQuery(conditions));
+        companyModel.setLanguageEnum(languageService.criteriaQuery(conditions));
+        companyModel.setFieldEnum(fieldService.criteriaQuery(conditions));
+        companyModel.setTranstypeEnum(transtypeService.criteriaQuery(conditions));
+        companyModel.setDoctypeEnum(doctypeService.criteriaQuery(conditions));
+
+        model.addAttribute("companyModel", companyModel);
+  
+        //since we canclled the 1st step, we stay at the 1st step of the translation service page;
+        model.addAttribute("page", 2); 
+        model.addAttribute("step", 1);
+  
+        return "/sys/comp_home"; 
+      }
+      else  //not cancel the 1st step, so create or edit the company object
+      {
+        String name = companyExt.getName();
+        if(name!=null) name = name.trim();
+        if(name==null || name.equals(""))
+        {
+          logger.error("Name cannot be null or empty.");
+          return "/sys/error_page";
+        }
+        companyExt.setName(name);
+
+        CityExt city = companyExt.getCity();
+        if(city==null)
+        {
+          logger.error("City is null");
+          return "/sys/error_page";
+        }
+
+        String addr = companyExt.getAddress();
+        if(addr!=null) addr = addr.trim();
+        if(addr==null || addr.equals(""))
+        {
+          logger.error("Address cannot be null or empty.");
+          return "/sys/error_page";
+        }
+        companyExt.setAddress(addr);
+        
+        String wsite = companyExt.getWebsite();
+        if(wsite!=null) wsite=wsite.trim();
+        if(wsite==null || wsite.equals(""))
+        {
+          logger.error("Website is null");
+          return "/sys/error_page";
+        }
+        companyExt.setWebsite(wsite);
+  
+        String introduct = companyExt.getInroduct();
+        if(introduct!=null) introduct=introduct.trim();
+        if(introduct!=null && !introduct.equals(""))
+          companyExt.setInroduct(introduct);
+        else
+          companyExt.setInroduct(null);
+  
+        Set<LanguageExt> languages = new TreeSet<LanguageExt>();
+        Set<FieldExt> fields = new TreeSet<FieldExt>();
+        Set<TranstypeExt> transtypes = new TreeSet<TranstypeExt>();
+        Set<DoctypeExt> doctypes = new TreeSet<DoctypeExt>();
+  
+        getCheckboxValues(request, languages, fields, transtypes, doctypes);
+  
+        companyExt.setLanguages(languages);
+        companyExt.setFields(fields);
+        companyExt.setTranstypes(transtypes);
+        companyExt.setDoctypes(doctypes);
+  
+        if(companyExt.getAuth_pass()==null)
+          companyExt.setAuth_pass(0L);   //wait to be authenticated
+  
+        if(companyExt.getValid_pass()==null)
+          companyExt.setValid_pass(0L);   //wait to be authenticated
+  
+        if(companyExt.getRecompos()==null)
+          companyExt.setRecompos(recomposService.load(5L, true)); //5 is "No recompos"
+  
+        if(companyExt.getId() == null) //user is creating the company instance (publishing translation service)
+        {
+          logger.debug("Creating company with id="+userId);
+  
+          //company has a one-to-one relationship with user, thus set the same 'id' with the related user; see
+          //Company.hbm.xml;
+          companyExt.setId(userId);
+    
+          try{
+            //save the CompanyExt instance created in goPublish() and populated with value in company/edit.jsp;
+            companyService.create(companyExt);
+          }
+          catch (Throwable e){
+            logger.error("Unexpected exception thrown when creating company");
+            e.printStackTrace();
+            return "/sys/error_page";
+          }
+        }
+        else //user is modifying the company instance (modifying translation service)
+        {
+          CompanyExt companyExtPer = companyService.load(companyExt.getId(), true);
+  
+          //We don't set these fields in edit.jsp, so we need to keep the existing values, or they will become null;
+          companyExt.setLogo(companyExtPer.getLogo());
+          companyExt.setAuthfile(companyExtPer.getAuthfile());
+  
+          try{
+            //save the CompanyExt instance created in goPublish() and populated with value in company/edit.jsp;
+            companyService.save(companyExt);
+          }
+          catch (Throwable e){
+            logger.error("Unexpected exception thrown when modifying company");
+            e.printStackTrace();
+            return "/sys/error_page";
+          }
+        }
+
+        model.addAttribute("page", 2); 
+        model.addAttribute("step", 2); //go the 2nd step
+
+        return "/sys/comp_home"; 
+      }
+    }
+    else //not the 1st step; that is to upload files (step2:logo; step3: authentication file) 
+    {
+      String fileType; 
+      if(step==2) fileType = "logo";
+      else if(step==3) fileType = "authentication_file";
+      else
+      {
+        logger.error("Invalid step ("+step+") in publishing or editing company");
+        return "/sys/error_page";
+      }
+
+      CompanyExt company;
+      try{
+        company = companyService.load(userId, true);
+      }
+      catch(Throwable e)
+      {
+        logger.error("Failed to load the company instance for which we are uploading files");
+        e.printStackTrace();
+        return "/sys/error_page";
+      }
+
+      if(company == null)
+      {
+        logger.error("The company instance for which we are uploading files is null");
+        return "/sys/error_page";
+      }
+
+
+      String skip = request.getParameter("skip");
+      if(skip!=null)  //skip uploading
+      {
+        logger.debug("Skip uploading "+fileType);
+      }
+      else //not skip uploading;
+      {
+        logger.debug("Receiving " + fileType);
+
+        String localPath = "/ybstore/company/"+userId+"/"+fileType;
+        String filePath = configService.getProperty("docBase")+localPath;
+
+        //Yuanguo: add a number to the suffix of image file; the number will be updated with system time in 
+        //milli seconds every time a new image is uploaded; why?
+        //Because, if we don't add the number, when the image is updated, the "src" in <img src="..."/> is 
+        //not updated, as a result, the browser will use the cached image instead of reloading the new one. 
+        //Someone on internet gave another solution: 
+        //     append "?t=Math.random()" to src.
+        //however, it will force a reload every time;
+        ReceivedData receivedData = UploadUtil.receive(request, true, false, filePath, "."+Calendar.getInstance().getTimeInMillis());
+        List<ReceivedFile> files = receivedData.getFileList(); 
+
+        if(files == null || files.size() == 0)
+        {
+          logger.error("error occurred when receiving " + fileType);
+        }
+        else
+        {
+          if(files.size() > 1)
+          {
+            logger.warn("more than 1 images are uploaded, we only care about the first one");
+          }
+
+          File rawFile = files.get(0).getFile();
+          String suffix = files.get(0).getSuffix();
+
+          if(fileType.equals("logo"))
+            company.setLogo(localPath+"/raw"+suffix);
+          else if(fileType.equals("authentication_file"))
+            company.setAuthfile(localPath+"/raw"+suffix);
+             
+          companyService.save(company);
+
+          //delete original files if ther is any;
+          File folder = new File(filePath);
+          if(folder.isDirectory())
+          {
+            String[] fileList = folder.list();
+            for(int i=0;i<fileList.length;i++)
+            {
+              if(!fileList[i].endsWith(suffix))
+              {
+                File beDeleted = new File(filePath, fileList[i]);
+                beDeleted.delete();
+              }
+            }
+          }
+          else
+          {
+            logger.warn("Something is wrong, "+filePath+" is not a folder");
+          }
+        }
+      }
+
+      if(step==3) //the last step
+      {
+        model.addAttribute("page", 0); 
+
+        UserModel userModel = new UserModel();
+        UserExt userExt = null;
+        try{
+          userExt = userService.load(userId, true);
+        }
+        catch(Throwable e)
+        {
+          logger.error("Cannot load user object, maybe userId is invalid.");
+          userExt = null;
+        }
+        if(userExt == null)
+          return "/sys/error_page";
+          
+        userModel.setUserExt(userExt);
+        model.addAttribute("userModel", userModel);
+
+
+        CompanyExt companyExt = null;
+        try{
+          companyExt = companyService.load(userId, true);
+        }
+        catch(Throwable e)
+        {
+          logger.debug("Cannot load company object, maybe not published");
+          companyExt = null;
+	}
+
+        companyModel.setCompanyExt(companyExt);
+        model.addAttribute("companyModel",companyModel);
+
+        return "/sys/comp_home"; 
+      }
+      else //not the last step, go to next step
+      {
+        model.addAttribute("page", 2); 
+        model.addAttribute("step", step+1); //go the 2nd step
+        return "/sys/comp_home"; 
+      }
+    }
+  }
+
 
   @RequestMapping(value = "/home")
   public String home(HttpServletRequest request, HttpServletResponse response, ModelMap model)
@@ -1666,6 +1970,68 @@ public class FrontEndController
     }
     else //company
     {
+      if(page==0 || page==1) //user status page or user base info page
+      {
+        UserModel userModel = new UserModel();
+
+        UserExt userExt = null;
+        try{
+          userExt = userService.load(userId, true);
+        }
+        catch(Throwable e)
+        {
+          logger.error("Cannot load user object, maybe userId is invalid.");
+          userExt = null;
+        }
+        if(userExt == null)
+          return "/sys/error_page";
+          
+        userModel.setUserExt(userExt);
+        model.addAttribute("userModel", userModel);
+
+        if(page==0)
+        {
+          CompanyModel companyModel = new CompanyModel();
+
+          CompanyExt companyExt = null;
+          try{
+            companyExt = companyService.load(userId, true);
+          }
+          catch(Throwable e)
+          {
+            logger.debug("Cannot load company object, maybe not published");
+            companyExt = null;
+          }
+
+          companyModel.setCompanyExt(companyExt);
+          model.addAttribute("companyModel",companyModel);
+        }
+      }
+      else //Translation service page
+      {
+        CompanyModel companyModel = new CompanyModel();
+
+        CompanyExt companyExt = null;
+        try{
+          companyExt = companyService.load(userId, true);
+        }
+        catch(Throwable e)
+        {
+          logger.debug("Cannot load company object, maybe not published");
+          companyExt = null;
+        }
+        companyModel.setCompanyExt(companyExt);
+  
+        //pass enumerations like cities, languages and etc to company/edit.jsp
+        List<ICondition> conditions = new ArrayList<ICondition>();
+        companyModel.setCityEnum(cityService.criteriaQuery(conditions));
+        companyModel.setLanguageEnum(languageService.criteriaQuery(conditions));
+        companyModel.setFieldEnum(fieldService.criteriaQuery(conditions));
+        companyModel.setTranstypeEnum(transtypeService.criteriaQuery(conditions));
+        companyModel.setDoctypeEnum(doctypeService.criteriaQuery(conditions));
+  
+        model.addAttribute("companyModel",companyModel);
+      }
       return "/sys/comp_home";  
     }
   }
@@ -1707,6 +2073,14 @@ public class FrontEndController
   @RequestMapping(value = "/goLogin")
   public String goLogin(@ModelAttribute UserModel userModel, ModelMap model){
     return "/sys/login";
+  }
+
+
+  @RequestMapping(value = "/logout")
+  public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+  {
+    session.setAttribute("user", null);
+    return "redirect:/index"; 
   }
 
 

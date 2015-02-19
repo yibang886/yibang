@@ -11,13 +11,20 @@
     <meta name="description" content="译邦" />
     <base target="_blank" />
 
+    <%--
     <link href="<%=request.getContextPath()%>/resource/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    --%>
     <link href="<%=request.getContextPath()%>/resource/ybcss/project.css" rel="stylesheet" type="text/css" />
+    <%--
     <script type="text/javascript" src="<%=request.getContextPath()%>/resource/js/jquery.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/resource/js/bootstrap.min.js"></script>
+    --%>
 
 </head>
 <body>
+
+<%! UserExt baseUserExt = null; %>
+<% baseUserExt = (UserExt)request.getSession().getAttribute("user"); %>
 
 <c:choose>
     <c:when test="${page==0}">
@@ -30,9 +37,6 @@
                     <div class="right-tools">
                         <a href="goRegister.action" target="_self">注册</a>
 
-                        <%! UserExt baseUserExt = null; %>
-                        <% baseUserExt = (UserExt)request.getSession().getAttribute("user"); %>
-               
                         <c:choose>
                             <c:when test="<%= baseUserExt==null %>">
                                 <a class="login-link" href="goLogin.action" target="_self">登录</a>
@@ -46,7 +50,7 @@
                                   </a>
                                   <ul class="dropdown-menu">
                                     <li><a href="home?id=${user.id}&type=${user.user_type}" target="_self">空间</a></li>
-                                    <li><a href="">退出</a></li>
+                                    <li><a href="<%=request.getContextPath()%>/logout.action" target="_self">退出</a></li>
                                   </ul>
                                 </li>
                               </ul>
@@ -245,7 +249,7 @@
                                     <!-- 审核能力 -->
                                     <div class="common-info-mod">
                                         <div class="cinfo-hd">
-                                            <h2>译员优势</h2>
+                                            <h2>审核与认证</h2>
                                         </div>
                                         <div class="cinfo-bd">
                                             <div class="c-info-cnt">
@@ -381,8 +385,28 @@
                         客服热线：400-888-8888
                     </div>
                     <div class="right-tools">
-                        <a href="">注册</a>
-                        <a href="" class="login-link">登录</a><span class="spline">|</span><a href="">关于</a>
+                        <a href="goRegister.action" target="_self">注册</a>
+
+                        <c:choose>
+                            <c:when test="<%= baseUserExt==null %>">
+                                <a class="login-link" href="goLogin.action" target="_self">登录</a>
+                            </c:when>
+                            <c:otherwise>
+                              <ul class="nav navbar-nav">
+                                <li class="dropdown">
+                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <%= baseUserExt.getemail() %>
+                                    <b class="caret"></b>
+                                  </a>
+                                  <ul class="dropdown-menu">
+                                    <li><a href="home?id=${user.id}&type=${user.user_type}" target="_self">空间</a></li>
+                                    <li><a href="<%=request.getContextPath()%>/logout.action" target="_self">退出</a></li>
+                                  </ul>
+                                </li>
+                              </ul>
+                            </c:otherwise>
+                        </c:choose>
+                        <span class="spline">|</span><a href="">关于</a>
                     </div>            
                 </div>
             </div>     
@@ -411,7 +435,7 @@
                                     <a href=""></a>
                                 </div>
                                 <div class="back-index">
-                                    <a href="">返回主页</a>
+                                    <a href="index.action" target="_self">返回主页</a>
                                 </div>
                             </div>
         
@@ -813,6 +837,33 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group">
+                                                                        <span class="form-label">翻译类型</span>
+                                                                        <div class="form-control">
+                                                                            <c:choose>
+                                                                                <c:when test="${ !empty individualModel.individualExt }">
+                                                                                    <c:forEach items="${individualModel.transtypeEnum}" var="var">
+                                                                                       <span class="checkbox ">
+                                                                                            <input name="transtypeCheckbox" value="${var.id}" type="checkbox" 
+                                                                                                <c:forEach items="${individualModel.individualExt.transtypes}" var="transtype">
+                                                                                                    <c:if test="${transtype.id==var.id}">
+                                                                                                        <c:out value="checked"/>
+                                                                                                    </c:if>
+                                                                                                </c:forEach> />
+                                                                                            ${var.transtype}
+                                                                                        </span>
+                                                                                    </c:forEach>
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    <c:forEach items="${individualModel.transtypeEnum}" var="var">
+                                                                                        <span class="checkbox ">
+                                                                                            <input name="transtypeCheckbox" value="${var.id}" type="checkbox"/>${var.transtype}
+                                                                                       </span>
+                                                                                    </c:forEach>
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
                                                                         <span class="form-label">文档类型</span>
                                                                         <div class="form-control">
                                                                             <c:choose>
@@ -852,33 +903,6 @@
                                                                                 </c:otherwise>
                                                                             </c:choose>
                                                                             <a class="more-check" id="dt_more_hide" onclick="more_hide('dt','dt_more_hide', ${fn:length(individualModel.doctypeEnum)})">更多&gt;&gt;</a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <span class="form-label">翻译类型</span>
-                                                                        <div class="form-control">
-                                                                            <c:choose>
-                                                                                <c:when test="${ !empty individualModel.individualExt }">
-                                                                                    <c:forEach items="${individualModel.transtypeEnum}" var="var">
-                                                                                       <span class="checkbox ">
-                                                                                            <input name="transtypeCheckbox" value="${var.id}" type="checkbox" 
-                                                                                                <c:forEach items="${individualModel.individualExt.transtypes}" var="transtype">
-                                                                                                    <c:if test="${transtype.id==var.id}">
-                                                                                                        <c:out value="checked"/>
-                                                                                                    </c:if>
-                                                                                                </c:forEach> />
-                                                                                            ${var.transtype}
-                                                                                        </span>
-                                                                                    </c:forEach>
-                                                                                </c:when>
-                                                                                <c:otherwise>
-                                                                                    <c:forEach items="${individualModel.transtypeEnum}" var="var">
-                                                                                        <span class="checkbox ">
-                                                                                            <input name="transtypeCheckbox" value="${var.id}" type="checkbox"/>${var.transtype}
-                                                                                       </span>
-                                                                                    </c:forEach>
-                                                                                </c:otherwise>
-                                                                            </c:choose>
                                                                         </div>
                                                                     </div>
                                                                     <div class="clearfix">
@@ -926,7 +950,8 @@
                                                                     <div class="form-group">
                                                                         <span class="form-label">个人主页</span>
                                                                         <div class="form-control">
-                                                                            <input type="text" name="individualExt.mainpage" value="<c:out value="${ individualModel.individualExt.mainpage }" escapeXml="true" />" />
+                                                                            <input type="text" name="individualExt.mainpage" id="iPageIpt" 
+									           value="<c:out value="${ individualModel.individualExt.mainpage }" escapeXml="true" />" />
                                                                         </div>
                                                                     </div>
                         
@@ -1020,6 +1045,33 @@
 <script type="text/javascript">
     //IE doesn't support string trim, this makes it support;
     String.prototype.trim=function(){return this.replace(/(^\s*)|(\s*$)/g,"");}
+
+    function isIE()
+    {  
+      if (window.navigator.userAgent.toLowerCase().indexOf("msie")>=1) 
+        return true; 
+      else 
+        return false; 
+    } 
+
+    function getLength(str)
+    {
+        var count = 0;
+        for(var i = 0; i < str.length; i++) 
+        {
+            count++;
+            if(escape(str.charAt(i)).length > 4) count++;
+        }
+        return count;
+    }
+
+    function checkURLPattern(url)
+    {
+        var pattern= /https?:\/\/[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}/
+        if(!pattern.test(url))
+            return 0;
+        return 1;
+    }
 
     function validateUser()
     {
@@ -1153,7 +1205,6 @@
         }
     }
 
-
     function HiddenSettingsObj()
     {
         this["lg"]=1; //language:         controlled by user and hidden initially;
@@ -1163,14 +1214,6 @@
 
     //global variables;
     hiddenSettingsObj = new HiddenSettingsObj();
-
-    function isIE()
-    {  
-      if (window.navigator.userAgent.toLowerCase().indexOf("msie")>=1) 
-        return true; 
-      else 
-        return false; 
-    } 
 
     function more_hide(cond, elemtId, total)
     {
@@ -1215,16 +1258,6 @@
       }
     }
 
-    function getLength(str)
-    {
-        var count = 0;
-        for(var i = 0; i < str.length; i++) 
-        {
-            count++;
-            if(escape(str.charAt(i)).length > 4) count++;
-        }
-        return count;
-    }
 
 
     function validateIndiv()
@@ -1240,7 +1273,7 @@
 
         if( getLength(name) > 16)
         {
-            alert("姓名长度不正确");
+            alert("姓名长度太大");
             return 0;
         }
 
@@ -1295,6 +1328,17 @@
                 return 0;
             }
         }
+
+        var mpage = document.getElementById("iPageIpt").value;
+	if(mpage!=null) mpage=mpage.trim();
+	if(mpage!=null && mpage!="")
+	{
+            if(checkURLPattern(mpage)==0)
+            {
+                alert("个人主页格式不正确");
+                return 0;
+            }
+	}
 
         return 1;
     }
