@@ -963,65 +963,68 @@ public class FrontEndController
   }
 
   @RequestMapping(value = "/doRegister")
-  public String doRegister(@ModelAttribute UserModel userModel, ModelMap model)
+  public String doRegister(@ModelAttribute UserModel userModel, ModelMap model, HttpSession session)
   {
-    if(userModel.getUserExt() != null){
+    if(userModel.getUserExt() == null){
+      logger.error("userModel.getUserExt() cannot be null for doRegister");
+      return "/sys/error_page";
+    }
 
-      String email = userModel.getUserExt().getemail();
-      String tel = userModel.getUserExt().gettel();
-      String mob = userModel.getUserExt().getmobile();
-      String fax = userModel.getUserExt().getfax();
-      String qq = userModel.getUserExt().getqq();
-      String wx = userModel.getUserExt().getweixin();
+    String email = userModel.getUserExt().getemail();
+    String tel = userModel.getUserExt().gettel();
+    String mob = userModel.getUserExt().getmobile();
+    String fax = userModel.getUserExt().getfax();
+    String qq = userModel.getUserExt().getqq();
+    String wx = userModel.getUserExt().getweixin();
 
-      if(email!=null) email = email.trim();
-      if(tel!=null) tel = tel.trim();
-      if(mob!=null) mob = mob.trim();
-      if(fax!=null) fax = fax.trim();
-      if(qq!=null) qq = qq.trim();
-      if(wx!=null) wx = wx.trim(); 
+    if(email!=null) email = email.trim();
+    if(tel!=null) tel = tel.trim();
+    if(mob!=null) mob = mob.trim();
+    if(fax!=null) fax = fax.trim();
+    if(qq!=null) qq = qq.trim();
+    if(wx!=null) wx = wx.trim(); 
 
-      if(email!=null && !email.equals(""))
-        userModel.getUserExt().setemail(email);
-      else
-        userModel.getUserExt().setemail(null);
+    if(email!=null && !email.equals(""))
+      userModel.getUserExt().setemail(email);
+    else
+      userModel.getUserExt().setemail(null);
 
-      if(tel!=null && !tel.equals(""))
-        userModel.getUserExt().settel(tel);
-      else
-        userModel.getUserExt().settel(null);
-      
-      if(mob!=null && !mob.equals(""))
-        userModel.getUserExt().setmobile(mob);
-      else
-        userModel.getUserExt().setmobile(null);
+    if(tel!=null && !tel.equals(""))
+      userModel.getUserExt().settel(tel);
+    else
+      userModel.getUserExt().settel(null);
+    
+    if(mob!=null && !mob.equals(""))
+      userModel.getUserExt().setmobile(mob);
+    else
+      userModel.getUserExt().setmobile(null);
 
-      if(fax!=null && !fax.equals(""))
-        userModel.getUserExt().setfax(fax);
-      else
-        userModel.getUserExt().setfax(null);
+    if(fax!=null && !fax.equals(""))
+      userModel.getUserExt().setfax(fax);
+    else
+      userModel.getUserExt().setfax(null);
 
-      if(qq!=null && !qq.equals(""))
-        userModel.getUserExt().setqq(qq);
-      else
-        userModel.getUserExt().setqq(null);
+    if(qq!=null && !qq.equals(""))
+      userModel.getUserExt().setqq(qq);
+    else
+      userModel.getUserExt().setqq(null);
 
-      if(wx!=null && !wx.equals(""))
-        userModel.getUserExt().setweixin(wx);
-      else
-        userModel.getUserExt().setweixin(null);
+    if(wx!=null && !wx.equals(""))
+      userModel.getUserExt().setweixin(wx);
+    else
+      userModel.getUserExt().setweixin(null);
 
-      userModel.getUserExt().setcoin(0L);
+    userModel.getUserExt().setcoin(0L);
 
-      try{
-        userService.create(userModel.getUserExt());
-      }
-      catch(Exception e)
-      {
-        logger.error("Unexpected exception thrown when creating user");
-        e.printStackTrace();
-        return "/sys/error_page";
-      }
+    try{
+      UserExt ue = userService.create(userModel.getUserExt());
+      session.setAttribute("user", ue);
+    }
+    catch(Exception e)
+    {
+      logger.error("Unexpected exception thrown when creating user");
+      e.printStackTrace();
+      return "/sys/error_page";
     }
 
     //in home page of a user, there are 3 pages that might be shown: 0. My Status; 1. Base Info; 2. Translation Service;
@@ -1052,6 +1055,17 @@ public class FrontEndController
     }
     else //company
     {
+      CompanyModel companyModel = new CompanyModel();
+
+      //pass enumerations like cities, educations, schools and etc to company/edit.jsp
+      List<ICondition> conditions = new ArrayList<ICondition>();
+      companyModel.setCityEnum(cityService.criteriaQuery(conditions));
+      companyModel.setLanguageEnum(languageService.criteriaQuery(conditions));
+      companyModel.setFieldEnum(fieldService.criteriaQuery(conditions));
+      companyModel.setTranstypeEnum(transtypeService.criteriaQuery(conditions));
+      companyModel.setDoctypeEnum(doctypeService.criteriaQuery(conditions));
+
+      model.addAttribute("companyModel",companyModel);
       return "/sys/comp_home";  
     }
   }
