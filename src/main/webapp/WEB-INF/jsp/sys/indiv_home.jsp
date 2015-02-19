@@ -45,7 +45,7 @@
                                     <b class="caret"></b>
                                   </a>
                                   <ul class="dropdown-menu">
-                                    <li><a href="home?id=${user.id}&type=${user.user_type}" target="_self">主页</a></li>
+                                    <li><a href="home?id=${user.id}&type=${user.user_type}" target="_self">空间</a></li>
                                     <li><a href="">退出</a></li>
                                   </ul>
                                 </li>
@@ -76,7 +76,7 @@
                                     <a href="">主页</a> &gt; <a>我的空间</a>
                                 </div>
                                 <div class="back-index">
-                                    <a href="">返回主页</a>
+                                    <a href="index.action" target="_self">返回主页</a>
                                 </div>
                             </div>
         
@@ -101,12 +101,12 @@
                                         <div class="cinfo-bd">
                                             <div class="c-info-cnt">
                                                 <ul class="info-show-lst">
-                                                    <li>
-                                                        <span class="label">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span>
+                                                    <li class="short-info-show clear-left">
+                                                        <span class="label">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span>
                                                         <p>${individualModel.individualExt.name}</p>
                                                     </li>
                                                     <li class="short-info-show clear-left">
-                                                        <span class="label">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</span>
+                                                        <span class="label">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</span>
                                                         <p>
                                                             <c:choose>
                                                                 <c:when test="${individualModel.individualExt.gender==0}">男</c:when>
@@ -116,13 +116,13 @@
                                                     </li>
 
                                                     <li class="short-info-show">
-                                                        <span class="label">教育水平：</span>
-                                                        <p>${individualModel.individualExt.education.education}</p>
-                                                    </li>
-
-                                                    <li class="short-info-show">
                                                         <span class="label">出生年月：</span>
                                                         <p>${individualModel.individualExt.birth_year}</p>
+                                                    </li>
+
+                                                    <li class="short-info-show clear-left">
+                                                        <span class="label">教育水平：</span>
+                                                        <p>${individualModel.individualExt.education.education}</p>
                                                     </li>
 
                                                     <li class="short-info-show">
@@ -131,6 +131,11 @@
                                                     </li>
 
                                                     <li class="short-info-show clear-left">
+                                                        <span class="label">所在城市：</span>
+                                                        <p>${individualModel.individualExt.city.city}</p>
+                                                    </li>
+
+                                                    <li class="short-info-show">
                                                         <span class="label">工作方式：</span>
                                                         <p>
                                                             <c:choose>
@@ -140,21 +145,21 @@
                                                         </p>
                                                     </li>
 
-                                                    <li class="short-info-show">
-                                                        <span class="label">所在城市：</span>
-                                                        <p>${individualModel.individualExt.city.city}</p>
+                                                    <li class="clear"></li>
+
+                                                    <li>
+                                                        <span class="label">个人简介：</span>
+                                                        <p>${individualModel.individualExt.introduct}</p>
                                                     </li>
 
-                                                    <li class="short-info-show clear-left"><span class="label">工作方式：</span><p>兼职</p></li>
-                                                    <li class="short-info-show"><span class="label">所在城市：</span><p>北京</p></li>
-                                                    <li class="clear"></li>
-                                                    <li><span class="label">公司名称：</span><p>北京爱波翻译有限责任公司</p></li>
-                                                    <li><span class="label">所在城市：</span><p>北京爱波翻译有限责任公司</p></li>
-                                                    <li><span class="label">公司名称：</span><p>北京爱波翻译有限责任公司</p></li>
+                                                    <li>
+                                                        <span class="label">个人主页：</span>
+                                                        <p>${individualModel.individualExt.mainpage}</p>
+                                                    </li>
                                                 </ul>
         
                                                 <div class="c-info-img">
-                                                    <img src="ybimg/c-show1.png" alt="">
+                                                    <img src="${individualModel.individualExt.photo}" alt="">
                                                 </div>
         
                                             </div>
@@ -169,10 +174,69 @@
                                         <div class="cinfo-bd">
                                             <div class="c-info-cnt">
                                                 <ul class="info-show-lst">
-                                                    <li><span class="label">语&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;种：</span><p>北京爱波翻译有限责任公司</p></li>
-                                                    <li><span class="label">所在城市：</span><p>北京爱波翻译有限责任公司</p></li>
-                                                    <li><span class="label">公司名称：</span><p>北京爱波翻译有限责任公司</p></li>
-                                                    <li><span class="label">所在城市：</span><p>北京爱波翻译有限责任公司</p></li>
+                                                    <li>
+                                                        <span class="label">语&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;种：</span>
+                                                        <c:if test="${!empty individualModel.individualExt.languages}">
+                                                            <c:forEach var="var" items="${individualModel.individualExt.languages}">
+                                                                <c:out value="${var.language}" escapeXml="true" />&nbsp;&nbsp;
+                                                            </c:forEach>
+                                                        </c:if>            
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">翻译类型：</span>
+                                                        <c:if test="${!empty individualModel.individualExt.transtypes}">
+                                                            <c:forEach var="var" items="${individualModel.individualExt.transtypes}">
+                                                                <c:out value="${var.transtype}" escapeXml="true" />&nbsp;&nbsp;
+                                                            </c:forEach>
+                                                        </c:if>            
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">专业领域：</span>
+                                                        <c:if test="${!empty individualModel.individualExt.fields}">
+                                                            <c:forEach var="var" items="${individualModel.individualExt.fields}">
+                                                                <c:out value="${var.field}" escapeXml="true" />&nbsp;&nbsp;
+                                                            </c:forEach>
+                                                        </c:if>            
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">文档类型：</span>
+                                                        <c:if test="${!empty individualModel.individualExt.doctypes}">
+                                                            <c:forEach var="var" items="${individualModel.individualExt.doctypes}">
+                                                                <c:out value="${var.doctype}" escapeXml="true" />&nbsp;&nbsp;
+                                                            </c:forEach>
+                                                        </c:if>            
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">工作经验：</span>
+                                                        <p>
+                                                            <c:choose>
+                                                                <c:when test="${!empty individualModel.individualExt.exp_year}">
+                                                                    ${individualModel.individualExt.exp_year}&nbsp;&nbsp;年
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    0&nbsp;&nbsp;年
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </p>
+                                                    </li>
+
+                                                    <li>
+                                                        <span class="label">翻译经验：</span>
+                                                        <p>
+                                                            <c:choose>
+                                                                <c:when test="${!empty individualModel.individualExt.exp_trans}">
+                                                                    ${individualModel.individualExt.exp_trans}&nbsp;&nbsp;万字
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    0&nbsp;&nbsp;万字
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </p>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">翻译作品：</span>
+                                                        <p>${individualModel.individualExt.works}</p>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -181,30 +245,59 @@
                                     <!-- 审核能力 -->
                                     <div class="common-info-mod">
                                         <div class="cinfo-hd">
-                                            <h2>审核能力</h2>
+                                            <h2>译员优势</h2>
                                         </div>
                                         <div class="cinfo-bd">
                                             <div class="c-info-cnt">
                                                 <ul class="info-show-lst">
-                                                    <li class="pic-info-li short-info-show-2">
-                                                        <span class="label">认证资料</span>
-                                                        <p class=""><img data-bigimg="ybimg/c-show2.png" src="ybimg/c-show2.png" alt=""></p>
+                                                    <c:if test="${!empty individualModel.individualExt.langcert}">
+                                                        <li class="pic-info-li short-info-show-2">
+                                                            <span class="label">语言等级证书</span>
+                                                            <p class=""><img data-bigimg="${individualModel.individualExt.langcert}" src="${individualModel.individualExt.langcert}" alt="" style="width:330px;height:264px;"></p>
+                                                        </li>
+                                                    </c:if>
+                                                    <c:if test="${!empty individualModel.individualExt.transcert}">
+                                                        <li class="pic-info-li short-info-show-2">
+                                                            <span class="label">翻译证书</span>
+                                                            <p class=""><img src="${individualModel.individualExt.transcert}" alt="" style="width:330px;height:264px;"></p>
+                                                        </li>
+                                                    </c:if>
+                                                    <c:if test="${!empty individualModel.individualExt.profcert}">
+                                                        <li class="pic-info-li short-info-show-2">
+                                                            <span class="label">专业证书</span>
+                                                            <p class=""><img src="${individualModel.individualExt.profcert}" alt="" style="width:330px;height:264px;"></p>
+                                                        </li>
+                                                    </c:if>
+                                                    <c:if test="${!empty individualModel.individualExt.authfile}">
+                                                        <li class="pic-info-li short-info-show-2">
+                                                            <span class="label">认证资料</span>
+                                                            <p class=""><img src="${individualModel.individualExt.authfile}" alt="" style="width:330px;height:264px;"></p>
+                                                        </li>
+                                                    </c:if>
+                                                    <li class="clear-left short-info-show">
+                                                        <span class="label">审核状态：</span>
+                                                        <c:choose>
+                                                            <c:when test="${individualModel.individualExt.valid_pass==0}"><p>待审核</p></c:when>
+                                                            <c:when test="${individualModel.individualExt.valid_pass==1}"><p>审核通过</p></c:when>
+                                                            <c:otherwise><p>审核未通过</p></c:otherwise>
+                                                        </c:choose>
                                                     </li>
-                                                    <li class="pic-info-li short-info-show-2">
-                                                        <span class="label">认证资料</span>
-                                                        <p class=""><img src="ybimg/c-show2.png" alt=""></p>
+                                                    <li class="short-info-show">
+                                                        <span class="label">认证状态：</span>
+                                                        <c:choose>
+                                                            <c:when test="${individualModel.individualExt.auth_pass==0}"><p>待认证</p></c:when>
+                                                            <c:when test="${individualModel.individualExt.auth_pass==1}"><p>认证通过</p></c:when>
+                                                            <c:otherwise><p>认证未通过</p></c:otherwise>
+                                                        </c:choose>
                                                     </li>
-                                                    <li class="pic-info-li short-info-show-2">
-                                                        <span class="label">认证资料</span>
-                                                        <p class=""><img src="ybimg/c-show2.png" alt=""></p>
+                                                    <li class="clear-left short-info-show">
+                                                        <span class="label">推荐位：</span>
+                                                        <p>${individualModel.individualExt.recompos.recompos}</p>
                                                     </li>
-                                                    <li class="pic-info-li short-info-show-2">
-                                                        <span class="label">认证资料</span>
-                                                        <p class=""><img src="ybimg/c-show2.png" alt=""></p>
+                                                    <li class="short-info-show">
+                                                        <span class="label">金币数：</span>
+                                                        <p>${userModel.userExt.coin}</p>
                                                     </li>
-                                                    <li class="short-info-show"><span class="label">固定电话：</span><p>111111111</p></li>
-                                                    <li class="short-info-show"><span class="label">移动电话：</span><p>22222222222</p></li>              <li class="clear-left short-info-show"><span class="label">传真：</span><p>图书 合同</p></li>
-                                                    <li class="short-info-show"><span class="label">传真：</span><p>图书 合同</p></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -218,12 +311,12 @@
                                         <div class="cinfo-bd">
                                             <div class="c-info-cnt">
                                                 <ul class="info-show-lst">
-                                                    <li class="short-info-show"><span class="label">邮箱：</span><p>21456987@qq.com</p></li>
-                                                    <li class="short-info-show"><span class="label">固定电话：</span><p>111111111</p></li>
-                                                    <li class="short-info-show"><span class="label">移动电话：</span><p>22222222222</p></li>
-                                                    <li class="short-info-show"><span class="label">传真：</span><p>图书 合同</p></li>
-                                                    <li class="short-info-show"><span class="label">传真：</span><p>图书 合同</p></li>
-                                                    <li class="short-info-show"><span class="label">传真：</span><p>图书 合同</p></li>
+                                                    <li class="short-info-show"><span class="label">邮箱：</span><p>${userModel.userExt.email}</p></li>
+                                                    <li class="short-info-show"><span class="label">QQ：</span><p>${userModel.userExt.qq}</p></li>
+                                                    <li class="short-info-show"><span class="label">移动电话：</span><p>${userModel.userExt.mobile}</p></li>
+                                                    <li class="short-info-show"><span class="label">微信：</span><p>${userModel.userExt.weixin}</p></li>
+                                                    <li class="short-info-show"><span class="label">传真：</span><p>${userModel.userExt.fax}</p></li>
+                                                    <li class="short-info-show"><span class="label">固定电话：</span><p>${userModel.userExt.tel}</p></li>
                                                 </ul>
                                             </div>
                                         </div>

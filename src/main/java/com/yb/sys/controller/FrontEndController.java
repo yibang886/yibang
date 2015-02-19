@@ -1514,6 +1514,37 @@ public class FrontEndController
       if(step==6) //the last step
       {
         model.addAttribute("page", 0); 
+
+        UserModel userModel = new UserModel();
+        UserExt userExt = null;
+        try{
+          userExt = userService.load(userId, true);
+        }
+        catch(Throwable e)
+        {
+          logger.error("Cannot load user object, maybe userId is invalid.");
+          userExt = null;
+        }
+        if(userExt == null)
+          return "/sys/error_page";
+          
+        userModel.setUserExt(userExt);
+        model.addAttribute("userModel", userModel);
+
+
+        IndividualExt individualExt = null;
+        try{
+          individualExt = individualService.load(userId, true);
+        }
+        catch(Throwable e)
+        {
+          logger.debug("Cannot load individual object, maybe not published");
+          individualExt = null;
+	}
+
+        individualModel.setIndividualExt(individualExt);
+        model.addAttribute("individualModel",individualModel);
+
         return "/sys/indiv_home"; 
       }
       else //not the last step, go to next step
@@ -1567,19 +1598,44 @@ public class FrontEndController
 
     if(userType==0L)  //individual
     {
-
-      if(page==0) //My Status
-      {
-      }
-      else if(page==1) //user base info
+      if(page==0 || page==1) //user status page or user base info page
       {
         UserModel userModel = new UserModel();
-        UserExt userExt = userService.load(userId, true);
-        userModel.setUserExt(userExt);
 
+        UserExt userExt = null;
+        try{
+          userExt = userService.load(userId, true);
+        }
+        catch(Throwable e)
+        {
+          logger.error("Cannot load user object, maybe userId is invalid.");
+          userExt = null;
+        }
+        if(userExt == null)
+          return "/sys/error_page";
+          
+        userModel.setUserExt(userExt);
         model.addAttribute("userModel", userModel);
+
+        if(page==0)
+        {
+          IndividualModel individualModel = new IndividualModel();
+
+          IndividualExt individualExt = null;
+          try{
+            individualExt = individualService.load(userId, true);
+          }
+          catch(Throwable e)
+          {
+            logger.debug("Cannot load individual object, maybe not published");
+            individualExt = null;
+          }
+
+          individualModel.setIndividualExt(individualExt);
+          model.addAttribute("individualModel",individualModel);
+        }
       }
-      else //Translation service
+      else //Translation service page
       {
         IndividualModel individualModel = new IndividualModel();
 
