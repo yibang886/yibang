@@ -93,7 +93,7 @@
                                 </div>
                                 <div class="c-info-mcnt">
                                     <div class="info-banner">
-                                        <img src="ybimg/company-banner.png" alt="">
+                                        <img src="<%=request.getContextPath()%>/resource/ybimg/myspace-banner.png" alt="">
                                     </div>
                                     <!-- 公司信息 -->
                                     <div class="common-info-mod">
