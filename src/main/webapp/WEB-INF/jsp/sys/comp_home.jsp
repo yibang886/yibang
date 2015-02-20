@@ -54,7 +54,7 @@
                               </ul>
                             </c:otherwise>
                         </c:choose>
-                        <span class="spline">|</span><a href="">关于</a>
+                        <span class="spline">|</span><a href="aboutYibang.action" target="_self">关于</a>
                     </div>            
                 </div>
             </div>     
@@ -126,7 +126,7 @@
                                                 </ul>
         
                                                 <div class="c-info-img">
-                                                    <img src="${companyModel.companyExt.logo}" alt="">
+                                                    <img src="${companyModel.companyExt.logo}" alt=""  style="width:165px;height:132px;">
                                                 </div>
         
                                             </div>
@@ -320,7 +320,7 @@
                               </ul>
                             </c:otherwise>
                         </c:choose>
-                        <span class="spline">|</span><a href="">关于</a>
+                        <span class="spline">|</span><a href="aboutYibang.action" target="_self">关于</a>
                     </div>            
                 </div>
             </div>     

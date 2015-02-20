@@ -10,10 +10,14 @@
     <meta name="description" content="译邦" />
     <base target="_blank" />
 
+    <%--
     <link href="<%=request.getContextPath()%>/resource/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    --%>
     <link href="<%=request.getContextPath()%>/resource/ybcss/project.css" rel="stylesheet" type="text/css" />
+    <%--
     <script type="text/javascript" src="<%=request.getContextPath()%>/resource/js/jquery.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/resource/js/bootstrap.min.js"></script>
+    --%>
 
     <script type="text/javascript">
         function goSearch()
@@ -58,7 +62,7 @@
                     </c:otherwise>
                 </c:choose>
 
-                <span class="spline">|</span><a href="">关于</a>
+                <span class="spline">|</span><a href="aboutYibang.action" target="_self">关于</a>
             </div>            
         </div>
     </div>     

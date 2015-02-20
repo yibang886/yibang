@@ -2136,4 +2136,23 @@ public class FrontEndController
     return "/sys/login";
   }
 
+  @RequestMapping(value = "/aboutYibang")
+  public String aboutYibang(ModelMap map)
+  {
+    String title="关于译邦";
+    String para1 = "译邦是一家聚合翻译公司、自由译员、兼职译员等信息，以帮助用户找到“最适合的翻译服务”为宗旨的信息服务类网站。译邦网所提供的翻译公司、个人译员信息覆盖全国主要大中型城市，语种既包括了英、法、德、西、日、韩等主流语种，也包括了国际交流中使用相对较少的小语种语言。在译邦网上，不管您是需要笔译、口译、同声传译还是会议交传，您都可以通过你所在的城市、你需要的语种、你想要的翻译类型进行筛选，从而精准的找到符合您要求的翻译服务。译邦网庞大的翻译公司/译员信息库，既包括了实力雄厚、可为您提供专业级服务的翻译公司，也包括了各个专业领域内精通各语种的高级人才。不管您所需要的翻译是什么语种，什么专业，都可以在这里找到您需要的。";
+    String para2 = "译邦网对每一家收录的公司/译员信息都进行审核，以确保信息的可靠性。对翻译公司/自由译员的认证服务，更确保了信息的真实性，为您找到最合适的翻译服务提供依据。";
+    String para3 = "找翻译，上译邦，翻译信息一网打尽！";
+
+    map.addAttribute("info_type", "msg");
+
+    map.addAttribute("title", title);
+
+    //at most 8 paragraphs
+    map.addAttribute("para1", para1);
+    map.addAttribute("para2", para2);
+    map.addAttribute("para3", para3);
+
+    return "/sys/info";
+  }
 }

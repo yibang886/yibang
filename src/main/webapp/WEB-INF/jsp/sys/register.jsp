@@ -19,7 +19,8 @@
             </div>
             <div class="right-tools">
                 <a href="">注册</a>
-                <a href="" class="login-link">登录</a><span class="spline">|</span><a href="">关于</a>
+                <a href="" class="login-link">登录</a>
+                <span class="spline">|</span><a href="aboutYibang.action" target="_self">关于</a>
             </div>            
         </div>
     </div>     
