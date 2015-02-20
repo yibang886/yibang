@@ -404,7 +404,7 @@
         <div class="parea head-search clearfix">
             <div class="logo"><img src="<%=request.getContextPath()%>/resource/ybimg/logo.png" alt=""></div>
             <div class="search">
-                <input id="txt_input" type="text" class="search-input">
+                <input id="txt_input" class="search-input" type="text" value="${search_text}">
                 <input type="submit" value="搜索" class="search-btn" onclick="queryWithText()">
             </div>
         </div>

@@ -28,10 +28,10 @@
         <div class="parea head-search clearfix">
             <div class="logo"><img src="<%=request.getContextPath()%>/resource/ybimg/logo.png" alt=""></div>
             <div class="search">
-            <form action="">
-                <input type="text" class="search-input">
-                <input type="submit" value="搜索" class="search-btn">
-            </form>
+                <form id="search_form" method="get" target="_self">
+                    <input name="st" type="text" class="search-input"/>
+                    <input type="submit" value="搜索" class="search-btn" onclick="goTextSearch()"/>
+                </form>
             </div>
         </div>
 
@@ -403,6 +403,13 @@
         {
             form.submit();
         }
+    }
+
+    function goTextSearch()
+    {
+        var form = document.getElementById("search_form");
+        form.action = "<%=request.getContextPath()%>/search.action";
+        form.submit();
     }
 </script>
 

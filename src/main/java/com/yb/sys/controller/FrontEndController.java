@@ -431,6 +431,22 @@ public class FrontEndController
   @RequestMapping(value = "/search", method = RequestMethod.GET)
   public String search(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response)
   {
+    String st = request.getParameter("st");
+    if(st!=null)
+    {
+      try{
+        st = URLDecoder.decode(st,"UTF-8");  
+        st = st.trim();
+      }
+      catch(Throwable t)
+      {
+        logger.warn("failed to decode URI parameter st:"+st);
+        st = null;
+      }
+    }
+    //pass the search text back to page
+    modelMap.addAttribute("search_text",st);
+
     //pass enumerations like cities, educations, schools and etc to company/edit.jsp
     List<ICondition> conditions = new ArrayList<ICondition>();
     modelMap.addAttribute("languages", languageService.criteriaQuery(conditions));
@@ -445,6 +461,10 @@ public class FrontEndController
     int compNum = PAGE_SIZE - indivNum;
 
     List<ICondition> condList = new ArrayList<ICondition>();
+    if(st!=null && !st.trim().equals(""))
+    {
+      condList.add(new LikeCondition("name", st));
+    }
 
     List<IndividualExt> result_indivs = individualService.criteriaQuery(condList, null, null, 1, indivNum);
     modelMap.addAttribute("individuals", result_indivs);
