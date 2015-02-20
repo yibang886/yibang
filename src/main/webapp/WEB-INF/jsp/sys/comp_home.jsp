@@ -75,7 +75,7 @@
         
                             <div class="breadcrumb clearfix">
                                 <div class="crumb">
-                                    <a>主页</a> &gt; <a>我的空间</a>
+                                    <a href="index.action" target="_self">主页</a> &gt; <a>我的空间</a>
                                 </div>
                                 <div class="back-index">
                                     <a href="index.action" target="_self">返回主页</a>
@@ -254,13 +254,13 @@
                 <div class="parea">
                     <div class="flinks">
                         <div class="flinks-l">
-                            <a href="">首页</a> | 
-                            <a href="">合作机构</a> | 
-                            <a href="">在线翻译 </a> |  
-                            <a href="">关于译邦 </a> | 
-                            <a href="">新手指引 </a> | 
-                            <a href="">广告服务</a> | 
-                            <a href="">联系我们</a>            
+                            <a href="index.action" target="_self">首页</a> | 
+                            <a href="disclaimer.action" target="_self">免责声明</a> | 
+                            <a href="aboutYibang.action" target="_self">关于译邦 </a> | 
+                            <a href="onlineServ.action" target="_self">在线翻译 </a> |  
+                            <a href="ally.action" target="_self">合作机构</a> | 
+                            <a href="advertise.action" target="_self">广告服务 </a> | 
+                            <a href="contactUs.action" target="_self">联系我们</a>            
                         </div>
                         <div class="flinks-r">
                             © 2014 译邦 All rights reserved 译邦信息服务(北京)有限公司 京ICP证 100953号
@@ -341,7 +341,7 @@
         
                             <div class="breadcrumb clearfix">
                                 <div class="crumb">
-                                    <a href="">主页</a> &gt; 
+                                    <a href="index.action" target="_self">主页</a> &gt; 
                                     <c:choose>
                                         <c:when test="${page==1}"><a>修改基本信息</a></c:when>
                                         <c:otherwise><a>发布修改服务</a></c:otherwise>
@@ -760,13 +760,13 @@
                 <div class="parea">
                     <div class="flinks">
                         <div class="flinks-l">
-                            <a href="">首页</a> | 
-                            <a href="">合作机构</a> | 
-                            <a href="">在线翻译 </a> |  
-                            <a href="">关于译邦 </a> | 
-                            <a href="">新手指引 </a> | 
-                            <a href="">广告服务</a> | 
-                            <a href="">联系我们</a>            
+                            <a href="index.action" target="_self">首页</a> | 
+                            <a href="disclaimer.action" target="_self">免责声明</a> | 
+                            <a href="aboutYibang.action" target="_self">关于译邦 </a> | 
+                            <a href="onlineServ.action" target="_self">在线翻译 </a> |  
+                            <a href="ally.action" target="_self">合作机构</a> | 
+                            <a href="advertise.action" target="_self">广告服务 </a> | 
+                            <a href="contactUs.action" target="_self">联系我们</a>            
                         </div>
                         <div class="flinks-r">
                             © 2014 译邦 All rights reserved 译邦信息服务(北京)有限公司 京ICP证 100953号

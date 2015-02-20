@@ -23,7 +23,7 @@
         function goSearch()
         {
             var form = document.getElementById("search_form");
-            form.action = "<%=request.getContextPath()%>/index.action;
+            form.action = "<%=request.getContextPath()%>/index.action";
             form.submit();
         }
     </script>
@@ -364,8 +364,8 @@
                         <h2>发布翻译服务</h2>
                     </div>
                     <div class="r-mod-bd">
-                        <a href="" class="r-link r-link2">我是翻译公司 &gt;</a>
-                        <a href="" class="r-link">我是个人译员 &gt;</a>
+                        <a class="r-link r-link2" href="goRegister.action" target="_self">我是翻译公司 &gt;</a>
+                        <a class="r-link" href="goRegister.action" target="_self">我是个人译员 &gt;</a>
                     </div>
                 </div>
 
@@ -375,12 +375,12 @@
                     </div>
                     <div class="r-mod-bd">
                         <div class="pic">
-                            <img src="http://img1.cache.netease.com/ent/2014/10/25/201410251652584a1a5.jpg" alt="">
+                            <img src="<%=request.getContextPath()%>/resource/ybimg/2d-bar-code.jpg" alt="">
                         </div>
-                        <h3>微信号：yibang126</h3>
+                        <h3>微信号：译邦</h3>
                         <p>
-                            公司QQ群：1258745845 <br>
-                            译员QQ群：1258745845
+                            公司QQ群：130021165 <br>
+                            译员QQ群：348851961
                         </p>
                     </div>
                 </div>
@@ -474,13 +474,13 @@
         <div class="parea">
             <div class="flinks">
                 <div class="flinks-l">
-                    <a href="">首页</a> | 
-                    <a href="">合作机构</a> | 
-                    <a href="">在线翻译 </a> |  
-                    <a href="">关于译邦 </a> | 
-                    <a href="">新手指引 </a> | 
-                    <a href="">广告服务</a> | 
-                    <a href="">联系我们</a>            
+                    <a href="index.action" target="_self">首页</a> | 
+                    <a href="disclaimer.action" target="_self">免责声明</a> | 
+                    <a href="aboutYibang.action" target="_self">关于译邦 </a> | 
+                    <a href="onlineServ.action" target="_self">在线翻译 </a> |  
+                    <a href="ally.action" target="_self">合作机构</a> | 
+                    <a href="advertise.action" target="_self">广告服务 </a> | 
+                    <a href="contactUs.action" target="_self">联系我们</a>            
                 </div>
                 <div class="flinks-r">
                     © 2014 译邦 All rights reserved 译邦信息服务(北京)有限公司 京ICP证 100953号

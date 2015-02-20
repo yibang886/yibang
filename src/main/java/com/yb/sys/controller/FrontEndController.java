@@ -2139,12 +2139,12 @@ public class FrontEndController
   @RequestMapping(value = "/aboutYibang")
   public String aboutYibang(ModelMap map)
   {
+    map.addAttribute("info_type", "msg");
+
     String title="关于译邦";
     String para1 = "译邦是一家聚合翻译公司、自由译员、兼职译员等信息，以帮助用户找到“最适合的翻译服务”为宗旨的信息服务类网站。译邦网所提供的翻译公司、个人译员信息覆盖全国主要大中型城市，语种既包括了英、法、德、西、日、韩等主流语种，也包括了国际交流中使用相对较少的小语种语言。在译邦网上，不管您是需要笔译、口译、同声传译还是会议交传，您都可以通过你所在的城市、你需要的语种、你想要的翻译类型进行筛选，从而精准的找到符合您要求的翻译服务。译邦网庞大的翻译公司/译员信息库，既包括了实力雄厚、可为您提供专业级服务的翻译公司，也包括了各个专业领域内精通各语种的高级人才。不管您所需要的翻译是什么语种，什么专业，都可以在这里找到您需要的。";
     String para2 = "译邦网对每一家收录的公司/译员信息都进行审核，以确保信息的可靠性。对翻译公司/自由译员的认证服务，更确保了信息的真实性，为您找到最合适的翻译服务提供依据。";
     String para3 = "找翻译，上译邦，翻译信息一网打尽！";
-
-    map.addAttribute("info_type", "msg");
 
     map.addAttribute("title", title);
 
@@ -2152,6 +2152,89 @@ public class FrontEndController
     map.addAttribute("para1", para1);
     map.addAttribute("para2", para2);
     map.addAttribute("para3", para3);
+
+    return "/sys/info";
+  }
+
+  @RequestMapping(value = "/advertise")
+  public String advertise(ModelMap map)
+  {
+    map.addAttribute("info_type", "msg");
+
+    String title="广告服务";
+    String para1 = "上译邦，让更多的客户找到您！";
+    String para2 = "译邦网通过主流搜索引擎、知名分类信息门户网站、网络广告联盟及其它上万家主流网站，每天将译邦网上的翻译服务信息呈现在成千上万的潜在客户面前，并将这些客户带给译邦网上的翻译公司、自由译员和兼职译员。在译邦网上，您不再需要投入巨额的资金去搜索引擎进行竞价排名，也不需要每天守在电脑前到各大分类信息网站上去发布信息就可以让更多的客户找到您，并与您联系，建立合作。免费登录译邦网以后，您将有更多的时间与精力，为客户提供更好的服务，更可以节省大量的推广费用，用于公司/个人未来更好的发展。";
+    String para3 = "在译邦网上，您除了可以免费展示您的信息外，还可以获得推荐，让更多的客户关注您。如需了解关于如何获得推荐的详情，请与我们联系。";
+    String para4 = "QQ：2107201709";
+    String para5 = "邮箱：2107201709@qq.com";
+
+    map.addAttribute("title", title);
+
+    //at most 8 paragraphs
+    map.addAttribute("para1", para1);
+    map.addAttribute("para2", para2);
+    map.addAttribute("para3", para3);
+    map.addAttribute("para4", para4);
+    map.addAttribute("para5", para5);
+
+    return "/sys/info";
+  }
+
+  @RequestMapping(value = "/onlineServ.action")
+  public String onlineServ(ModelMap map)
+  {
+    map.addAttribute("info_type", "msg");
+
+    String title="在线翻译";
+    String para1 = "您好，在线翻译服务暂不支持！";
+
+    map.addAttribute("title", title);
+    map.addAttribute("para1", para1);
+    return "/sys/info";
+  }
+
+  @RequestMapping(value = "/ally.action")
+  public String ally(ModelMap map)
+  {
+    map.addAttribute("info_type", "msg");
+
+    String title="合作机构";
+    String para1 = "您好，我们正与合作机构洽谈中！";
+
+    map.addAttribute("title", title);
+    map.addAttribute("para1", para1);
+    return "/sys/info";
+  }
+  @RequestMapping(value = "/disclaimer.action")
+  public String disclaimer(ModelMap map)
+  {
+    map.addAttribute("info_type", "msg");
+
+    String title="免责声明";
+    String para1 = "关于本站：1.本网站旨在为广大翻译需求者提供翻译服务信息，所展示的信息均由翻译服务提供方自行提供或发布，本网站对其信息内容的真实性不承担任何法律责任。如翻译服务提供方所提交的信息、图片、商标等任何内容侵犯任何第三方的权益，与本网站无关，本网站不承担任何法律责任。2.本网站仅为翻译服务提供方提供展示信息的平台。翻译服务需求方与提供方的合作与交易，由双方自行完成，与本网站无关。如双方因交易而发生任何纠纷，本网站不承担任何法律责任。3.翻译服务提供方在本网站提交任何信息，则表明已同意将其信息公开展示。如因本网站信息公开展示而导致翻译服务提供方资料泄露，以及由此而导致的法律争议和后果，本网站均不承担任何责任。4.当政府司法机关依照法定程序要求本网站披露公司或个人资料时，我们将根据执法单位之要求或为公共安全之目的提供公司或个人资料。在此情况下之任何披露，本网站不承担任何法律责任。";
+    String para2 = "网站运行：1.本网站如因系统维护或升级而需暂停服务时，将事先公告。若因线路及非本网站控制范围外的硬件故障或其它不可抗力而导致暂停服务，于暂停服务期间造成的一切不便与损失，本网站不承担任何责任。2.任何由于黑客攻击、计算机病毒侵入或发作、因政府管制而造成的暂时性关闭等影响网络正常经营的不可抗力而造成的公司或个人资料泄露、丢失、被盗用或被窜改等，本网站不承担任何责任。";
+    String para3 = "法律责任：1.本网站使用者因为违反本声明的规定而触犯中华人民共和国法律的，一切后果自己负责，本网站不承担任何责任。2.凡以任何方式登陆本网站提交信息，或直接、间接使用本网站信息者，视为自愿接受本网站声明的约束。3.本声明未涉及的问题参见国家有关法律法规，当本声明与国家法律法规冲突时，以国家法律法规为准。";
+
+    map.addAttribute("title", title);
+    //at most 8 paragraphs
+    map.addAttribute("para1", para1);
+    map.addAttribute("para2", para2);
+    map.addAttribute("para3", para3);
+
+    return "/sys/info";
+  }
+  @RequestMapping(value = "/contactUs.action")
+  public String contactUs(ModelMap map)
+  {
+    map.addAttribute("info_type", "msg");
+
+    String title="联系我们";
+    String para1 = "QQ：2107201709";
+    String para2 = "邮箱：2107201709@qq.com";
+
+    map.addAttribute("title", title);
+    map.addAttribute("para1", para1);
+    map.addAttribute("para2", para2);
 
     return "/sys/info";
   }
