@@ -975,6 +975,59 @@ public class FrontEndController
     return "/sys/query";
   }
 
+
+  @RequestMapping(value = "/detail")
+  public String detail(ModelMap model, HttpServletRequest request)
+  {
+    Long userId;
+    try{
+      userId = Long.parseLong(request.getParameter("id").trim());
+    }
+    catch (Throwable e){
+      logger.error("Unexpected exception thrown when parsing userId");
+      e.printStackTrace();
+      return error_page(model, "系统故障", "未知错误导致输入用户ID为空或者非法！");
+    }
+
+    UserExt userExt = null;
+    try{
+      userExt = userService.load(userId, true);
+    }
+    catch(Throwable e)
+    {
+      logger.error("Cannot load user object, maybe userId is invalid.");
+      userExt = null;
+      return error_page(model, "系统故障", "数据库操作异常导致加载用户失败！");
+    }
+    if(userExt == null)
+      return error_page(model, "系统故障", "加载用户失败！");
+
+    UserModel userModel = new UserModel();
+    userModel.setUserExt(userExt);
+    model.addAttribute("userModel", userModel);
+    
+
+    if(userExt.getuser_type()==0L)  // individual;
+    {
+      IndividualModel individualModel = new IndividualModel();
+      individualModel.setIndividualExt(userExt.getindividual());
+      model.addAttribute("individualModel", individualModel);
+
+      return "/sys/indiv_detail";
+    }
+    else if(userExt.getuser_type()==1L)  // company;
+    {
+      CompanyModel companyModel = new CompanyModel();
+      companyModel.setCompanyExt(userExt.getcompany());
+      model.addAttribute("companyModel", companyModel);
+
+      return "/sys/comp_detail";
+    }
+
+    return error_page(model, "系统故障", "未知错误导致用户类型非法！");
+  }
+
+
   @RequestMapping(value = "/goRegister")
   public String goRegister(@ModelAttribute UserModel userModel, ModelMap model){
     userModel.setOperationType("create");
@@ -1391,14 +1444,6 @@ public class FrontEndController
         individualExt.settranstypes(transtypes);
         individualExt.setdoctypes(doctypes);
   
-        if(individualExt.getauth_pass()==null)
-          individualExt.setauth_pass(0L);   //wait to be authenticated
-  
-        if(individualExt.getvalid_pass()==null)
-          individualExt.setvalid_pass(0L);   //wait to be authenticated
-  
-        if(individualExt.getrecompos()==null)
-          individualExt.setrecompos(recomposService.load(5L, true)); //5 is "No recompos"
   
         if(individualExt.getId() == null) //user is creating the individual instance (publishing translation service)
         {
@@ -1407,6 +1452,15 @@ public class FrontEndController
           //individual has a one-to-one relationship with user, thus set the same 'id' with the related user; see
           //Individual.hbm.xml;
           individualExt.setId(userId);
+
+          if(individualExt.getauth_pass()==null)
+            individualExt.setauth_pass(0L);   //wait to be authenticated
+    
+          if(individualExt.getvalid_pass()==null)
+            individualExt.setvalid_pass(0L);   //wait to be authenticated
+    
+          if(individualExt.getrecompos()==null)
+            individualExt.setrecompos(recomposService.load(5L, true)); //5 is "No recompos"
     
           try{
             //save the IndividualExt instance created in goPublish() and populated with value in individual/edit.jsp;
@@ -1428,6 +1482,10 @@ public class FrontEndController
           individualExt.setlangcert(individualExtPer.getlangcert());
           individualExt.setprofcert(individualExtPer.getprofcert());
           individualExt.setauthfile(individualExtPer.getauthfile());
+
+          individualExt.setauth_pass(individualExtPer.getauth_pass());
+          individualExt.setvalid_pass(individualExtPer.getvalid_pass());
+          individualExt.setrecompos(individualExtPer.getrecompos());
   
           try{
             //save the IndividualExt instance created in goPublish() and populated with value in individual/edit.jsp;
@@ -1707,14 +1765,6 @@ public class FrontEndController
         companyExt.setTranstypes(transtypes);
         companyExt.setDoctypes(doctypes);
   
-        if(companyExt.getAuth_pass()==null)
-          companyExt.setAuth_pass(0L);   //wait to be authenticated
-  
-        if(companyExt.getValid_pass()==null)
-          companyExt.setValid_pass(0L);   //wait to be authenticated
-  
-        if(companyExt.getRecompos()==null)
-          companyExt.setRecompos(recomposService.load(5L, true)); //5 is "No recompos"
   
         if(companyExt.getId() == null) //user is creating the company instance (publishing translation service)
         {
@@ -1723,6 +1773,15 @@ public class FrontEndController
           //company has a one-to-one relationship with user, thus set the same 'id' with the related user; see
           //Company.hbm.xml;
           companyExt.setId(userId);
+
+          if(companyExt.getAuth_pass()==null)
+            companyExt.setAuth_pass(0L);   //wait to be authenticated
+    
+          if(companyExt.getValid_pass()==null)
+            companyExt.setValid_pass(0L);   //wait to be authenticated
+    
+          if(companyExt.getRecompos()==null)
+            companyExt.setRecompos(recomposService.load(5L, true)); //5 is "No recompos"
     
           try{
             //save the CompanyExt instance created in goPublish() and populated with value in company/edit.jsp;
@@ -1741,6 +1800,10 @@ public class FrontEndController
           //We don't set these fields in edit.jsp, so we need to keep the existing values, or they will become null;
           companyExt.setLogo(companyExtPer.getLogo());
           companyExt.setAuthfile(companyExtPer.getAuthfile());
+
+          companyExt.setRecompos(companyExtPer.getRecompos());
+          companyExt.setAuth_pass(companyExtPer.getAuth_pass()); 
+          companyExt.setValid_pass(companyExtPer.getValid_pass());
   
           try{
             //save the CompanyExt instance created in goPublish() and populated with value in company/edit.jsp;

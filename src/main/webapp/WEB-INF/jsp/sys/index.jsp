@@ -91,9 +91,9 @@
                                 <div class="authen-flag"></div>
                             </c:if>
                             <div class="pic-block">
-                                <img src="${companyA1.logo}" alt=""/>
+                                <a href="detail.action?id=${companyA1.id}"><img src="${companyA1.logo}" alt=""/></a>
                             </div>
-                            <h2>${companyA1.name}</h2>
+                            <h2><a href="detail.action?id=${companyA1.id}">${companyA1.name}</a></h2>
                             <ul class="lst-c1">
                                 <li style="overflow:hidden;white-space:nowrap;">
                                     <span class="num">1</span><b>支持语种：</b>
@@ -149,9 +149,9 @@
                                 <div class="authen-flag"></div>
                             </c:if>
                             <div class="pic-block">
-                                <img src="${companyA2.logo}" alt=""> 
+                                <a href="detail.action?id=${companyA2.id}"><img src="${companyA2.logo}" alt=""> </a>
                             </div>
-                            <h2>${companyA2.name}</h2>
+                            <h2><a href="detail.action?id=${companyA2.id}">${companyA2.name}</a></h2>
                             <ul class="lst-c2">
                                 <li style="overflow:hidden;white-space:nowrap;">
                                     <b>支持语种：</b>
@@ -199,9 +199,9 @@
                                 <div class="authen-flag"></div>
                             </c:if>
                             <div class="pic-block">
-                                <img src="${individualA2.photo}" alt=""> 
+                                <a href="detail.action?id=${individualA2.id}"><img src="${individualA2.photo}" alt=""></a>
                             </div>
-                            <h2>${individualA2.name}</h2>
+                            <h2><a href="detail.action?id=${individualA2.id}">${individualA2.name}</a></h2>
                             <ul class="lst-c2">
                                 <li style="overflow:hidden;white-space:nowrap;">
                                     <b>支持语种：</b>
@@ -248,10 +248,10 @@
                     <c:forEach var="companyA3" items="${companiesA3}">
                         <div class="company-card-3 clearfix">                        
                             <div class="pic-block">
-                                <img src="${companyA3.logo}" alt=""><i></i>
+                                <a href="detail.action?id=${companyA3.id}"><img src="${companyA3.logo}" alt=""></a><i></i>
                             </div>
                             <h2>
-                                <b>${companyA3.name}</b>
+                                <b><a href="detail.action?id=${companyA3.id}">${companyA3.name}</a></b>
                                 <c:if test="${companyA3.auth_pass==1}">
                                     <div class="authen-s-flag1"></div>
                                 </c:if>
@@ -300,10 +300,10 @@
                     <c:forEach var="individualA3" items="${individualsA3}">
                         <div class="company-card-3 clearfix">                        
                             <div class="pic-block">
-                                <img src="${individualA3.photo}" alt=""><i></i>
+                                <a href="detail.action?id=${individualA3.id}"><img src="${individualA3.photo}" alt=""></a><i></i>
                             </div>
                             <h2>
-                                <b>${individualA3.name}</b>
+                                <b><a href="detail.action?id=${individualA3.id}">${individualA3.name}</a></b>
                                 <c:if test="${individualA3.auth_pass==1}">
                                     <div class="authen-s-flag1"></div>
                                 </c:if>
@@ -393,9 +393,9 @@
                         <ul class="lst-rc">
                             <c:forEach var="companyA4" items="${companiesA4}">
                                 <li>
-                                    <img class="pic" src="${companyA4.logo}" alt="">
+                                    <a href="detail.action?id=${companyA4.id}"><img class="pic" src="${companyA4.logo}" alt=""></a>
                                     <h2>
-                                        <a href="">${companyA4.name}</a>
+                                        <a href="detail.action?id=${companyA4.id}">${companyA4.name}</a>
                                         <c:if test="${companyA4.auth_pass==1}">
                                             <span class="authen-s-flag1"></span>
                                         </c:if>
@@ -427,12 +427,11 @@
                                 </li> 
                             </c:forEach>
 
-
                             <c:forEach var="individualA4" items="${individualsA4}">
                                 <li>
-                                    <img class="pic" src="${individualA4.photo}" alt="">
+                                    <a href="detail.action?id=${individualA4.id}"><img class="pic" src="${individualA4.photo}" alt=""></a>
                                     <h2>
-                                      <a href="">${individualA4.name}</a>
+                                        <a href="detail.action?id=${individualA4.id}">${individualA4.name}</a>
                                         <c:if test="${individualA4.auth_pass==1}">
                                             <span class="authen-s-flag1"></span>
                                         </c:if>

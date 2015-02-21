@@ -587,10 +587,10 @@
                             <c:forEach var="comp" items="${companies}">
                                 <div class="company-card-3 clearfix">                        
                                     <div class="pic-block">
-                                        <img src="${comp.logo}" alt=""><i></i>
+                                        <a href="detail.action?id=${comp.id}"><img src="${comp.logo}" alt=""></a><i></i>
                                     </div>
                                     <h2>
-                                        <b>${comp.name}</b>
+                                        <b><a href="detail.action?id=${comp.id}">${comp.name}</a></b>
                                         <c:if test="${comp.auth_pass==1}">
                                             <div class="authen-s-flag1"></div>
                                         </c:if>
@@ -641,10 +641,10 @@
                             <c:forEach var="indiv" items="${individuals}">
                                 <div class="company-card-3 clearfix">                        
                                     <div class="pic-block">
-                                        <img src="${indiv.photo}" alt=""><i></i>
+                                        <a href="detail.action?id=${indiv.id}"><img src="${indiv.photo}" alt=""></a><i></i>
                                     </div>
                                     <h2>
-                                        <b>${indiv.name}</b>
+                                        <b><a href="detail.action?id=${indiv.id}">${indiv.name}</a></b>
                                         <c:if test="${indiv.auth_pass==1}">
                                             <div class="authen-s-flag1"></div>
                                         </c:if>

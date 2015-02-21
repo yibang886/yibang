@@ -94,11 +94,13 @@
                 <img src="<%=request.getContextPath()%>/resource/ybimg/banner.png" alt="" />
             </div>
         </div>
+
         <div class="pmain-content">
             <br/>
             <br/>
             <br/>
             <br/>
+
             <div class="parea clearfix">
                 <div class="layout-left">
 
