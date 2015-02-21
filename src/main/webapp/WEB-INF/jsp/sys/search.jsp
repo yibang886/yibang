@@ -391,7 +391,7 @@
     <div class="phead">
         <div class="parea">
             <div class="hot-phone">
-                客服热线：400-888-8888
+                客服热线：028-6580-6596
             </div>
             <div class="right-tools">
                 <a href="goRegister.action" target="_self">注册</a>
