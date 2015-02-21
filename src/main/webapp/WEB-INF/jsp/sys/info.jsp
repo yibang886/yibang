@@ -71,7 +71,7 @@
                         <div class="crumb">
                             <a href="index.action" target="_self">主页</a> &gt; 
                             <c:choose>
-                                <c:when test="${info_type==err}">
+                                <c:when test="${info_type=='err'}">
                                     <a>错误信息</a>
                                 </c:when>
                                 <c:otherwise>
@@ -105,7 +105,7 @@
                     <c:if test="${!empty title}">
                         <div><p>
                             <c:choose>
-                                <c:when test="${info_type==err}">
+                                <c:when test="${info_type=='err'}">
                                     <font size="+2" color="red">
                                 </c:when>
                                 <c:otherwise>
@@ -122,7 +122,7 @@
                     <c:if test="${!empty para1}">
                         <div><p>
                             <c:choose>
-                                <c:when test="${info_type==err}">
+                                <c:when test="${info_type=='err'}">
                                     <font size="+0.5" color="red">
                                 </c:when>
                                 <c:otherwise>
@@ -137,7 +137,7 @@
                     <c:if test="${!empty para2}">
                         <div><p>
                             <c:choose>
-                                <c:when test="${info_type==err}">
+                                <c:when test="${info_type=='err'}">
                                     <font size="+0.5" color="red">
                                 </c:when>
                                 <c:otherwise>
@@ -152,7 +152,7 @@
                     <c:if test="${!empty para3}">
                         <div><p>
                             <c:choose>
-                                <c:when test="${info_type==err}">
+                                <c:when test="${info_type=='err'}">
                                     <font size="+0.5" color="red">
                                 </c:when>
                                 <c:otherwise>
@@ -167,7 +167,7 @@
                     <c:if test="${!empty para4}">
                         <div><p>
                             <c:choose>
-                                <c:when test="${info_type==err}">
+                                <c:when test="${info_type=='err'}">
                                     <font size="+0.5" color="red">
                                 </c:when>
                                 <c:otherwise>
@@ -182,7 +182,7 @@
                     <c:if test="${!empty para5}">
                         <div><p>
                             <c:choose>
-                                <c:when test="${info_type==err}">
+                                <c:when test="${info_type=='err'}">
                                     <font size="+0.5" color="red">
                                 </c:when>
                                 <c:otherwise>
@@ -197,7 +197,7 @@
                     <c:if test="${!empty para6}">
                         <div><p>
                             <c:choose>
-                                <c:when test="${info_type==err}">
+                                <c:when test="${info_type=='err'}">
                                     <font size="+0.5" color="red">
                                 </c:when>
                                 <c:otherwise>
@@ -212,7 +212,7 @@
                     <c:if test="${!empty para7}">
                         <div><p>
                             <c:choose>
-                                <c:when test="${info_type==err}">
+                                <c:when test="${info_type=='err'}">
                                     <font size="+0.5" color="red">
                                 </c:when>
                                 <c:otherwise>
@@ -227,7 +227,7 @@
                     <c:if test="${!empty para8}">
                         <div><p>
                             <c:choose>
-                                <c:when test="${info_type==err}">
+                                <c:when test="${info_type=='err'}">
                                     <font size="+0.5" color="red">
                                 </c:when>
                                 <c:otherwise>

@@ -987,7 +987,7 @@ public class FrontEndController
   {
     if(userModel.getUserExt() == null){
       logger.error("userModel.getUserExt() cannot be null for doRegister");
-      return "/sys/error_page";
+      return error_page(model, "系统故障", "未知错误导致输入信息为空，注册失败！");
     }
 
     String email = userModel.getUserExt().getemail();
@@ -1044,7 +1044,7 @@ public class FrontEndController
     {
       logger.error("Unexpected exception thrown when creating user");
       e.printStackTrace();
-      return "/sys/error_page";
+      return error_page(model, "系统故障", "数据库操作异常导致创建用户失败！");
     }
 
     //in home page of a user, there are 3 pages that might be shown: 0. My Status; 1. Base Info; 2. Translation Service;
@@ -1098,7 +1098,7 @@ public class FrontEndController
     if(userModel.getUserExt() == null || userModel.getUserExt().getId() == 0)
     {
       logger.error("Unknown userId");
-      return "/sys/error_page";
+      return error_page(model, "系统故障", "未知错误导致输入用户ID为空，修改失败！");
     }
 
     UserExt userExtPer = userService.load(userModel.getUserExt().getId(), true);
@@ -1115,7 +1115,9 @@ public class FrontEndController
         if(userExtPer.getindividual()!=null || userExtPer.getcompany()!=null)
         {
           logger.debug("Cannot modify user type if translation service has been published.");
-          return "/sys/error_page";
+          return error_page(model, "操作非法", "您已经发布了" 
+                                   + (userModel.getUserExt().getuser_type().equals(0L)?"个人译员翻译服务":"翻译公司翻译服务") 
+                                   + "，不能更改用户类型！");
         }
       }
 
@@ -1246,7 +1248,7 @@ public class FrontEndController
     catch (Throwable e){
       logger.error("Unexpected exception thrown when parsing userId");
       e.printStackTrace();
-      return "/sys/error_page";
+      return error_page(model, "系统故障", "未知错误导致输入用户ID为空或者非法，操作失败！");
     }
     model.addAttribute("userId", userId);
 
@@ -1258,7 +1260,7 @@ public class FrontEndController
     catch (Throwable e){
       logger.error("Unexpected exception thrown when parsing step");
       e.printStackTrace();
-      return "/sys/error_page";
+      return error_page(model, "系统故障", "未知错误导致输入步骤为空或者非法，操作失败！");
     }
 
     if(step==1)
@@ -1267,7 +1269,7 @@ public class FrontEndController
       if( individualExt == null)
       {
         logger.error("individualModel cannot be null for step 1 of Creating-Or-Editing-Individual");
-        return "/sys/error_page";
+        return error_page(model, "系统故障", "未知错误导致输入翻译服务信息为空，操作失败！");
       }
 
       String cancel = request.getParameter("cancel");
@@ -1304,7 +1306,7 @@ public class FrontEndController
         if(name==null || name.equals(""))
         {
           logger.error("Name cannot be null or empty.");
-          return "/sys/error_page";
+          return error_page(model, "统故障", "未知错误导致输入姓名为空，操作失败！"); //客户端js已经保证了姓名不为空，若这里为空，系统出现未知故障
         }
         individualExt.setname(name);
   
@@ -1312,35 +1314,35 @@ public class FrontEndController
         if(gender==null || (gender!=0L && gender!=1L))
         {
           logger.error("Gender invalid: "+gender);
-          return "/sys/error_page";
+          return error_page(model, "统故障", "未知错误导致输入性别为空，操作失败！"); //客户端js已经保证了性别不为空，若这里为空，系统出现未知故障
         }
   
         EducationExt edu = individualExt.geteducation();
         if(edu==null)
         {
           logger.error("Education is null");
-          return "/sys/error_page";
+          return error_page(model, "统故障", "未知错误导致输入教育水平为空，操作失败！"); //客户端js已经保证了教育水平不为空，若这里为空，系统出现未知故障
         }
    
         SchoolExt school = individualExt.getschool();
         if(school==null)
         {
           logger.error("School is null");
-          return "/sys/error_page";
+          return error_page(model, "统故障", "未知错误导致输入毕业院校为空，操作失败！"); //客户端js已经保证了教育水平不为空，若这里为空，系统出现未知故障
         }
   
         Long birth_year = individualExt.getbirth_year();
         if(birth_year==null)
         {
           logger.error("Birth_year is null");
-          return "/sys/error_page";
+          return error_page(model, "统故障", "未知错误导致输入出生年月为空，操作失败！"); //客户端js已经保证了出生年月不为空，若这里为空，系统出现未知故障
         }
   
         CityExt city = individualExt.getcity();
         if(city==null)
         {
           logger.error("City is null");
-          return "/sys/error_page";
+          return error_page(model, "统故障", "未知错误导致输入所在城市为空，操作失败！"); //客户端js已经保证了所在城市不为空，若这里为空，系统出现未知故障
         }
         
         String mainpage = individualExt.getmainpage();
@@ -1354,7 +1356,7 @@ public class FrontEndController
         if(workstyle==null || (workstyle!=0L && workstyle!=1L))
         {
           logger.error("Workstyle invalid: "+workstyle);
-          return "/sys/error_page";
+          return error_page(model, "统故障", "未知错误导致输入工作方式为空或者非法，操作失败！"); //客户端js已经保证了工作方式不空且合法，若这里为空或非法，系统出现未知故障
         }
   
         if(individualExt.getexp_year()==null)
@@ -1413,7 +1415,7 @@ public class FrontEndController
           catch (Throwable e){
             logger.error("Unexpected exception thrown when creating individual");
             e.printStackTrace();
-            return "/sys/error_page";
+            return error_page(model, "系统故障", "数据库操作异常导致创建个人译员翻译服务失败！");
           }
         }
         else //user is modifying the individual instance (modifying translation service)
@@ -1434,7 +1436,7 @@ public class FrontEndController
           catch (Throwable e){
             logger.error("Unexpected exception thrown when modifying individual");
             e.printStackTrace();
-            return "/sys/error_page";
+            return error_page(model, "系统故障", "数据库操作异常导致修改个人译员翻译服务失败！");
           }
         }
 
@@ -1455,7 +1457,7 @@ public class FrontEndController
       else
       {
         logger.error("Invalid step ("+step+") in publishing or editing individual");
-        return "/sys/error_page";
+        return error_page(model, "统故障", "未知错误导致步骤非法，操作失败！"); 
       }
 
       IndividualExt individual;
@@ -1466,13 +1468,13 @@ public class FrontEndController
       {
         logger.error("Failed to load the individual instance for which we are uploading files");
         e.printStackTrace();
-        return "/sys/error_page";
+        return error_page(model, "系统故障", "数据库操作异常导致加载个人译员翻译服务失败！");
       }
 
       if(individual == null)
       {
         logger.error("The individual instance for which we are uploading files is null");
-        return "/sys/error_page";
+        return error_page(model, "系统故障", "加载个人译员翻译服务失败！");
       }
 
       String skip = request.getParameter("skip");
@@ -1558,9 +1560,10 @@ public class FrontEndController
         {
           logger.error("Cannot load user object, maybe userId is invalid.");
           userExt = null;
+          return error_page(model, "系统故障", "数据库操作异常导致加载用户失败！");
         }
         if(userExt == null)
-          return "/sys/error_page";
+          return error_page(model, "系统故障", "加载用户失败！");
           
         userModel.setUserExt(userExt);
         model.addAttribute("userModel", userModel);
@@ -1600,7 +1603,7 @@ public class FrontEndController
     catch (Throwable e){
       logger.error("Unexpected exception thrown when parsing userId");
       e.printStackTrace();
-      return "/sys/error_page";
+      return error_page(model, "系统故障", "未知错误导致输入用户ID为空或者非法，操作失败！");
     }
     model.addAttribute("userId", userId);
 
@@ -1612,7 +1615,7 @@ public class FrontEndController
     catch (Throwable e){
       logger.error("Unexpected exception thrown when parsing step");
       e.printStackTrace();
-      return "/sys/error_page";
+      return error_page(model, "系统故障", "未知错误导致输入步骤为空或者非法，操作失败！");
     }
 
     if(step==1)
@@ -1621,7 +1624,7 @@ public class FrontEndController
       if( companyExt == null)
       {
         logger.error("companyModel cannot be null for step 1 of Creating-Or-Editing-Company");
-        return "/sys/error_page";
+        return error_page(model, "系统故障", "未知错误导致输入翻译服务信息为空，操作失败！");
       }
 
       String cancel = request.getParameter("cancel");
@@ -1656,7 +1659,7 @@ public class FrontEndController
         if(name==null || name.equals(""))
         {
           logger.error("Name cannot be null or empty.");
-          return "/sys/error_page";
+          return error_page(model, "统故障", "未知错误导致输入公司名称为空，操作失败！"); 
         }
         companyExt.setName(name);
 
@@ -1664,7 +1667,7 @@ public class FrontEndController
         if(city==null)
         {
           logger.error("City is null");
-          return "/sys/error_page";
+          return error_page(model, "统故障", "未知错误导致输入所在城市为空，操作失败！"); 
         }
 
         String addr = companyExt.getAddress();
@@ -1672,7 +1675,7 @@ public class FrontEndController
         if(addr==null || addr.equals(""))
         {
           logger.error("Address cannot be null or empty.");
-          return "/sys/error_page";
+          return error_page(model, "统故障", "未知错误导致输入公司地址为空，操作失败！"); 
         }
         companyExt.setAddress(addr);
         
@@ -1681,7 +1684,7 @@ public class FrontEndController
         if(wsite==null || wsite.equals(""))
         {
           logger.error("Website is null");
-          return "/sys/error_page";
+          return error_page(model, "统故障", "未知错误导致输入公司网站为空，操作失败！"); 
         }
         companyExt.setWebsite(wsite);
   
@@ -1728,7 +1731,7 @@ public class FrontEndController
           catch (Throwable e){
             logger.error("Unexpected exception thrown when creating company");
             e.printStackTrace();
-            return "/sys/error_page";
+            return error_page(model, "系统故障", "数据库操作异常导致创建翻译公司翻译服务失败！");
           }
         }
         else //user is modifying the company instance (modifying translation service)
@@ -1746,7 +1749,7 @@ public class FrontEndController
           catch (Throwable e){
             logger.error("Unexpected exception thrown when modifying company");
             e.printStackTrace();
-            return "/sys/error_page";
+            return error_page(model, "系统故障", "数据库操作异常导致修改翻译公司翻译服务失败！");
           }
         }
 
@@ -1764,7 +1767,7 @@ public class FrontEndController
       else
       {
         logger.error("Invalid step ("+step+") in publishing or editing company");
-        return "/sys/error_page";
+        return error_page(model, "统故障", "未知错误导致步骤非法，操作失败！"); 
       }
 
       CompanyExt company;
@@ -1775,13 +1778,13 @@ public class FrontEndController
       {
         logger.error("Failed to load the company instance for which we are uploading files");
         e.printStackTrace();
-        return "/sys/error_page";
+        return error_page(model, "系统故障", "数据库操作异常导致加载翻译公司翻译服务失败！");
       }
 
       if(company == null)
       {
         logger.error("The company instance for which we are uploading files is null");
-        return "/sys/error_page";
+        return error_page(model, "系统故障", "加载翻译公司翻译服务失败！");
       }
 
 
@@ -1862,9 +1865,10 @@ public class FrontEndController
         {
           logger.error("Cannot load user object, maybe userId is invalid.");
           userExt = null;
+          return error_page(model, "系统故障", "数据库操作异常导致加载用户失败！");
         }
         if(userExt == null)
-          return "/sys/error_page";
+          return error_page(model, "系统故障", "加载用户失败！");
           
         userModel.setUserExt(userExt);
         model.addAttribute("userModel", userModel);
@@ -1896,8 +1900,14 @@ public class FrontEndController
 
 
   @RequestMapping(value = "/home")
-  public String home(HttpServletRequest request, HttpServletResponse response, ModelMap model)
+  public String home(HttpServletRequest request, HttpServletResponse response, ModelMap model, HttpSession session)
   {
+    UserExt sessionUser = (UserExt)session.getAttribute("user");
+    if(sessionUser==null)
+    {
+      logger.error("No user is in session.");
+      return "/sys/login";
+    }
 
     Long userType;
     try{
@@ -1906,7 +1916,13 @@ public class FrontEndController
     catch (Throwable e){
       logger.error("Unexpected exception thrown when parsing userType");
       e.printStackTrace();
-      return "/sys/error_page";
+      return "/sys/login";
+    }
+
+    if( !sessionUser.getuser_type().equals(userType))
+    {
+      logger.error("userType is invalid.");
+      return "/sys/login";
     }
 
     Long userId;
@@ -1916,7 +1932,13 @@ public class FrontEndController
     catch (Throwable e){
       logger.error("Unexpected exception thrown when parsing userId");
       e.printStackTrace();
-      return "/sys/error_page";
+      return "/sys/login";
+    }
+
+    if( !sessionUser.getId().equals(userId))
+    {
+      logger.error("userId is invalid.");
+      return "/sys/login";
     }
 
     Integer page = 0;
@@ -1924,8 +1946,8 @@ public class FrontEndController
       page = Integer.parseInt(request.getParameter("page").trim());
     }
     catch (Throwable e){
-      logger.warn("Unexpected exception thrown when parsing page");
-      e.printStackTrace();
+      logger.warn("exception thrown when parsing page, default to 0");
+      page = 0;
     }
 
     model.addAttribute("userId", userId);
@@ -1947,10 +1969,10 @@ public class FrontEndController
         catch(Throwable e)
         {
           logger.error("Cannot load user object, maybe userId is invalid.");
-          userExt = null;
+          return "/sys/login";
         }
         if(userExt == null)
-          return "/sys/error_page";
+          return "/sys/login";
           
         userModel.setUserExt(userExt);
         model.addAttribute("userModel", userModel);
@@ -2015,10 +2037,10 @@ public class FrontEndController
         catch(Throwable e)
         {
           logger.error("Cannot load user object, maybe userId is invalid.");
-          userExt = null;
+          return "/sys/login";
         }
         if(userExt == null)
-          return "/sys/error_page";
+          return "/sys/login";
           
         userModel.setUserExt(userExt);
         model.addAttribute("userModel", userModel);
@@ -2255,6 +2277,17 @@ public class FrontEndController
     map.addAttribute("title", title);
     map.addAttribute("para1", para1);
     map.addAttribute("para2", para2);
+
+    return "/sys/info";
+  }
+
+  public String error_page(ModelMap map, String title, String errinfo)
+  {
+    map.addAttribute("info_type", "err");
+
+    map.addAttribute("title", title);
+    map.addAttribute("para1", errinfo);
+    map.addAttribute("para2", "若非操作非法，请点退出空间（点击右上角的用户邮箱并选择'退出'），然后重新登录并再试一次。");
 
     return "/sys/info";
   }
