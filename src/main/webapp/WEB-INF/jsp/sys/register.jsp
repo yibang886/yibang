@@ -1,4 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@ page import="com.yb.sys.entity.UserExt" %>
 <%@ include file="/core/include.jsp"%>
 <!DOCTYPE HTML>
 <html>
