@@ -360,8 +360,8 @@
                         <h2>发布翻译服务</h2>
                     </div>
                     <div class="r-mod-bd">
-                        <a class="r-link r-link2" href="goRegister.action" target="_self">我是翻译公司 &gt;</a>
-                        <a class="r-link" href="goRegister.action" target="_self">我是个人译员 &gt;</a>
+                        <a class="r-link r-link2" href="goRegister.action?type=1" target="_self">我是翻译公司 &gt;</a>
+                        <a class="r-link" href="goRegister.action?type=0" target="_self">我是个人译员 &gt;</a>
                     </div>
                 </div>
 

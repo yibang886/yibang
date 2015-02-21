@@ -101,8 +101,16 @@
                                         <span class="form-label">用户类型(*)</span>
                                         <div class="form-control">
                                             <select required name="userExt.user_type">
-                                                <option value="0" selected="true">个人译员</option>
-                                                <option value="1">翻译公司</option>
+                                                <c:choose>
+                                                    <c:when test="${userType==0}">
+                                                        <option value="0" selected="true">个人译员</option>
+                                                        <option value="1">翻译公司</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="0">个人译员</option>
+                                                        <option value="1" selected="true">翻译公司</option>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </select>
                                         </div>
                                     </div>

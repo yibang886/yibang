@@ -1029,8 +1029,19 @@ public class FrontEndController
 
 
   @RequestMapping(value = "/goRegister")
-  public String goRegister(@ModelAttribute UserModel userModel, ModelMap model){
+  public String goRegister(@ModelAttribute UserModel userModel, ModelMap model, HttpServletRequest request)
+  {
     userModel.setOperationType("create");
+
+    Long userType = 0L;
+    try{
+      userType = Long.parseLong(request.getParameter("type").trim());
+    } 
+    catch (Throwable e){
+      userType = 0L;
+    }
+
+    model.addAttribute("userType",userType);
     model.addAttribute(userModel);
     return "/sys/register";
   }
