@@ -117,7 +117,7 @@
                                                     </li>
                                                     <li>
                                                         <span class="label">公司网站：</span>
-                                                        <p>${companyModel.companyExt.website}</p>
+                                                        <p><a href="${companyModel.companyExt.website}" style="color:blue;">${companyModel.companyExt.website}</a></p>
                                                     </li>
                                                     <li>
                                                         <span class="label">公司简介：</span>

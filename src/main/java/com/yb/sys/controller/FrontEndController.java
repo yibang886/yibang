@@ -2336,10 +2336,12 @@ public class FrontEndController
     String title="联系我们";
     String para1 = "QQ：2107201709";
     String para2 = "邮箱：2107201709@qq.com";
+    String para3 = "电话：028-6580-6596";
 
     map.addAttribute("title", title);
     map.addAttribute("para1", para1);
     map.addAttribute("para2", para2);
+    map.addAttribute("para3", para3);
 
     return "/sys/info";
   }

@@ -143,7 +143,7 @@
 
                                             <li>
                                                 <span class="label">个人主页：</span>
-                                                <p>${individualModel.individualExt.mainpage}</p>
+                                                <p><a href="${individualModel.individualExt.mainpage}" style="color:blue;">${individualModel.individualExt.mainpage}</a></p>
                                             </li>
                                         </ul>
 
