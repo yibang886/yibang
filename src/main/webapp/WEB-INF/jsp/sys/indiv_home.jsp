@@ -11,14 +11,10 @@
     <meta name="description" content="译邦" />
     <base target="_blank" />
 
-    <%--
-    <link href="<%=request.getContextPath()%>/resource/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    --%>
+    <link href="<%=request.getContextPath()%>/resource/ybcss/bootstrap.part.hyg.css" rel="stylesheet" type="text/css" />
     <link href="<%=request.getContextPath()%>/resource/ybcss/project.css" rel="stylesheet" type="text/css" />
-    <%--
     <script type="text/javascript" src="<%=request.getContextPath()%>/resource/js/jquery.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/resource/js/bootstrap.min.js"></script>
-    --%>
 
 </head>
 <body>

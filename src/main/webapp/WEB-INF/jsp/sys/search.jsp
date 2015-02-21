@@ -16,7 +16,11 @@
     <meta name="keywords" content="译邦" />
     <meta name="description" content="译邦" />
     <base target="_blank" />
+
+    <link href="<%=request.getContextPath()%>/resource/ybcss/bootstrap.part.hyg.css" rel="stylesheet" type="text/css" />
     <link href="<%=request.getContextPath()%>/resource/ybcss/project.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="<%=request.getContextPath()%>/resource/js/jquery.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/resource/js/bootstrap.min.js"></script>
 
     <script type="text/javascript">
         //IE doesn't support string trim, this makes it support;
@@ -395,7 +399,30 @@
             </div>
             <div class="right-tools">
                 <a href="goRegister.action" target="_self">注册</a>
-                <a href="" class="login-link">登录</a>
+
+                <%! UserExt baseUserExt = null; %>
+                <% baseUserExt = (UserExt)request.getSession().getAttribute("user"); %>
+               
+                <c:choose>
+                    <c:when test="<%= baseUserExt==null %>">
+                        <a class="login-link" href="goLogin.action" target="_self">登录</a>
+                    </c:when>
+                    <c:otherwise>
+                      <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <%= baseUserExt.getemail() %>
+                            <b class="caret"></b>
+                          </a>
+                          <ul class="dropdown-menu">
+                            <li><a href="home?id=${user.id}&type=${user.user_type}" target="_self">空间</a></li>
+                            <li><a href="<%=request.getContextPath()%>/logout.action" target="_self">退出</a></li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </c:otherwise>
+                </c:choose>
+
                 <span class="spline">|</span><a href="aboutYibang.action" target="_self">关于</a>
             </div>            
         </div>
