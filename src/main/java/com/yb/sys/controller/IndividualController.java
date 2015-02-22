@@ -544,17 +544,33 @@ public class IndividualController {
               sendMail = false;
             }
 
-            String operationCN;
+            String title = "译邦网审核认证结果"; //should never use this title.
 
             if(operation.equals("authenticate")) 
             {
               individual.setauth_pass(dbResult);
-              operationCN="认证";
+
+              if(result.equals("pass"))
+              {
+                title = "您已通过译邦网的认证";
+              }
+              else 
+              {
+                title = "您未通过译邦网的认证";
+              }
             }
             else
             {
               individual.setvalid_pass(dbResult);
-              operationCN="审核";
+
+              if(result.equals("pass"))
+              {
+                title = "您在译邦网提交的信息审核已通过";
+              }
+              else 
+              {
+                title = "您在译邦网提交的信息审核未通过";
+              }
             }
 
             individualService.save(individual);
@@ -568,7 +584,6 @@ public class IndividualController {
               String from = "yibang886@163.com";
               String passwd = "yibang887";
               String to = individual.getuser().getemail();
-              String title = "译邦网"+operationCN+"结果";
 
               if(MailUtil.sendMail(from, passwd, to, title, emailContent)==false)
               logger.error("failed to send email to "+to);

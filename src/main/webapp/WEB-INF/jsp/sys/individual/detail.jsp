@@ -35,33 +35,74 @@
       }
     }
 
-    var op;
-    if(operationType == "authenticate")
-    {
-      op = "认证";
-    }
-    else if(operationType == "validate")
-    {
-      op = "审核";
-    }
+    var txtArea = document.getElementById("emailContent");
+    var mailCnt ;
 
     if(checkedRadioId == "pass")
     {
-      var txtArea = document.getElementById("emailContent");
-      txtArea.value = username+"您好！\n" + 
-                      "恭喜你！你已经通过译邦翻译平台的"+op+"！";
+      if(operationType == "authenticate")
+      {
+        mailCnt = username+"您好！\n\n" +
+                "感谢您对译邦网的关注与信任。\n" + 
+                "您所提交的资料已通过认证，您的信息将优先展示给所有译邦网的用户，让潜在的客户找到您。\n" + 
+                "请参考以下链接，了解如何让您的信息在译邦网上得到更多的展示机会：\n" +
+                "http://www.yibang.com\n" +
+                "如果您有任何需求或疑问，欢迎与我们联系！\n" + 
+                "电话：028-6580-6596\n" +
+                "传真：028-6580-6596\n" +
+                "邮箱：2107201709\n" +
+                "QQ：2107201709@qq.com\n\n" +
+                "感谢您的关注与支持！\n";
+      }
+      else if(operationType == "validate")
+      {
+        mailCnt = username+"您好！\n\n" +
+                "感谢您对译邦网的关注与信任。\n" +
+                "您所提交的信息已通过审核，您的信息将有机会展示给所有译邦网的用户，让潜在的客户找到您。\n" +
+                "如果您还没有通过提交相关资质进行认证，建议您及时上传所要求的文件完成认证。认证后的信息将优先展示，并且更容易获得客户的信任，也让您更容易与客户建立联系。\n" +
+                "如果您已经进行过认证，您可以通过以下链接，了解如何让您的信息在译邦网上得到更多的展示机会：\n" +
+                "http://www.yibang.com\n" +
+                "感谢您的关注与支持！\n";
+      }
     }
     else if(checkedRadioId == "fail")
     {
-      var txtArea = document.getElementById("emailContent");
-      txtArea.value = username+"您好！\n" +
-                      "很遗憾！您未能通过译邦翻译平台的"+op+"。请重新认真填写您的个人资料！";
+      if(operationType == "authenticate")
+      {
+        mailCnt = username+"您好！\n\n" +
+                "感谢您对译邦网的关注与信任。\n" +
+                "很抱歉的通知你，您所提交的资料未能通过认证。未能通过认证的原因如下：\n" +
+                "1. 资料不完整；\n" + 
+                "2. 图片不清楚；\n" +
+                "3. 其它原因; \n\n" +
+                "请您重新提交相关资料，我们将再次为您服务。\n" + 
+                "在您通过认证后，您的信息将优先展示给所有译邦网的用户，让潜在的客户找到您。\n" + 
+                "在您通过认证后，您还可以通过以下链接，了解如何让您的信息在译邦网上得到更多的展示机会：\n" +
+                "http://www.yibang.com\n" +
+                "感谢您的关注与支持！\n";
+      }
+      else if(operationType == "validate")
+      {
+        mailCnt = username+"您好！\n\n" +
+              "感谢您对译邦网的关注与信任。\n" +
+              "很抱歉的通知您，您所提交的信息未能通过审核。未能通过审核的原因如下：\n" +
+              "1. 信息不完整；\n" +
+              "2. 信息不真实；\n" +
+              "3. 违反国家有关规定；\n" +
+              "4. 其它原因; \n\n" +
+              "请您修改以上信息并重新提交，我们将再次为您服务。\n" +
+              "您所提交的信息通过审核后，将有机会展示给所有译邦网的用户，让潜在的客户找到您。\n" +
+              "同时我们也建议您提交相关资质进行认证。认证后的信息将优先展示，并且更容易获得客户的信任，也让您更容易与客户建立联系。\n" +
+              "在您通过了审核与认证以后，您还可以通过以下链接，了解如何让您的信息在译邦网上得到更多的展示机会：\n" +
+              "http://www.yibang.com\n" +
+              "感谢您的关注与支持！\n";
+      }
     }
     else
     {
-      var txtArea = document.getElementById("emailContent");
-      txtArea.value = "";
+      mailCnt = "";
     }
+    txtArea.value = mailCnt;
   }
 
   function submitOrCancel(subOrCan, operationType, indivId)
@@ -512,7 +553,7 @@
             <div>邮件内容</div>
           </td>
           <td>
-            <div><textarea name="emailContent" rows="5" cols="80" id="emailContent"></textarea></div>
+            <div><textarea name="emailContent" rows="15" cols="80" id="emailContent"></textarea></div>
           </td>
         </tr>
         <tr>
