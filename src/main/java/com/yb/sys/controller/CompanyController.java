@@ -273,7 +273,10 @@ public class CompanyController
 
       return "/sys/company/upload";
     }
-		return "/invalid";
+
+    modelMap.addAttribute("title", "系统故障");
+    modelMap.addAttribute("err_msg", "未知错误导致翻译服务实例为空或者其ID非法，不能编辑。");
+    return "../../../err_info";
   }
 
 	@RequestMapping(value = "/company/doUploadFile")
@@ -284,10 +287,13 @@ public class CompanyController
   {
     Long compId = Long.parseLong(request.getParameter("dataId"));
 
-		if( compId == 0){
+    if( compId == 0){
       logger.error("DataId ("+compId+") is invalid");
-      return "/invalid";
-		}
+
+      modelMap.addAttribute("title", "系统故障");
+      modelMap.addAttribute("err_msg", "未知错误导致翻译服务实例ID非法，不能上传文件。");
+      return "../../../err_info";
+    }
 
     String fileType = request.getParameter("fileType");
     int skip = Integer.parseInt(request.getParameter("skip"));
@@ -311,7 +317,10 @@ public class CompanyController
     {
       logger.error("fileType("+fileType+") is invalid, will skip upload the file");
       skip = 1;
-      view = "/invalid";
+
+      modelMap.addAttribute("title", "系统故障");
+      modelMap.addAttribute("err_msg", "未知错误导致所上传的文件类型非法，不能上传文件。");
+      view = "../../../err_info";
     }
 
     ReceivedData receivedData; 

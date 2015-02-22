@@ -328,13 +328,17 @@ public class UserController {
       if(userExt.getindividual() != null)
       {
         logger.info("Cannot delete user entity before corresponding individual is deleted");
-        return "/invalid";
+	model.addAttribute("title", "操作非法");
+        model.addAttribute("err_msg", "你已经发布了个人译员翻译服务，请先删除翻译服务，然后才能删除用户。");
+        return "../../../err_info";
       }
 
       if(userExt.getcompany() != null)
       {
         logger.info("Cannot delete user entity before corresponding company is deleted");
-        return "/invalid";
+	model.addAttribute("title", "操作非法");
+        model.addAttribute("err_msg", "你已经发布了翻译公司翻译服务，请先删除翻译服务，然后才能删除用户。");
+        return "../../../err_info";
       }
 
       userService.delete(userExt);
@@ -358,14 +362,18 @@ public class UserController {
 
     if( userId == 0){
       logger.error("DataId ("+userId+") is invalid");
-      return "/invalid";
+      model.addAttribute("title", "系统故障");
+      model.addAttribute("err_msg", "用户ID非法，不能发布翻译服务。");
+      return "../../../err_info";
     }
 
     UserExt userExt = userService.load(userId, true);
     if(userExt == null)
     {
       logger.error("Failed to load user by ID:"+userId);
-      return "/invalid";
+      model.addAttribute("title", "系统故障");
+      model.addAttribute("err_msg", "加载用户失败，不能发布翻译服务。");
+      return "../../../err_info";
     }
 
     //in doPublish() function, we need the userId, so we pass it to edit.jsp and then pass to doPublish();
@@ -386,7 +394,9 @@ public class UserController {
       if(indiv != null)
       {
         logger.info("User has already published translation service");
-        return "/invalid";
+	model.addAttribute("title", "操作非法");
+        model.addAttribute("err_msg", "你已经发布了翻译服务，不能重复发布。请删除后重新发布。");
+        return "../../../err_info";
       }
 
       entityModel.setEducationEnum(educationService.criteriaQuery(conditions));
@@ -410,7 +420,9 @@ public class UserController {
       if(comp != null)
       {
         logger.info("User has already published translation service");
-        return "/invalid";
+	model.addAttribute("title", "操作非法");
+        model.addAttribute("err_msg", "你已经发布了翻译服务，不能重复发布。请删除后重新发布。");
+        return "../../../err_info";
       }
 
       //create a new intance of CompanyExt; it will be passed to company/edit.jsp and it will be populated there.
@@ -421,7 +433,9 @@ public class UserController {
     else
     {
       logger.error("Cannot publish translation service because user_type ("+userExt.getuser_type()+") is invalid");
-      return "/invalid";
+      model.addAttribute("title", "系统故障");
+      model.addAttribute("err_msg", "未知错误导致用户类型非法（合法的用户类型为个人译员或翻译公司），不能发布翻译服务。");
+      return "../../../err_info";
     }
   }
 
@@ -511,7 +525,7 @@ public class UserController {
   
         return "/sys/individual/upload";
       }
-      else if(userExt.getuser_type()==1) //翻译公司
+      else //翻译公司
       {
         //get the CompanyExt instance created in goPublish() and populated with value in company/edit.jsp;
         CompanyExt companyExt = entityModel.getCompanyExt();
@@ -543,10 +557,10 @@ public class UserController {
     else
     {
       logger.error("Failed to publish translation service because user_type ("+userExt.getuser_type()+") is invalid");
-      return "/invalid";
+      model.addAttribute("title", "系统故障");
+      model.addAttribute("err_msg", "未知错误导致用户类型非法（合法的用户类型为个人译员或翻译公司），不能发布翻译服务。");
+      return "../../../err_info";
     }
-
-    return "/invalid";
   }
 
   //Yuanguo: we want to receive uploaded file by HttpServletRequest, thus we use this kind of controller which 
@@ -558,14 +572,18 @@ public class UserController {
 
     if( userId == 0){
       logger.error("DataId ("+userId+") is invalid");
-      return "/invalid";
+      request.setAttribute("title", "系统故障");
+      request.setAttribute("err_msg", "用户ID非法，不能上传文件。");
+      return "../../../err_info";
     }
 
     UserExt userExt = userService.load(userId, true);
     if(userExt == null)
     {
       logger.error("Failed to load user by ID:"+userId);
-      return "/invalid";
+      request.setAttribute("title", "系统故障");
+      request.setAttribute("err_msg", "加载用户失败，不能上传文件。");
+      return "../../../err_info";
     }
 
     String fileType = request.getParameter("fileType");
@@ -610,7 +628,10 @@ public class UserController {
       {
         logger.error("fileType("+fileType+") is invalid, will skip upload the file");
         skip = 1;
-        view = "/invalid";
+
+        request.setAttribute("title", "系统故障"); 
+        request.setAttribute("err_msg", "未知错误导致所上传的文件类型非法，不能上传文件。");
+        view = "../../../err_info";
       }
 
       if(skip == 0)
@@ -721,7 +742,10 @@ public class UserController {
       {
         logger.error("fileType("+fileType+") is invalid, will skip upload the file");
         skip = 1;
-        view = "/invalid";
+
+        request.setAttribute("title", "系统故障"); 
+        request.setAttribute("err_msg", "未知错误导致所上传的文件类型非法，不能上传文件。");
+        view = "../../../err_info";
       }
 
       if(skip == 0)
@@ -798,7 +822,9 @@ public class UserController {
     else
     {
       logger.error("Fail to upload file because user_type ("+userExt.getuser_type()+") is invalid");
-      return "/invalid";
+      request.setAttribute("title", "系统故障");
+      request.setAttribute("err_msg", "未知错误导致用户类型非法（合法的用户类型为个人译员或翻译公司），不能上传文件。");
+      return "../../../err_info";
     }
   }
 

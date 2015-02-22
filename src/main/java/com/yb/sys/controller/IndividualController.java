@@ -264,8 +264,10 @@ public class IndividualController {
       return "/sys/individual/upload";
 		}
 
-		return "/invalid";
-	}
+    model.addAttribute("title", "系统故障");
+    model.addAttribute("err_msg", "未知错误导致翻译服务实例为空或者其ID非法，不能编辑。");
+    return "../../../err_info";
+  }
 
   //Yuanguo: we want to receive uploaded file by HttpServletRequest, thus we add  request and response as parameters;
 	@RequestMapping(value = "/individual/doUploadFile")
@@ -273,10 +275,12 @@ public class IndividualController {
   {
     Long indivId = Long.parseLong(request.getParameter("dataId"));
 
-		if( indivId == 0){
+    if( indivId == 0){
       logger.error("DataId ("+indivId+") is invalid");
-      return "/invalid";
-		}
+      model.addAttribute("title", "系统故障");
+      model.addAttribute("err_msg", "未知错误导致翻译服务实例ID非法，不能上传文件。");
+      return "../../../err_info";
+    }
 
     String fileType = request.getParameter("fileType");
     int skip = Integer.parseInt(request.getParameter("skip"));
@@ -317,7 +321,10 @@ public class IndividualController {
     {
       logger.error("fileType("+fileType+") is invalid, will skip upload the file");
       skip = 1;
-      view = "/invalid";
+
+      model.addAttribute("title", "系统故障");
+      model.addAttribute("err_msg", "未知错误导致所上传的文件类型非法，不能上传文件。");
+      view = "../../../err_info";
     }
 
     ReceivedData receivedData; 
