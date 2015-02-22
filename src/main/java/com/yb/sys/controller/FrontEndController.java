@@ -2282,7 +2282,7 @@ public class FrontEndController
     String para2 = "译邦网通过主流搜索引擎、知名分类信息门户网站、网络广告联盟及其它上万家主流网站，每天将译邦网上的翻译服务信息呈现在成千上万的潜在客户面前，并将这些客户带给译邦网上的翻译公司、自由译员和兼职译员。在译邦网上，您不再需要投入巨额的资金去搜索引擎进行竞价排名，也不需要每天守在电脑前到各大分类信息网站上去发布信息就可以让更多的客户找到您，并与您联系，建立合作。免费登录译邦网以后，您将有更多的时间与精力，为客户提供更好的服务，更可以节省大量的推广费用，用于公司/个人未来更好的发展。";
     String para3 = "在译邦网上，您除了可以免费展示您的信息外，还可以获得推荐，让更多的客户关注您。如需了解关于如何获得推荐的详情，请与我们联系。";
     String para4 = "QQ：2107201709";
-    String para5 = "邮箱：2107201709@qq.com";
+    String para5 = "邮箱：yibang886@163.com";
 
     map.addAttribute("title", title);
 
@@ -2346,7 +2346,7 @@ public class FrontEndController
 
     String title="联系我们";
     String para1 = "QQ：2107201709";
-    String para2 = "邮箱：2107201709@qq.com";
+    String para2 = "邮箱：yibang886@163.com";
     String para3 = "电话：028-6580-6596";
 
     map.addAttribute("title", title);

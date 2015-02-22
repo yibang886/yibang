@@ -96,6 +96,12 @@ public class CompanyController
                                       HttpServletRequest request, 
                                       HttpServletResponse response)
   {
+    List<ICondition> conditions = new ArrayList<ICondition>();
+
+    float allNum = companyService.criteriaQueryCount(conditions);
+    entityModel.setPageCount((int)Math.ceil(allNum/entityModel.getPageSize()));
+    entityModel.setItems(companyService.criteriaQuery(conditions, null, entityModel.getCurrentPage(), entityModel.getPageSize()));
+
     modelMap.addAttribute("entityModel", entityModel);
     return "/sys/company/index";
   }
@@ -116,7 +122,7 @@ public class CompanyController
     float allNum = companyService.criteriaQueryCount(conditions);
     entityModel.setPageCount((int)Math.ceil(allNum/entityModel.getPageSize()));
 
-		entityModel.setItems(companyService.criteriaQuery(conditions, null, entityModel.getCurrentPage(), entityModel.getPageSize()));
+    entityModel.setItems(companyService.criteriaQuery(conditions, null, entityModel.getCurrentPage(), entityModel.getPageSize()));
 
     modelMap.addAttribute("entityModel", entityModel);
     return "/sys/company/index";
@@ -399,31 +405,34 @@ public class CompanyController
     //whenever file uploading is skipped, we did receive text fields; currently, we are using these text files to
     //pass companyQueryCon; because the "enctype" of upload form is "multipart/form-data", companyQueryCon 
     //can not be bound by Spring automatically, thus, we receive the fileds and bind it ourselves;
-    Map<String,String> textMap = receivedData.getTextMap();
-
     CompanyExt queryCon = new CompanyExt();
-    if(textMap.containsKey("companyQueryCon.auth_pass"))
+    if(receivedData != null)
     {
-      try{
-        Long value = Long.parseLong(textMap.get("companyQueryCon.auth_pass"));
-        queryCon.setAuth_pass(value);
-      }
-      catch(Throwable e)
+      Map<String,String> textMap = receivedData.getTextMap();
+  
+      if(textMap!=null && textMap.containsKey("companyQueryCon.auth_pass"))
       {
-        logger.error("Exception caught!");
-        e.printStackTrace();
+        try{
+          Long value = Long.parseLong(textMap.get("companyQueryCon.auth_pass"));
+          queryCon.setAuth_pass(value);
+        }
+        catch(Throwable e)
+        {
+          logger.error("Exception caught!");
+          e.printStackTrace();
+        }
       }
-    }
-    if(textMap.containsKey("companyQueryCon.valid_pass"))
-    {
-      try{
-        Long value = Long.parseLong(textMap.get("companyQueryCon.valid_pass"));
-        queryCon.setValid_pass(value);
-      }
-      catch(Throwable e)
+      if(textMap!=null && textMap.containsKey("companyQueryCon.valid_pass"))
       {
-        logger.error("Exception caught!");
-        e.printStackTrace();
+        try{
+          Long value = Long.parseLong(textMap.get("companyQueryCon.valid_pass"));
+          queryCon.setValid_pass(value);
+        }
+        catch(Throwable e)
+        {
+          logger.error("Exception caught!");
+          e.printStackTrace();
+        }
       }
     }
 
@@ -436,13 +445,15 @@ public class CompanyController
       //the original companyQueryCon is null because the form is "multipart/form-data" and Spring doesn't bind it automatically) to 
       //query() function; but the modification on companyQueryCon (like above) doesn't take effect; I don't know why;
       //Thus, do the query here and return directly to index.jsp instead of forwarding to /company/query;
-  		//return "forward:/company/query";
-  		List<ICondition> conditions = new ArrayList<ICondition>();
-  
+      
+      //return "forward:/company/query";
+      List<ICondition> conditions = new ArrayList<ICondition>();
       generateConditions(conditions, queryCon);
   
-  		entityModel.setItems(companyService.criteriaQuery(conditions));
-  		return "/sys/company/index";
+      float allNum = companyService.criteriaQueryCount(conditions);
+      entityModel.setPageCount((int)Math.ceil(allNum/entityModel.getPageSize()));
+      entityModel.setItems(companyService.criteriaQuery(conditions, null, entityModel.getCurrentPage(), entityModel.getPageSize()));
+      return "/sys/company/index";
     }
     else  // not last step of uploading, so go to next step;
     {
@@ -531,17 +542,33 @@ public class CompanyController
               sendMail = false;
             }
 
-            String operationCN;
+            String title = "译邦网审核认证结果"; //should never use this title.
 
             if(operation.equals("authenticate")) 
             {
               company.setAuth_pass(dbResult);
-              operationCN="认证";
+
+              if(result.equals("pass"))
+              {
+                title = "您已通过译邦网的认证";
+              }
+              else 
+              {
+                title = "您未通过译邦网的认证";
+              }
             }
             else
             {
               company.setValid_pass(dbResult);
-              operationCN="审核";
+
+              if(result.equals("pass"))
+              {
+                title = "您在译邦网提交的信息审核已通过";
+              }
+              else 
+              {
+                title = "您在译邦网提交的信息审核未通过";
+              }
             }
 
             companyService.save(company);
@@ -555,7 +582,6 @@ public class CompanyController
               String from = "yibang886@163.com";
               String passwd = "yibang887";
               String to = company.getUser().getemail();
-              String title = "译邦网"+operationCN+"结果";
 
               if(MailUtil.sendMail(from, passwd, to, title, emailContent)==false)
               logger.error("failed to send email to "+to);
@@ -605,15 +631,18 @@ public class CompanyController
     //query() function; but the modification on companyQueryCon (like above) doesn't take effect; I don't know why;
     //Thus, do the query here and return directly to index.jsp instead of forwarding to /company/query;
 
-		//return "forward:/company/query";
-		List<ICondition> conditions = new ArrayList<ICondition>();
+    //return "forward:/company/query";
+    List<ICondition> conditions = new ArrayList<ICondition>();
 
     generateConditions(conditions, queryCon);
 
-		entityModel.setItems(companyService.criteriaQuery(conditions));
-		modelMap.addAttribute("entityModel", entityModel);
-		return "/sys/company/index";
-	}
+    float allNum = companyService.criteriaQueryCount(conditions);
+    entityModel.setPageCount((int)Math.ceil(allNum/entityModel.getPageSize()));
+    entityModel.setItems(companyService.criteriaQuery(conditions, null, entityModel.getCurrentPage(), entityModel.getPageSize()));
+
+    modelMap.addAttribute("entityModel", entityModel);
+    return "/sys/company/index";
+  }
   
   @RequestMapping(value = "/company/doDelete")
   public String doDelete(@ModelAttribute CompanyModel entityModel, 

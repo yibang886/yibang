@@ -156,10 +156,12 @@ public class UserController {
 
     //even for index page, we don't show admin account;
     List<ICondition> conditions = new ArrayList<ICondition>();
-    conditions.add(new NeCondition("user_type",new Long(2L)));
-    conditions.add(new NeCondition("user_type",new Long(3L)));
+    generateConditions(conditions, null);
     
-    userModel.setItems(userService.criteriaQuery(conditions));
+    float allNum = userService.criteriaQueryCount(conditions);
+    userModel.setPageCount((int)Math.ceil(allNum/userModel.getPageSize()));
+    userModel.setItems(userService.criteriaQuery(conditions, null, userModel.getCurrentPage(), userModel.getPageSize()));
+
     model.addAttribute(userModel);
     return "/sys/user/index";
   }

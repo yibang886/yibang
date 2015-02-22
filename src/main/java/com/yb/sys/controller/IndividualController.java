@@ -104,30 +104,37 @@ public class IndividualController {
 
 
 	@RequestMapping(value = "/individual/index")
-	public String index(@ModelAttribute IndividualModel individualModel, ModelMap model){
-		model.addAttribute(individualModel);
-		
-		return "/sys/individual/index";
+	public String index(@ModelAttribute IndividualModel individualModel, ModelMap model)
+        {
+          List<ICondition> conditions = new ArrayList<ICondition>();
+
+          float allNum = individualService.criteriaQueryCount(conditions);
+          individualModel.setPageCount((int)Math.ceil(allNum/individualModel.getPageSize()));
+          individualModel.setItems(individualService.criteriaQuery(conditions, null, individualModel.getCurrentPage(), individualModel.getPageSize()));
+
+          model.addAttribute(individualModel);
+          return "/sys/individual/index";
 	}
 	
 	@RequestMapping(value = "/individual/query")
-	public String query(@ModelAttribute IndividualModel individualModel, ModelMap model){
-		IndividualExt individualQueryCon = individualModel.getIndividualQueryCon();
-    logger.debug("individualQueryCon is null? "+ (individualQueryCon==null));
+	public String query(@ModelAttribute IndividualModel individualModel, ModelMap model)
+        {
+          IndividualExt individualQueryCon = individualModel.getIndividualQueryCon();
+          logger.debug("individualQueryCon is null? "+ (individualQueryCon==null));
 
-		List<ICondition> conditions = new ArrayList<ICondition>();
+          List<ICondition> conditions = new ArrayList<ICondition>();
 
-		if(individualQueryCon != null){
-      generateConditions(conditions, individualQueryCon);
-		}
+          if(individualQueryCon != null)
+          {
+            generateConditions(conditions, individualQueryCon);
+          }
 
-    float allNum = individualService.criteriaQueryCount(conditions);
-    individualModel.setPageCount((int)Math.ceil(allNum/individualModel.getPageSize()));
+          float allNum = individualService.criteriaQueryCount(conditions);
+          individualModel.setPageCount((int)Math.ceil(allNum/individualModel.getPageSize()));
+          individualModel.setItems(individualService.criteriaQuery(conditions, null, individualModel.getCurrentPage(), individualModel.getPageSize()));
 
-		individualModel.setItems(individualService.criteriaQuery(conditions, null, individualModel.getCurrentPage(), individualModel.getPageSize()));
-
-		model.addAttribute(individualModel);
-		return "/sys/individual/index";
+          model.addAttribute(individualModel);
+          return "/sys/individual/index";
 	}
 	
 	@RequestMapping(value = "/individual/goView")
@@ -418,31 +425,34 @@ public class IndividualController {
     //whenever file uploading is skipped, we did receive text fields; currently, we are using these text files to
     //pass individualQueryCon; because the "enctype" of upload form is "multipart/form-data", individualQueryCon 
     //can not be bound by Spring automatically, thus, we receive the fileds and bind it ourselves;
-    Map<String,String> textMap = receivedData.getTextMap();
-
     IndividualExt queryCon = new IndividualExt();
-    if(textMap.containsKey("individualQueryCon.auth_pass"))
+    if(receivedData != null)
     {
-      try{
-        Long value = Long.parseLong(textMap.get("individualQueryCon.auth_pass"));
-        queryCon.setauth_pass(value);
-      }
-      catch(Throwable e)
+      Map<String,String> textMap = receivedData.getTextMap();
+  
+      if(textMap!=null && textMap.containsKey("individualQueryCon.auth_pass"))
       {
-        logger.error("Exception caught!");
-        e.printStackTrace();
+        try{
+          Long value = Long.parseLong(textMap.get("individualQueryCon.auth_pass"));
+          queryCon.setauth_pass(value);
+        }
+        catch(Throwable e)
+        {
+          logger.error("Exception caught!");
+          e.printStackTrace();
+        }
       }
-    }
-    if(textMap.containsKey("individualQueryCon.valid_pass"))
-    {
-      try{
-        Long value = Long.parseLong(textMap.get("individualQueryCon.valid_pass"));
-        queryCon.setvalid_pass(value);
-      }
-      catch(Throwable e)
+      if(textMap!=null && textMap.containsKey("individualQueryCon.valid_pass"))
       {
-        logger.error("Exception caught!");
-        e.printStackTrace();
+        try{
+          Long value = Long.parseLong(textMap.get("individualQueryCon.valid_pass"));
+          queryCon.setvalid_pass(value);
+        }
+        catch(Throwable e)
+        {
+          logger.error("Exception caught!");
+          e.printStackTrace();
+        }
       }
     }
 
@@ -455,13 +465,14 @@ public class IndividualController {
       //the original individualQueryCon is null because the form is "multipart/form-data" and Spring doesn't bind it automatically) to 
       //query() function; but the modification on individualQueryCon (like above) doesn't take effect; I don't know why;
       //Thus, do the query here and return directly to index.jsp instead of forwarding to /individual/query;
-  		//return "forward:/individual/query";
-  		List<ICondition> conditions = new ArrayList<ICondition>();
-  
+      //return "forward:/individual/query";
+      List<ICondition> conditions = new ArrayList<ICondition>();
       generateConditions(conditions, queryCon);
   
-  		entityModel.setItems(individualService.criteriaQuery(conditions));
-  		return "/sys/individual/index";
+      float allNum = individualService.criteriaQueryCount(conditions);
+      entityModel.setPageCount((int)Math.ceil(allNum/entityModel.getPageSize()));
+      entityModel.setItems(individualService.criteriaQuery(conditions, null, entityModel.getCurrentPage(), entityModel.getPageSize()));
+      return "/sys/individual/index";
     }
     else  // not last step of uploading, so go to next step;
     {
@@ -634,15 +645,17 @@ public class IndividualController {
     //query() function; but the modification on individualQueryCon (like above) doesn't take effect; I don't know why;
     //Thus, do the query here and return directly to index.jsp instead of forwarding to /individual/query;
 
-		//return "forward:/individual/query";
-		List<ICondition> conditions = new ArrayList<ICondition>();
+    //return "forward:/individual/query";
+    List<ICondition> conditions = new ArrayList<ICondition>();
 
     generateConditions(conditions, queryCon);
 
-		entityModel.setItems(individualService.criteriaQuery(conditions));
-		model.addAttribute(entityModel);
-		return "/sys/individual/index";
-	}
+    float allNum = individualService.criteriaQueryCount(conditions);
+    entityModel.setPageCount((int)Math.ceil(allNum/entityModel.getPageSize()));
+    entityModel.setItems(individualService.criteriaQuery(conditions, null, entityModel.getCurrentPage(), entityModel.getPageSize()));
+    model.addAttribute(entityModel);
+    return "/sys/individual/index";
+    }
 
 	@RequestMapping(value = "/individual/goValidate")
 	public String goValidate(@ModelAttribute IndividualModel individualModel, ModelMap model){
