@@ -29,5 +29,6 @@ echo -e "\nStarting tomcat ......"
 web_serv_ctl.sh start 
 
 sleep 30
-rm -fr /home/www/resource
-mv -f $TOMCAT_WEBAPP_HOME/$PROJECT/resource  /home/www
+rm -fr /home/www/yibang
+mkdir -p /home/www/yibang
+mv -f $TOMCAT_WEBAPP_HOME/$PROJECT/resource /home/www/yibang
