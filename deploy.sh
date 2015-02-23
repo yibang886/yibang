@@ -27,3 +27,6 @@ set +x
 
 echo -e "\nStarting tomcat ......"
 web_serv_ctl.sh start 
+
+rm -fr /home/www/resource
+mv -f $TOMCAT_WEBAPP_HOME/$PROJECT/resource  /home/www
