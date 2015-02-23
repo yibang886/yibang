@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-  <display-name>YiBang</display-name>
+  <display-name>yibang</display-name>
+
+  <welcome-file-list>  
+    <welcome-file>index</welcome-file>  
+  </welcome-file-list>
 
   <context-param>
     <param-name>contextConfigLocation</param-name>
@@ -20,6 +24,11 @@
   <servlet-mapping>
     <servlet-name>ybdispatcher</servlet-name>
     <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>ybdispatcher</servlet-name>
+    <url-pattern>/index</url-pattern>
   </servlet-mapping>
 
   <filter>
