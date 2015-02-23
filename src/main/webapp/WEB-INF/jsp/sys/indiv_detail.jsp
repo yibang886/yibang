@@ -259,6 +259,8 @@
                                                     <p class=""><img src="${individualModel.individualExt.authfile}" alt="" style="width:330px;height:264px;"></p>
                                                 </li>
                                             </c:if>
+
+					    <%--
                                             <li class="clear-left short-info-show">
                                                 <span class="label">审核状态：</span>
                                                 <c:choose>
@@ -275,6 +277,8 @@
                                                     <c:otherwise><p>认证未通过</p></c:otherwise>
                                                 </c:choose>
                                             </li>
+					    --%>
+
                                             <li class="clear-left short-info-show">
                                                 <span class="label">推荐位：</span>
                                                 <p>${individualModel.individualExt.recompos.recompos}</p>

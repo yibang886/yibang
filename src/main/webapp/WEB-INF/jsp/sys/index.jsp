@@ -286,6 +286,7 @@
                                     <span class="info-item">微信：${companyA3.user.weixin}</span>
                                 </c:if>
                                 &nbsp;&nbsp;
+                                <br>
                                 <c:if test="${!empty companyA3.user.email}">
                                     <span class="info-item">邮箱：${companyA3.user.email}</span>
                                 </c:if>
@@ -338,6 +339,7 @@
                                     <span class="info-item">微信：${individualA3.user.weixin}</span>
                                 </c:if>
                                 &nbsp;&nbsp;
+                                <br>
                                 <c:if test="${!empty individualA3.user.email}">
                                     <span class="info-item">邮箱：${individualA3.user.email}</span>
                                 </c:if>
