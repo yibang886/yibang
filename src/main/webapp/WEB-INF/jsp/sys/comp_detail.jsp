@@ -156,29 +156,27 @@
                                         <ul class="info-show-lst">
                                             <c:if test="${!empty companyModel.companyExt.authfile}">
                                                 <li class="pic-info-li">
-                                                    <span class="label">认证资料</span>
+                                                    <span class="label" align="left">认证资料</span>
                                                     <p class=""><img data-bigimg="${companyModel.companyExt.authfile}"  
                                                                      src="${companyModel.companyExt.authfile}" alt="" style="width:330px;height:264px;"></p>
                                                 </li>
                                             </c:if>
-					    <%--
                                             <li class="clear-left short-info-show">
                                                 <span class="label">审核状态：</span>
                                                 <c:choose>
-                                                    <c:when test="${companyModel.companyExt.valid_pass==0}"><p>待审核</p></c:when>
                                                     <c:when test="${companyModel.companyExt.valid_pass==1}"><p>审核通过</p></c:when>
-                                                    <c:otherwise><p>审核未通过</p></c:otherwise>
+                                                    <c:otherwise><p>暂未审核</p></c:otherwise>
                                                 </c:choose>
                                             </li>
                                             <li class="short-info-show">
                                                 <span class="label">认证状态：</span>
                                                 <c:choose>
-                                                    <c:when test="${companyModel.companyExt.auth_pass==0}"><p>待认证</p></c:when>
                                                     <c:when test="${companyModel.companyExt.auth_pass==1}"><p>认证通过</p></c:when>
-                                                    <c:otherwise><p>认证未通过</p></c:otherwise>
+                                                    <c:otherwise><p>暂未认证</p></c:otherwise>
                                                 </c:choose>
                                             </li>
-					    --%>
+
+					    <%--
                                             <li class="clear-left short-info-show">
                                                 <span class="label">推荐位：</span>
                                                 <p>${companyModel.companyExt.recompos.recompos}</p>
@@ -187,6 +185,7 @@
                                                 <span class="label">金币数：</span>
                                                 <p>${userModel.userExt.coin}</p>
                                             </li>
+					    --%>
                                         </ul>
                                     </div>
                                 </div>
