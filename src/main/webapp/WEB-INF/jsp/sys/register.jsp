@@ -54,7 +54,7 @@
     </div>     
     <div class="pbody">
         <div class="parea head-search clearfix">
-            <div class="logo"><img src="<%=request.getContextPath()%>/resource/ybimg/logo.png" alt=""></div>
+            <div class="logo"><a href="index.action" target="_self"><img src="<%=request.getContextPath()%>/resource/ybimg/logo.png" alt=""></a></div>
             <div class="search">
                 <form id="search_form" method="get" target="_self">
                     <input name="st" type="text" class="search-input"/>

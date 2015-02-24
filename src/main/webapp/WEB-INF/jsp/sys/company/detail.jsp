@@ -47,7 +47,7 @@ function clickRadio(operationType, username)
               "感谢您对译邦网的关注与信任。\n" + 
               "您所提交的资料已通过认证，您的信息将优先展示给所有译邦网的用户，让潜在的客户找到您。\n" + 
               "请参考以下链接，了解如何让您的信息在译邦网上得到更多的展示机会：\n" +
-              "http://www.yibang.com\n" +
+              "http://fanyi360.cn/yibang/advertise.action\n" +
               "如果您有任何需求或疑问，欢迎与我们联系！\n" + 
               "电话：028-6580-6596\n" +
               "传真：028-6580-6596\n" +
@@ -62,7 +62,7 @@ function clickRadio(operationType, username)
               "您所提交的信息已通过审核，您的信息将有机会展示给所有译邦网的用户，让潜在的客户找到您。\n" +
               "如果您还没有通过提交相关资质进行认证，建议您及时上传所要求的文件完成认证。认证后的信息将优先展示，并且更容易获得客户的信任，也让您更容易与客户建立联系。\n" +
               "如果您已经进行过认证，您可以通过以下链接，了解如何让您的信息在译邦网上得到更多的展示机会：\n" +
-              "http://www.yibang.com\n" +
+              "http://fanyi360.cn/yibang/advertise.action\n" +
               "感谢您的关注与支持！\n";
     }
   }
@@ -79,7 +79,7 @@ function clickRadio(operationType, username)
               "请您重新提交相关资料，我们将再次为您服务。\n" + 
               "在您通过认证后，您的信息将优先展示给所有译邦网的用户，让潜在的客户找到您。\n" + 
               "在您通过认证后，您还可以通过以下链接，了解如何让您的信息在译邦网上得到更多的展示机会：\n" +
-              "http://www.yibang.com\n" +
+              "http://fanyi360.cn/yibang/advertise.action\n" +
               "感谢您的关注与支持！\n";
     }
     else if(operationType == "validate")
@@ -95,7 +95,7 @@ function clickRadio(operationType, username)
             "您所提交的信息通过审核后，将有机会展示给所有译邦网的用户，让潜在的客户找到您。\n" +
             "同时我们也建议您提交相关资质进行认证。认证后的信息将优先展示，并且更容易获得客户的信任，也让您更容易与客户建立联系。\n" +
             "在您通过了审核与认证以后，您还可以通过以下链接，了解如何让您的信息在译邦网上得到更多的展示机会：\n" +
-            "http://www.yibang.com\n" +
+            "http://fanyi360.cn/yibang/advertise.action\n" +
             "感谢您的关注与支持！\n";
     }
   }

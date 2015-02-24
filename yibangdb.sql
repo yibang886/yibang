@@ -739,7 +739,7 @@ CREATE TABLE IF NOT EXISTS company
   city_id INT UNSIGNED NOT NULL,               /*所在城市*/
   address VARCHAR(256) NOT NULL,               /*详细地址*/
   website VARCHAR(128) NOT NULL UNIQUE,        /*公司网站*/
-  inroduct VARCHAR(1024),                      /*公司简介*/ 
+  inroduct VARCHAR(2048),                      /*公司简介*/ 
   logo VARCHAR(256),                     /*logo图片文件名后缀*/
   authfile VARCHAR(256),                 /*认证资料图片文件名后缀*/
   auth_pass INT UNSIGNED NOT NULL DEFAULT 0,   /*是否通过认证, 0:待认证; 1:认证通过; 2:认证未通过*/

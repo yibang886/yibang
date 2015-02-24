@@ -72,7 +72,7 @@
                                     <div class="c-info-cnt">
                                         <ul class="info-show-lst">
                                             <li>
-                                                <span class="label">公司名词：</span>
+                                                <span class="label">公司名称：</span>
                                                 <p>${companyModel.companyExt.name}</p>
                                             </li>
                                             <li>

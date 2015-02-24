@@ -54,7 +54,7 @@
     </div>     
     <div class="pbody">
         <div class="parea head-search clearfix">
-            <div class="logo"><img src="<%=request.getContextPath()%>/resource/ybimg/logo.png" alt=""></div>
+            <div class="logo"><a href="index.action" target="_self"><img src="<%=request.getContextPath()%>/resource/ybimg/logo.png" alt=""></a></div>
             <div class="search">
                 <form id="search_form" method="get" target="_self">
                     <input name="st" type="text" class="search-input"/>
@@ -118,129 +118,28 @@
                             </font>
                         </p></div>
                         <br/>
+                        <br/>
                     </c:if>
 
-		    <%-- at most 8 paragraphs --%>
-                    <c:if test="${!empty para1}">
-                        <div><p>
-                            <c:choose>
-                                <c:when test="${info_type=='err'}">
-                                    <font size="+0.5" color="red">
-                                </c:when>
-                                <c:otherwise>
-                                    <font size="+0.5">
-                                </c:otherwise>
-                            </c:choose>
-                                ${para1}
-                            </font>
-                        </p></div>
-                    </c:if>
-
-                    <c:if test="${!empty para2}">
-                        <div><p>
-                            <c:choose>
-                                <c:when test="${info_type=='err'}">
-                                    <font size="+0.5" color="red">
-                                </c:when>
-                                <c:otherwise>
-                                    <font size="+0.5">
-                                </c:otherwise>
-                            </c:choose>
-                                ${para2}
-                            </font>
-                        </p></div>
-                    </c:if>
-
-                    <c:if test="${!empty para3}">
-                        <div><p>
-                            <c:choose>
-                                <c:when test="${info_type=='err'}">
-                                    <font size="+0.5" color="red">
-                                </c:when>
-                                <c:otherwise>
-                                    <font size="+0.5">
-                                </c:otherwise>
-                            </c:choose>
-                                ${para3}
-                            </font>
-                        </p></div>
-                    </c:if>
-
-                    <c:if test="${!empty para4}">
-                        <div><p>
-                            <c:choose>
-                                <c:when test="${info_type=='err'}">
-                                    <font size="+0.5" color="red">
-                                </c:when>
-                                <c:otherwise>
-                                    <font size="+0.5">
-                                </c:otherwise>
-                            </c:choose>
-                                ${para4}
-                            </font>
-                        </p></div>
-                    </c:if>
-
-                    <c:if test="${!empty para5}">
-                        <div><p>
-                            <c:choose>
-                                <c:when test="${info_type=='err'}">
-                                    <font size="+0.5" color="red">
-                                </c:when>
-                                <c:otherwise>
-                                    <font size="+0.5">
-                                </c:otherwise>
-                            </c:choose>
-                                ${para5}
-                            </font>
-                        </p></div>
-                    </c:if>
-
-                    <c:if test="${!empty para6}">
-                        <div><p>
-                            <c:choose>
-                                <c:when test="${info_type=='err'}">
-                                    <font size="+0.5" color="red">
-                                </c:when>
-                                <c:otherwise>
-                                    <font size="+0.5">
-                                </c:otherwise>
-                            </c:choose>
-                                ${para6}
-                            </font>
-                        </p></div>
-                    </c:if>
-
-                    <c:if test="${!empty para7}">
-                        <div><p>
-                            <c:choose>
-                                <c:when test="${info_type=='err'}">
-                                    <font size="+0.5" color="red">
-                                </c:when>
-                                <c:otherwise>
-                                    <font size="+0.5">
-                                </c:otherwise>
-                            </c:choose>
-                                ${para7}
-                            </font>
-                        </p></div>
-                    </c:if>
-
-                    <c:if test="${!empty para8}">
-                        <div><p>
-                            <c:choose>
-                                <c:when test="${info_type=='err'}">
-                                    <font size="+0.5" color="red">
-                                </c:when>
-                                <c:otherwise>
-                                    <font size="+0.5">
-                                </c:otherwise>
-                            </c:choose>
-                                ${para8}
-                            </font>
-                        </p></div>
-                    </c:if>
-		    <%-- at most 8 paragraphs --%>
+                    <c:forEach var="para" items="${paragraphs}">
+                        <c:choose>
+                            <c:when test="${para==''}"><br/></c:when>
+                            <c:otherwise>
+                                <div><p>
+                                    <c:choose>
+                                        <c:when test="${info_type=='err'}">
+                                            <font size="+0.5" color="red">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <font size="+0.5">
+                                        </c:otherwise>
+                                    </c:choose>
+                                        ${para}
+                                    </font>
+                                </p></div>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
 
                 </div>
             </div>

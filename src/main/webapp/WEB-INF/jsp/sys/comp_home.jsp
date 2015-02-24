@@ -56,7 +56,7 @@
             </div>     
             <div class="pbody">
                 <div class="parea head-search clearfix">
-                    <div class="logo"><img src="<%=request.getContextPath()%>/resource/ybimg/logo.png" alt=""></div>
+                    <div class="logo"><a href="index.action" target="_self"><img src="<%=request.getContextPath()%>/resource/ybimg/logo.png" alt=""></a></div>
                     <div class="search">
                         <form id="search_form" method="get" target="_self">
                             <input name="st" type="text" class="search-input"/>
@@ -100,7 +100,7 @@
                                             <div class="c-info-cnt">
                                                 <ul class="info-show-lst">
                                                     <li>
-                                                        <span class="label">公司名词：</span>
+                                                        <span class="label">公司名称：</span>
                                                         <p>${companyModel.companyExt.name}</p>
                                                     </li>
                                                     <li>
@@ -318,7 +318,7 @@
             </div>     
             <div class="pbody">
                 <div class="parea head-search clearfix">
-                    <div class="logo"><img src="<%=request.getContextPath()%>/resource/ybimg/logo.png" alt=""></div>
+                    <div class="logo"><a href="index.action" target="_self"><img src="<%=request.getContextPath()%>/resource/ybimg/logo.png" alt=""></a></div>
                     <div class="search">
                         <form id="search_form" method="get" target="_self">
                             <input name="st" type="text" class="search-input"/>
@@ -689,7 +689,7 @@
                                                                                         <textarea id="introTA" name="companyExt.inroduct" rows="3">${companyModel.companyExt.inroduct}</textarea>
                                                                                     </c:when>
                                                                                     <c:otherwise>
-                                                                                        <textarea id="introTA" name="companyExt.inroduct" rows="3">限长512个中文字符或者1024个英文字符</textarea>
+                                                                                        <textarea id="introTA" name="companyExt.inroduct" rows="3">限长1024个中文字符或者2048个英文字符</textarea>
                                                                                     </c:otherwise>
                                                                                 </c:choose>
                                                                             </div>
@@ -1065,7 +1065,7 @@
 	}
         if(checkURLPattern(website)==0)
         {
-            alert("公司网站格式不正确");
+            alert("公司网站格式不正确, 请以http://或者https://开头");
             return 0;
         }
 
