@@ -1156,7 +1156,7 @@ public class FrontEndController
 
 
   @RequestMapping(value = "/doUserEdit")
-  public String doUserEdit(@ModelAttribute UserModel userModel, ModelMap model, HttpServletRequest request)
+  public String doUserEdit(@ModelAttribute UserModel userModel, ModelMap model, HttpServletRequest request, HttpSession session)
   {
 
     if(userModel.getUserExt() == null || userModel.getUserExt().getId() == 0)
@@ -1227,6 +1227,8 @@ public class FrontEndController
       UserExt userExt = userModel.getUserExt();
       userExt.setcoin(userExtPer.getcoin());
       userService.save(userExt);
+
+      session.setAttribute("user", userExt);
     }
     else //cancel
     {

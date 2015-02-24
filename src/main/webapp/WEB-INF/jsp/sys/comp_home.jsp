@@ -83,8 +83,8 @@
                                 <div class="c-info-sidebar">
                                     <ul class="side-nav-lst">
                                         <li class="current"><a class="nav-info">我的空间</a></li>
-                                        <li><a class="nav-info-modify" href="home.action?type=1&id=${userId}&page=1" target="_self">修改基本信息</a></li>
-                                        <li><a class="nav-publish" href="home.action?type=1&id=${userId}&page=2" target="_self">发布修改服务</a></li>
+                                        <li><a class="nav-info-modify" href="home.action?type=${user.user_type}&id=${userId}&page=1" target="_self">修改基本信息</a></li>
+                                        <li><a class="nav-publish" href="home.action?type=${user.user_type}&id=${userId}&page=2" target="_self">发布修改服务</a></li>
                                     </ul>
                                 </div>
                                 <div class="c-info-mcnt">
@@ -351,13 +351,13 @@
                                     <ul class="side-nav-lst">
                                         <c:choose>
                                             <c:when test="${page==1}">
-                                                <li><a class="nav-info" href="home.action?type=1&id=${userId}&page=0" target="_self">我的空间</a></li>
+                                                <li><a class="nav-info" href="home.action?type=${user.user_type}&id=${userId}&page=0" target="_self">我的空间</a></li>
                                                 <li class="current"><a class="nav-info-modify">修改基本信息</a></li>
-                                                <li><a class="nav-publish" href="home.action?type=1&id=${userId}&page=2" target="_self">发布修改服务</a></li>
+                                                <li><a class="nav-publish" href="home.action?type=${user.user_type}&id=${userId}&page=2" target="_self">发布修改服务</a></li>
                                             </c:when>
                                             <c:otherwise>
-                                                <li><a class="nav-info" href="home.action?type=1&id=${userId}&page=0" target="_self">我的空间</a></li>
-                                                <li><a class="nav-info-modify" href="home.action?type=1&id=${userId}&page=1" target="_self">修改基本信息</a></li>
+                                                <li><a class="nav-info" href="home.action?type=${user.user_type}&id=${userId}&page=0" target="_self">我的空间</a></li>
+                                                <li><a class="nav-info-modify" href="home.action?type=${user.user_type}&id=${userId}&page=1" target="_self">修改基本信息</a></li>
                                                 <li class="current"><a class="nav-publish">发布修改服务</a></li>
                                             </c:otherwise>
                                         </c:choose>
