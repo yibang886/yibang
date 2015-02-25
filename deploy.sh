@@ -28,7 +28,7 @@ set +x
 echo -e "\nStarting tomcat ......"
 web_serv_ctl.sh start 
 
-sleep 30
+sleep 60
 rm -fr /home/www/yibang
 mkdir -p /home/www/yibang
 mv -f $TOMCAT_WEBAPP_HOME/$PROJECT/resource /home/www/yibang
