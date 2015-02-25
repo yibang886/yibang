@@ -338,14 +338,10 @@
             tel=tel.trim();
             if(tel != "")
             {
-                if(!digitPattern.test(tel))
+                var telPattern = /^\d{3,4}-\d{7,8}$/;
+                if(!telPattern.test(tel))
                 {
-                    alert("固定电话号码必须为数字");
-                    return 0;
-                }
-                if(tel.length < 7 || tel.length > 16)
-                {
-                    alert("固定电话号码长度不正确");
+                    alert("固定电话号码格式：区号(3至4位)-电话号码(7至8位)");
                     return 0;
                 }
             }
