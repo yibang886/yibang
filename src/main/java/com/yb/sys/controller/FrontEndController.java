@@ -517,6 +517,22 @@ public class FrontEndController
     logger.debug("Yuanguo: st="+st);
 
 
+    //primary order: recompos.id    
+    List<Order> recomposOrders = new ArrayList<Order>();
+    recomposOrders.add(Order.asc("id"));
+    AssocCriteria recomposCrit = new AssocCriteria("recompos", null, recomposOrders);
+
+    //secondary order: user.coin;
+    List<Order> coinOrders = new ArrayList<Order>();
+    coinOrders.add(Order.desc("coin"));
+    AssocCriteria coinCrit = new AssocCriteria("user", null, coinOrders);
+
+    List<AssocCriteria> assocCriterias = new ArrayList<AssocCriteria>();
+    assocCriterias.add(recomposCrit);
+    assocCriterias.add(coinCrit);
+
+
+
     int pageNo = 1;
     int indivNum=0;
     int compNum=0;
@@ -773,7 +789,7 @@ public class FrontEndController
 
       if(search)
       {
-        List<IndividualExt> result_indivs = individualService.criteriaQuery(condList1, null, null, pageNo, indivNum);
+        List<IndividualExt> result_indivs = individualService.criteriaQuery(condList1, null, assocCriterias, pageNo, indivNum);
         modelMap.addAttribute("individuals", result_indivs);
         int num_got = result_indivs.size();
         logger.debug("Yuanguo: result_indivs.size()="+result_indivs.size());
@@ -958,7 +974,7 @@ public class FrontEndController
 
       if(search)
       {
-        List<CompanyExt> result_comps = companyService.criteriaQuery(condList, null, null, pageNo, compNum);
+        List<CompanyExt> result_comps = companyService.criteriaQuery(condList, null, assocCriterias, pageNo, compNum);
         modelMap.addAttribute("companies", result_comps);
         logger.debug("Yuanguo: result_comps.size()="+result_comps.size());
         for(CompanyExt cmp: result_comps)
