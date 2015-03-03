@@ -369,7 +369,7 @@
                                         <div class="common-info-mod2">
                                             <div class="cinfo-hd">
                                                 <c:choose>
-                                                    <c:when test="${page==1}"><h2>修改基本信息(带*号项为必填项)</h2></c:when>
+                                                    <c:when test="${page==1}"><h2>修改基本信息(带*号项为必填项; 移动电话、固定电话、QQ和微信至少选一)</h2></c:when>
                                                     <c:otherwise><h2>发布修改服务(带*号项为必填项)</h2></c:otherwise>
                                                 </c:choose>
                                             </div>
@@ -403,7 +403,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <span class="form-label">移动电话(*)</span>
+                                                                <span class="form-label">移动电话</span>
                                                                 <div class="form-control">
                                                                     <input required id="mobInput" name="userExt.mobile" type="digits" 
                                                                                     value="<c:out value="${ userModel.userExt.mobile }" escapeXml="true" />" />
@@ -844,22 +844,22 @@
         }
 
         var mob = document.getElementById("mobInput").value;
-        if(mob!=null) mob=mob.trim();
-        if(mob==null || mob=="")
+        if(mob!=null) 
         {
-            alert("移动电话号码不能为空");
-            return 0;
-        }
-
-        if(!digitPattern.test(mob))
-        {
-            alert("移动电话号码必须为数字");
-            return 0;
-        }
-        if(mob.length < 11 || mob.length > 16)
-        {
-            alert("移动电话号码长度不正确");
-            return 0;
+            mob=mob.trim();
+            if(mob != "")
+            {
+                if(!digitPattern.test(mob))
+                {
+                    alert("移动电话号码必须为数字");
+                    return 0;
+                }
+                if(mob.length < 11 || mob.length > 16)
+                {
+                    alert("移动电话号码长度不正确");
+                    return 0;
+                }
+            }
         }
 
         var tel = document.getElementById("telInput").value;
@@ -868,14 +868,10 @@
             tel=tel.trim();
             if(tel != "")
             {
-                if(!digitPattern.test(tel))
+                var telPattern = /^\d{3,4}-\d{7,8}$/;
+                if(!telPattern.test(tel))
                 {
-                    alert("固定电话号码必须为数字");
-                    return 0;
-                }
-                if(tel.length < 7 || tel.length > 16)
-                {
-                    alert("固定电话号码长度不正确");
+                    alert("固定电话号码格式：区号(3至4位)-电话号码(7至8位)");
                     return 0;
                 }
             }
@@ -887,14 +883,10 @@
             fax=fax.trim();
             if(fax != "")
             {
-                if(!digitPattern.test(fax))
+                var faxPattern = /^\d{3,4}-\d{7,8}$/;
+                if(!faxPattern.test(fax))
                 {
-                    alert("传真号码必须为数字");
-                    return 0;
-                }
-                if(fax.length < 7 || fax.length > 16)
-                {
-                    alert("传真号码长度不正确");
+                    alert("传真号码格式：区号(3至4位)-电话号码(7至8位)");
                     return 0;
                 }
             }
@@ -931,6 +923,12 @@
                     return 0;
                 }
             }
+        }
+
+        if( (mob==null || mob=="") && (tel==null || tel=="") && (qq==null || qq=="") && (wx==null || wx=="") )
+        {
+            alert("移动电话、固定电话、QQ和微信不能全部为空！");
+            return 0;
         }
 
         return 1;
