@@ -238,7 +238,7 @@
                 }
                 else
                 {
-                  alert("由于未知原因,不能验证箱是否唯一");
+                  alert("由于未知原因,不能验证邮箱地址是否唯一");
                   emailValid = 0;
                 }
             }
@@ -267,12 +267,14 @@
         if(email==null || email=="")
         {
             alert("邮箱地址不能为空");
+            emailValid = 0;
             return 0;
         }
 
         if(email.length > 32)
         {
             alert("邮箱地址长度必须<=32");
+            emailValid = 0;
             return 0;
         }
 
@@ -280,6 +282,7 @@
         if(!emailPattern.test(email))
         {
             alert("邮箱地址无效");
+            emailValid = 0;
             return 0;
         }
 
@@ -413,7 +416,7 @@
 
         if(emailValid==0)
         {
-          alert("邮箱地址无效或者不唯一");
+          alert("邮箱地址为空、无效或者不唯一");
           return 0;
         }
 

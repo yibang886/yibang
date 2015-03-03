@@ -2211,6 +2211,128 @@ public class FrontEndController
     }
     else //client should never give null or empty email
     {
+      logger.error("email given is null or empty");
+      map.put(key,-1);
+    }
+
+    return map;
+  }
+
+
+  @RequestMapping(value = "/websiteUnique")
+  @ResponseBody
+  public Map<String,Integer> websiteUnique(HttpServletRequest request, HttpServletResponse response, ModelMap model){
+
+    Map<String,Integer> map = new HashMap<String,Integer>();
+    String key = "NumWithWebsite";
+
+    Long userId;
+    try{
+      userId = Long.parseLong(request.getParameter("id").trim());
+    }
+    catch (Throwable e){
+      logger.error("Unexpected exception thrown when parsing userId");
+      map.put(key,-1);
+      return map;
+    }
+
+    logger.debug("UserId:"+userId);
+
+    CompanyExt compExt = companyService.load(userId, false);
+
+    String ws = request.getParameter("website");
+    if(ws != null) ws = ws.trim();
+
+    logger.debug("website:"+ws);
+
+    if(ws!=null && !ws.equals(""))
+    {
+      List<ICondition> conditions = new ArrayList<ICondition>();
+      conditions.add(new EqCondition("website",ws));
+      try{
+        int allNum = companyService.criteriaQueryCount(conditions);
+        if(allNum>1)  //we are sure that the website is conflict
+          map.put(key,allNum);
+	else if(allNum==1) 
+        {
+          if( compExt!=null && ws.equals(compExt.getWebsite()) )  //exactly 1 and the user has already published a company, then it should be the company itself (when modifying)
+            map.put(key,0);
+          else
+            map.put(key,1); 
+        }
+        else
+            map.put(key,0);
+      }
+      catch(Exception e)
+      {
+        logger.error("Unexpected exception thrown when query count of companies by the website:"+ws);
+        e.printStackTrace();
+        map.put(key,-1);
+      }
+    }
+    else //client should never give null or empty website 
+    {
+      logger.error("website given is null or empty");
+      map.put(key,-1);
+    }
+
+    return map;
+  }
+
+  @RequestMapping(value = "/nameUnique")
+  @ResponseBody
+  public Map<String,Integer> nameUnique(HttpServletRequest request, HttpServletResponse response, ModelMap model){
+
+    Map<String,Integer> map = new HashMap<String,Integer>();
+    String key = "NumWithName";
+
+    Long userId;
+    try{
+      userId = Long.parseLong(request.getParameter("id").trim());
+    }
+    catch (Throwable e){
+      logger.error("Unexpected exception thrown when parsing userId");
+      map.put(key,-1);
+      return map;
+    }
+
+    logger.debug("UserId:"+userId);
+
+    CompanyExt compExt = companyService.load(userId, false);
+
+    String name = request.getParameter("name");
+    if(name != null) name = name.trim();
+
+    logger.debug("name:"+name);
+
+    if(name!=null && !name.equals(""))
+    {
+      List<ICondition> conditions = new ArrayList<ICondition>();
+      conditions.add(new EqCondition("name",name));
+      try{
+        int allNum = companyService.criteriaQueryCount(conditions);
+        if(allNum>1)  //we are sure that the name is conflict
+          map.put(key,allNum);
+	else if(allNum==1) 
+        {
+          if( compExt!=null && name.equals(compExt.getName()) )  //exactly 1 and the user has already published a company, then it should be the company itself (when modifying)
+            map.put(key,0);
+          else
+            map.put(key,1); 
+        }
+        else
+            map.put(key,0);
+      }
+      catch(Exception e)
+      {
+        logger.error("Unexpected exception thrown when query count of companies by the name:"+name);
+        e.printStackTrace();
+        map.put(key,-1);
+      }
+    }
+    else //client should never give null or empty website 
+    {
+      logger.error("name given is null or empty");
       map.put(key,-1);
     }
 

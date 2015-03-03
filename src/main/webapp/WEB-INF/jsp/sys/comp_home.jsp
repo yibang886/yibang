@@ -492,7 +492,8 @@
                                                                             <span class="form-label">公司名称(*)</span>
                                                                             <div class="form-control">
                                                                                 <input required name="companyExt.name" type="text" id="iNameIpt"
-                                                                                                value="<c:out value="${ companyModel.companyExt.name }" escapeXml="true" />" />
+                                                                                                value="<c:out value="${ companyModel.companyExt.name }" escapeXml="true" />" 
+                                                                                                onblur="validateName('${userId}', 1)" onfocus="nameValid=2;" />
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-group">
@@ -525,6 +526,14 @@
                                                                                                 value="<c:out value="${companyModel.companyExt.address}" escapeXml="true" />" />
                                                                             </div>
                                                                         </div>
+                                                                        <div class="form-group">
+                                                                            <span class="form-label">公司网址(*)</span>
+                                                                            <div class="form-control">
+                                                                                <input required name="companyExt.website" type="text" id="iWebIpt"
+                                                                                                value="<c:out value="${companyModel.companyExt.website}" escapeXml="true" />"  
+                                                                                                onblur="validateWebsite('${userId}', 1)" onfocus="websiteValid=2;" />
+                                                                            </div>
+                                                                        </div>                                                 
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <span class="form-label">语种</span>
@@ -694,13 +703,6 @@
                                                                                 </c:choose>
                                                                             </div>
                                                                         </div>                                                
-                                                                        <div class="form-group">
-                                                                            <span class="form-label">公司网址(*)</span>
-                                                                            <div class="form-control">
-                                                                                <input required name="companyExt.website" type="text" id="iWebIpt"
-                                                                                                value="<c:out value="${companyModel.companyExt.website}" escapeXml="true" />" />
-                                                                            </div>
-                                                                        </div>                                                 
                                                                     </div>                                                   
                                                                                                                   
                                                                     <%--
@@ -824,6 +826,159 @@
         if(!pattern.test(url))
             return 0;
         return 1;
+    }
+
+    //global variables;
+    websiteValid = 0;
+    nameValid = 0;
+
+    function getXMLHttpRequest() 
+    {  
+      var xmlHttp;
+      if(window.XMLHttpRequest) 
+      {
+          var xmlHttp = new window.XMLHttpRequest();
+      } 
+      else if (window.ActiveXObject) 
+      {
+          var xmlHttp = new window.ActiveXObject('Microsoft.XMLHTTP');
+      }
+      return xmlHttp;
+    }  
+
+    function changeWebsite() 
+    {
+        if (xmlHttp.readyState == 4) 
+        {
+            if (xmlHttp.status == 200) 
+            {
+                var json = eval("("+xmlHttp.responseText+")");
+                if(json.NumWithWebsite>0)
+                {
+                  alert("该公司网址已被注册,请确保网址唯一");
+                  websiteValid = 3;
+                }
+                else if(json.NumWithWebsite==0)
+                {
+                  websiteValid = 1;
+                }
+                else
+                {
+                  alert("由于未知原因,不能验证公司网址是否唯一");
+                  websiteValid = 3;
+                }
+            }
+        }
+    }
+
+    function checkWebsiteUnique(website, userId)
+    {
+      var url = "websiteUnique.action?id="+userId+"&website="+website;
+
+      xmlHttp = getXMLHttpRequest();
+      if(xmlHttp == null)
+          alert('Failed to get XMLHttpRequest');
+      else
+      {
+          xmlHttp.onreadystatechange = changeWebsite;
+          xmlHttp.open("GET",url,true);
+          xmlHttp.send(null);
+      }
+    }
+
+    function validateWebsite(userId, ajax)
+    {
+        var website = document.getElementById("iWebIpt").value;
+        if(website!=null) website=website.trim();
+        if(website==null || website=="")
+        {
+            alert("公司网站不能为空");
+            websiteValid = 3;
+            return 0;
+        }
+        if(checkURLPattern(website)==0)
+        {
+            alert("公司网站格式不正确, 请以http://或者https://开头");
+            websiteValid = 3;
+            return 0;
+        }
+
+	if(ajax==1)
+            checkWebsiteUnique(website, userId);
+	else
+	{
+	    websiteValid = 1;
+	    return 1;
+	}
+
+    }
+
+    function changeName() 
+    {
+        if (xmlHttp.readyState == 4) 
+        {
+            if (xmlHttp.status == 200) 
+            {
+                var json = eval("("+xmlHttp.responseText+")");
+                if(json.NumWithName>0)
+                {
+                  alert("该公司名称已被注册,请确保公司名称唯一");
+                  nameValid = 3;
+                }
+                else if(json.NumWithName==0)
+                {
+                  nameValid = 1;
+                }
+                else
+                {
+                  alert("由于未知原因,不能验证公司名称是否唯一");
+                  nameValid = 3;
+                }
+            }
+        }
+    }
+
+    function checkNameUnique(name,userId)
+    {
+      var url = "nameUnique.action?id="+userId+"&name="+name;
+
+      xmlHttp = getXMLHttpRequest();
+      if(xmlHttp == null)
+          alert('Failed to get XMLHttpRequest');
+      else
+      {
+          xmlHttp.onreadystatechange = changeName;
+          xmlHttp.open("GET",url,true);
+          xmlHttp.send(null);
+      }
+    }
+
+    function validateName(userId, ajax)
+    {
+        var name = document.getElementById("iNameIpt").value;
+        if(name!=null) name=name.trim();
+
+        if(name==null || name=="")
+        {
+            alert("公司名称不能为空");
+            nameValid = 3;
+            return 0;
+        }
+
+        if( getLength(name) > 64)
+        {
+            alert("公司名称长度太大");
+            nameValid = 3;
+            return 0;
+        }
+
+	if(ajax == 1)
+            checkNameUnique(name, userId);
+	else
+	{
+            nameValid = 1;
+	    return 1;
+	}
     }
 
 
@@ -1013,21 +1168,6 @@
 
     function validateComp()
     {
-        var name = document.getElementById("iNameIpt").value;
-        if(name!=null) name=name.trim();
-
-        if(name==null || name=="")
-        {
-            alert("公司名称不能为空");
-            return 0;
-        }
-
-        if( getLength(name) > 64)
-        {
-            alert("公司名称长度太大");
-            return 0;
-        }
-
         var addr = document.getElementById("iAddrIpt").value;
         if(addr!=null) addr=addr.trim();
 
@@ -1054,19 +1194,6 @@
             }
         }
 
-        var website = document.getElementById("iWebIpt").value;
-	if(website!=null) website=website.trim();
-	if(website==null || website=="")
-	{
-            alert("公司网站不能为空");
-            return 0;
-	}
-        if(checkURLPattern(website)==0)
-        {
-            alert("公司网站格式不正确, 请以http://或者https://开头");
-            return 0;
-        }
-
         return 1;
     }
 
@@ -1086,11 +1213,51 @@
             }
             else
             {
+
                 compForm.action = action;
-                if(validateComp()==1)
+
+                if(nameValid==0)
                 {
-                    compForm.submit();
+		    if( validateName(userId,0) == 0 )
+		        return 0;
                 }
+
+        
+                if(nameValid==2)
+                {
+                  alert("正在验证公司名称是否唯一,稍后重新提交");
+                  return 0;
+                }
+
+                if(nameValid==3)
+                {
+                  alert("公司名称为空、无效或者不唯一");
+                  return 0;
+                }
+
+
+		if(websiteValid==0)
+		{
+		    if( validateWebsite(userId,0) == 0 )
+		        return 0;
+		}
+
+                if(websiteValid==2)
+                {
+                  alert("正在验证公司网址是否唯一,稍后重新提交");
+                  return 0;
+                }
+
+                if(websiteValid==3)
+                {
+                  alert("公司网址为空、无效或者不唯一");
+                  return 0;
+                }
+
+                if(validateComp()==0)
+                    return 0;
+
+                compForm.submit();
             }
         }
         else //not step 1
