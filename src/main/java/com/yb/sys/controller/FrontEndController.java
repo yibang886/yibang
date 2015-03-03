@@ -2301,7 +2301,19 @@ public class FrontEndController
     CompanyExt compExt = companyService.load(userId, false);
 
     String name = request.getParameter("name");
-    if(name != null) name = name.trim();
+    if(name != null) 
+    {
+      try{
+        name = URLDecoder.decode(name,"UTF-8");  
+        name = name.trim();
+      }
+      catch(Throwable t)
+      {
+        logger.warn("failed to decode URI parameter name:"+name);
+        map.put(key,-1);
+        return map;
+      }
+    }
 
     logger.debug("name:"+name);
 

@@ -973,7 +973,10 @@
         }
 
 	if(ajax == 1)
+	{
+            name = encodeURIComponent(name);
             checkNameUnique(name, userId);
+	}
 	else
 	{
             nameValid = 1;
