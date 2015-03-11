@@ -583,7 +583,6 @@ INSERT INTO city(city) VALUES ('广州');
 INSERT INTO city(city) VALUES ('深圳');
 INSERT INTO city(city) VALUES ('成都');
 INSERT INTO city(city) VALUES ('西安');
-INSERT INTO city(city) VALUES ('南京');
 INSERT INTO city(city) VALUES ('沈阳');
 INSERT INTO city(city) VALUES ('大连');
 INSERT INTO city(city) VALUES ('长春');
